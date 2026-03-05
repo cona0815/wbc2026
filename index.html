@@ -51,6 +51,16 @@
   }
   #pitch-label.show { opacity: 1; }
 
+  #magic-bat-label {
+    position: absolute; bottom: 70px; left: 50%; transform: translateX(-50%);
+    font-family: 'Righteous', cursive; font-size: 22px;
+    text-shadow: 0 0 25px currentColor, 0 0 50px currentColor;
+    opacity: 0; transition: opacity 0.3s; pointer-events: none;
+    animation: magicPulse 0.5s ease-in-out infinite alternate;
+  }
+  #magic-bat-label.show { opacity: 1; }
+  @keyframes magicPulse { from { transform: translateX(-50%) scale(1); } to { transform: translateX(-50%) scale(1.08); } }
+
   #pause-btn {
     position: absolute; top: 16px; right: 16px; z-index: 30;
     width: 46px; height: 46px; border-radius: 50%;
@@ -62,6 +72,18 @@
   }
   #pause-btn:hover { transform: scale(1.12); background: rgba(255,255,255,0.18); }
   #pause-btn:active { transform: scale(0.95); }
+
+  #home-btn {
+    position: absolute; top: 16px; right: 70px; z-index: 30;
+    width: 46px; height: 46px; border-radius: 50%;
+    background: rgba(0,0,0,0.6); border: 2px solid rgba(255,255,255,0.35);
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; backdrop-filter: blur(6px);
+    transition: transform 0.15s, background 0.15s;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.4);
+  }
+  #home-btn:hover { transform: scale(1.12); background: rgba(255,255,255,0.18); }
+  #home-btn:active { transform: scale(0.95); }
 
   #instructions {
     position: absolute; bottom: 18px; left: 50%; transform: translateX(-50%);
@@ -167,6 +189,19 @@
   }
   .diff-hard:hover { box-shadow: 0 8px 35px rgba(230,57,70,0.5); }
   .diff-hard .tag { background: #e63946; color: #fff; }
+  .diff-super {
+    background: linear-gradient(135deg, #1a0025, #330033);
+    border: 2px solid #ff00ff;
+    box-shadow: 0 4px 20px rgba(255,0,255,0.3);
+    animation: superGlow 2s ease-in-out infinite;
+  }
+  .diff-super:hover { box-shadow: 0 8px 40px rgba(255,0,255,0.6); }
+  .diff-super .tag { background: linear-gradient(90deg, #ff00ff, #ff6600); color: #fff; }
+  .diff-super .name { color: #ff80ff; }
+  @keyframes superGlow {
+    0%,100% { border-color: #ff00ff; }
+    50% { border-color: #ff6600; }
+  }
   #menu-flag { font-size: 40px; margin-bottom: 4px; }
 
 </style>
@@ -197,6 +232,12 @@
         <div class="desc">極速投球<br>判定超嚴格<br>23種魔球</div>
         <div class="tag">PRO</div>
       </div>
+      <div class="diff-card diff-super" onclick="selectDifficulty('super')">
+        <div class="icon">💀</div>
+        <div class="name">超級挑戰</div>
+        <div class="desc">全部魔球<br>判定極嚴<br>33種球路</div>
+        <div class="tag">IMPOSSIBLE</div>
+      </div>
     </div>
   </div>
 </div>
@@ -216,6 +257,7 @@
   <div id="hit-info"></div>
   <div id="combo"></div>
   <div id="pitch-label"></div>
+  <div id="magic-bat-label"></div>
   <div id="instructions">按 <b>空白鍵</b> 或 <b>點擊</b> 揮棒 | 30球挑戰！ ⚾</div>
 </div>
 
@@ -225,6 +267,11 @@
   </svg>
   <svg id="play-icon" width="20" height="20" viewBox="0 0 18 18" fill="white" style="display:none">
     <polygon points="4,2 16,9 4,16"/>
+  </svg>
+</div>
+<div id="home-btn">
+  <svg width="20" height="20" viewBox="0 0 20 20" fill="white">
+    <path d="M10 2L2 9h3v7h4v-4h2v4h4V9h3L10 2z"/>
   </svg>
 </div>
 
@@ -393,6 +440,29 @@ const SFX = {
   lookBall(){
     playTone(300, 0.15, 'sine', 0.04);
     playTone(250, 0.2, 'sine', 0.03, 0.1);
+  },
+  magicBatActivate(){
+    playSweep(300, 1500, 0.3, 'sine', 0.1);
+    playSweep(400, 2000, 0.25, 'sine', 0.08, 0.1);
+    playTone(1500, 0.1, 'triangle', 0.06, 0.3);
+    playTone(2000, 0.08, 'sine', 0.05, 0.35);
+    playTone(2500, 0.08, 'sine', 0.04, 0.4);
+    playNoise(0.3, 0.04, 0.2, 5000);
+  },
+  magicBatHit(){
+    playNoise(0.04, 0.5, 0, 8000);
+    playTone(1500, 0.05, 'square', 0.2);
+    playTone(2000, 0.04, 'sine', 0.15, 0.01);
+    playSweep(500, 2000, 0.3, 'sine', 0.1, 0.05);
+    playTone(523, 0.1, 'square', 0.12, 0.1);
+    playTone(659, 0.1, 'square', 0.12, 0.2);
+    playTone(784, 0.1, 'square', 0.12, 0.3);
+    playTone(1047, 0.12, 'square', 0.14, 0.4);
+    playTone(1318, 0.15, 'square', 0.12, 0.5);
+    playTone(1568, 0.2, 'sine', 0.1, 0.6);
+    playTone(2093, 0.3, 'sine', 0.08, 0.75);
+    playNoise(3, 0.12, 0.2, 1200);
+    playNoise(2.5, 0.08, 0.5, 2000);
   }
 };
 
@@ -403,17 +473,22 @@ const DIFFICULTY = {
   easy: {
     pitchSpeed: 0.011, sweet: 0.10, good: 0.20, ok: 0.30,
     pitchDelay: 1500, magicBase: 7, magicMid: 5, magicHard: 3,
-    magicSpeedMult: 0.85, curveMult: 0.7, label: '簡單'
+    magicSpeedMult: 0.85, curveMult: 0.7, allMagic: false, label: '簡單'
   },
   normal: {
     pitchSpeed: 0.016, sweet: 0.07, good: 0.16, ok: 0.26,
     pitchDelay: 1200, magicBase: 5, magicMid: 3, magicHard: 2,
-    magicSpeedMult: 1.0, curveMult: 1.0, label: '普通'
+    magicSpeedMult: 1.0, curveMult: 1.0, allMagic: false, label: '普通'
   },
   hard: {
     pitchSpeed: 0.022, sweet: 0.045, good: 0.10, ok: 0.18,
     pitchDelay: 900, magicBase: 3, magicMid: 2, magicHard: 2,
-    magicSpeedMult: 1.25, curveMult: 1.4, label: '專業'
+    magicSpeedMult: 1.25, curveMult: 1.4, allMagic: false, label: '專業'
+  },
+  super: {
+    pitchSpeed: 0.026, sweet: 0.035, good: 0.08, ok: 0.14,
+    pitchDelay: 750, magicBase: 1, magicMid: 1, magicHard: 1,
+    magicSpeedMult: 1.4, curveMult: 1.6, allMagic: true, label: '超級挑戰'
   }
 };
 let diff = DIFFICULTY.normal;
@@ -432,6 +507,18 @@ let batState = 'ready', canSwing = false;
 let bannerText = '', bannerTimer = 0;
 let totalPitches = 0, ballsRemaining = MAX_BALLS;
 let paused = false, gameOver = false;
+
+// ═══════════════════════════════════
+// MAGIC BAT SYSTEM
+// ═══════════════════════════════════
+const MAGIC_BATS = [
+  { type:'fire',   label:'🔥 烈焰魔棒', batColor1:'#ff4500', batColor2:'#ffd700', glowColor:'rgba(255,69,0,', particleColors:['255,100,0','255,200,0','255,255,100'] },
+  { type:'thunder',label:'⚡ 雷神之棒', batColor1:'#00bfff', batColor2:'#e0ffff', glowColor:'rgba(0,191,255,', particleColors:['100,200,255','200,240,255','255,255,255'] },
+  { type:'dragon', label:'🐉 龍魂棒',   batColor1:'#00ff88', batColor2:'#80ffcc', glowColor:'rgba(0,255,136,', particleColors:['0,255,100','100,255,200','200,255,150'] },
+];
+let magicBat = null; // null or one of MAGIC_BATS
+let magicBatTimer = 0;
+let magicBatParticles = [];
 
 let currentPitch = { type:'normal', speed:BASE_PITCH_SPEED, curve:0, label:'' };
 // Base pitches (all difficulties)
@@ -467,10 +554,25 @@ const HARD_EXTRA = [
   { type:'phantom',  speed:0.010, curve:1,    label:'👻 幽靈球' },
 ];
 
+// Super challenge only extra pitches (+10)
+const SUPER_EXTRA = [
+  { type:'meteor',   speed:0.040, curve:0,    label:'☄️ 隕石球' },
+  { type:'teleport', speed:0.020, curve:0,    label:'🌀 瞬移球' },
+  { type:'boomerang',speed:0.010, curve:-2.5, label:'🪃 迴旋球' },
+  { type:'tornado',  speed:0.014, curve:3,    label:'🌪️ 龍捲球' },
+  { type:'gravity',  speed:0.012, curve:0,    label:'🕳️ 重力球' },
+  { type:'mirage',   speed:0.015, curve:0.5,  label:'🏜️ 海市蜃樓球' },
+  { type:'frozen',   speed:0.003, curve:0,    label:'🧊 冰凍球' },
+  { type:'rocket',   speed:0.045, curve:0,    label:'🚀 火箭球' },
+  { type:'drunk',    speed:0.011, curve:1,    label:'🍺 醉拳球' },
+  { type:'shadow',   speed:0.018, curve:-1,   label:'🌑 暗影球' },
+];
+
 function getMagicPitchPool() {
   let pool = [...BASE_PITCHES];
-  if(diff === DIFFICULTY.normal || diff === DIFFICULTY.hard) pool = pool.concat(NORMAL_EXTRA);
-  if(diff === DIFFICULTY.hard) pool = pool.concat(HARD_EXTRA);
+  if(diff === DIFFICULTY.normal || diff === DIFFICULTY.hard || diff === DIFFICULTY.super) pool = pool.concat(NORMAL_EXTRA);
+  if(diff === DIFFICULTY.hard || diff === DIFFICULTY.super) pool = pool.concat(HARD_EXTRA);
+  if(diff === DIFFICULTY.super) pool = pool.concat(SUPER_EXTRA);
   return pool;
 }
 const HR_QUOTES = [
@@ -773,12 +875,22 @@ function drawPitcher(t) {
 
 function drawBatter(t) {
   const bx=pX+30, by=pY-8;
+  const mb = magicBat;
   X.save(); X.translate(bx,by); X.scale(-1,1);
   X.fillStyle='rgba(0,0,0,0.2)'; X.beginPath(); X.ellipse(0,24,14,5,0,0,Math.PI*2); X.fill();
   let bA2, bL=38;
   if(batState==='ready') bA2=-1.2+Math.sin(t*0.003)*0.05;
   else if(batState==='swing') bA2=-1.2+swingAnim*2.8;
   else bA2=-1.2+2.8;
+
+  // Magic bat aura on body
+  if(mb){
+    const gr=X.createRadialGradient(0,0,5,0,0,35);
+    gr.addColorStop(0,mb.glowColor+(0.15+Math.sin(t*0.008)*0.08)+')');
+    gr.addColorStop(1,mb.glowColor+'0)');
+    X.fillStyle=gr; X.beginPath(); X.arc(0,0,35,0,Math.PI*2); X.fill();
+  }
+
   X.fillStyle='#f1faee'; X.fillRect(-4,11,6,14); X.fillRect(3,11,6,14);
   X.fillStyle='#1d3557'; X.fillRect(-5,24,8,4); X.fillRect(2,24,8,4);
   X.fillStyle='#1d3557'; X.beginPath(); X.roundRect(-10,-9,20,24,4); X.fill();
@@ -786,14 +898,60 @@ function drawBatter(t) {
   X.font='bold 8px "Righteous"'; X.fillText('1',0,12);
   X.fillStyle='#fcd5b4'; X.beginPath(); X.arc(0,-16,8,0,Math.PI*2); X.fill();
   X.fillStyle='#e63946'; X.beginPath(); X.arc(0,-18,9,Math.PI,0); X.fill(); X.fillRect(-9,-19,5,6);
-  X.fillStyle='#333'; X.beginPath(); X.arc(-2.5,-15,1,0,Math.PI*2); X.arc(2.5,-15,1,0,Math.PI*2); X.fill();
+
+  // Magic bat: glowing eyes
+  if(mb){
+    X.fillStyle=mb.batColor1; X.shadowColor=mb.batColor1; X.shadowBlur=6;
+    X.beginPath(); X.arc(-2.5,-15,1.3,0,Math.PI*2); X.arc(2.5,-15,1.3,0,Math.PI*2); X.fill();
+    X.shadowBlur=0;
+  } else {
+    X.fillStyle='#333'; X.beginPath(); X.arc(-2.5,-15,1,0,Math.PI*2); X.arc(2.5,-15,1,0,Math.PI*2); X.fill();
+  }
+
+  // Draw bat
   X.save(); X.translate(8,-5); X.rotate(bA2);
-  X.strokeStyle='#7a5a10'; X.lineWidth=3.5; X.lineCap='round';
-  X.beginPath(); X.moveTo(0,0); X.lineTo(0,-bL*0.55); X.stroke();
-  X.strokeStyle='#c9956b'; X.lineWidth=5.5;
-  X.beginPath(); X.moveTo(0,-bL*0.5); X.lineTo(0,-bL); X.stroke();
-  X.strokeStyle='#d4a574'; X.lineWidth=4.5;
-  X.beginPath(); X.moveTo(0,-bL); X.lineTo(0,-bL-3); X.stroke();
+  if(mb){
+    // Magic bat glow trail
+    const gAlpha = 0.2+Math.sin(t*0.01)*0.1;
+    X.shadowColor=mb.batColor1; X.shadowBlur=15;
+    // Handle
+    const hGrad = X.createLinearGradient(0,0,0,-bL);
+    hGrad.addColorStop(0,mb.batColor1); hGrad.addColorStop(1,mb.batColor2);
+    X.strokeStyle=hGrad; X.lineWidth=4; X.lineCap='round';
+    X.beginPath(); X.moveTo(0,0); X.lineTo(0,-bL*0.55); X.stroke();
+    // Barrel
+    const bGrad = X.createLinearGradient(0,-bL*0.5,0,-bL);
+    bGrad.addColorStop(0,mb.batColor1); bGrad.addColorStop(1,mb.batColor2);
+    X.strokeStyle=bGrad; X.lineWidth=7;
+    X.beginPath(); X.moveTo(0,-bL*0.5); X.lineTo(0,-bL); X.stroke();
+    // Tip glow
+    X.strokeStyle=mb.batColor2; X.lineWidth=5.5;
+    X.beginPath(); X.moveTo(0,-bL); X.lineTo(0,-bL-4); X.stroke();
+    X.shadowBlur=0;
+    // Orbiting particles around bat
+    for(let j=0;j<5;j++){
+      const ang = t*0.012+j*Math.PI*0.4;
+      const dist2 = 6+Math.sin(t*0.008+j)*3;
+      const py2 = -bL*0.5-j*4;
+      const px2 = Math.cos(ang)*dist2;
+      const py3 = py2+Math.sin(ang)*dist2*0.4;
+      const pc = mb.particleColors[j%mb.particleColors.length];
+      X.fillStyle=`rgba(${pc},${0.4+Math.sin(t*0.01+j)*0.2})`;
+      X.beginPath(); X.arc(px2,py3,1.5+Math.sin(t*0.015+j)*0.5,0,Math.PI*2); X.fill();
+    }
+    // Energy ring at barrel
+    X.strokeStyle=mb.glowColor+(0.2+Math.sin(t*0.015)*0.1)+')';
+    X.lineWidth=1.5;
+    X.beginPath(); X.arc(0,-bL*0.75,10+Math.sin(t*0.01)*3,0,Math.PI*2); X.stroke();
+  } else {
+    // Normal bat
+    X.strokeStyle='#7a5a10'; X.lineWidth=3.5; X.lineCap='round';
+    X.beginPath(); X.moveTo(0,0); X.lineTo(0,-bL*0.55); X.stroke();
+    X.strokeStyle='#c9956b'; X.lineWidth=5.5;
+    X.beginPath(); X.moveTo(0,-bL*0.5); X.lineTo(0,-bL); X.stroke();
+    X.strokeStyle='#d4a574'; X.lineWidth=4.5;
+    X.beginPath(); X.moveTo(0,-bL); X.lineTo(0,-bL-3); X.stroke();
+  }
   X.restore(); X.restore();
 }
 
@@ -825,6 +983,17 @@ function drawPitchBall() {
   else if(cp.type==='vulcan'){ by+=Math.sin(t2*Math.PI*2.5)*10; bx+=Math.sin(t2*Math.PI)*W*0.03; }
   else if(cp.type==='wipeout'){ bx-=t2*t2*W*0.15; by+=Math.sin(t2*Math.PI)*10; }
   else if(cp.type==='phantom'){ bx+=Math.sin(t2*Math.PI*2.5)*W*0.05; by-=Math.cos(t2*Math.PI*1.5)*20; }
+  // Super extra physics
+  else if(cp.type==='meteor'){ by+=t2*t2*30; }
+  else if(cp.type==='teleport'){ const jump=Math.floor(t2*4)%2; bx+=(jump?1:-1)*W*0.06*Math.sin(t2*20); }
+  else if(cp.type==='boomerang'){ bx-=Math.sin(t2*Math.PI*1.5)*W*0.14; by-=Math.cos(t2*Math.PI)*25; }
+  else if(cp.type==='tornado'){ bx+=Math.sin(t2*Math.PI*8)*W*0.04*(1-t2); by+=Math.cos(t2*Math.PI*8)*12*(1-t2); }
+  else if(cp.type==='gravity'){ by+=t2>0.5?(t2-0.5)*(t2-0.5)*400:0; }
+  else if(cp.type==='mirage'){ bx+=Math.sin(t2*Math.PI*3)*W*0.06*Math.sin(t2*Math.PI*7); }
+  else if(cp.type==='frozen'){ bx+=Math.sin(t2*Math.PI*0.5)*W*0.01; }
+  else if(cp.type==='rocket'){ by-=t2*t2*20; }
+  else if(cp.type==='drunk'){ bx+=Math.sin(t2*Math.PI*5)*W*0.05+Math.cos(t2*Math.PI*3)*W*0.03; by+=Math.sin(t2*Math.PI*4)*15; }
+  else if(cp.type==='shadow'){ bx-=Math.sin(t2*Math.PI)*W*0.07; by+=Math.sin(t2*Math.PI*2)*12; }
   const sc=0.5+t2*0.65;
 
   X.save(); X.translate(bx,by); X.scale(sc,sc);
@@ -839,18 +1008,22 @@ function drawPitchBall() {
       knuckle:'rgba(180,180,180,0.35)',screwball:'rgba(100,0,200,0.4)',splitter:'rgba(255,50,50,0.4)',
       gyro:'rgba(0,255,200,0.35)',palmball:'rgba(200,150,100,0.3)',eephus:'rgba(255,180,255,0.3)',
       slurve:'rgba(100,50,255,0.4)',vulcan:'rgba(255,120,0,0.35)',wipeout:'rgba(0,100,255,0.4)',
-      phantom:'rgba(180,180,255,0.3)'
+      phantom:'rgba(180,180,255,0.3)',
+      meteor:'rgba(255,80,0,0.5)',teleport:'rgba(0,255,255,0.4)',boomerang:'rgba(255,200,50,0.35)',
+      tornado:'rgba(100,200,255,0.4)',gravity:'rgba(80,0,120,0.45)',mirage:'rgba(255,220,150,0.35)',
+      frozen:'rgba(150,220,255,0.4)',rocket:'rgba(255,50,0,0.5)',drunk:'rgba(200,180,50,0.35)',
+      shadow:'rgba(50,0,80,0.5)'
     };
     X.fillStyle=gc[cp.type]||'rgba(255,100,100,0.3)'; X.beginPath(); X.arc(0,0,12,0,Math.PI*2); X.fill();
-    if(cp.type==='fast'||cp.type==='superfast'||cp.type==='splitter'){
+    if(cp.type==='fast'||cp.type==='superfast'||cp.type==='splitter'||cp.type==='meteor'||cp.type==='rocket'){
       for(let j=0;j<3;j++){ X.fillStyle=`rgba(255,${150+Math.random()*100},0,${0.3-j*0.1})`;
         X.beginPath(); X.arc(-3-j*4+Math.random()*2,Math.random()*4-2,2-j*0.5,0,Math.PI*2); X.fill(); }
     }
-    if(cp.type==='snake'||cp.type==='floater'||cp.type==='knuckle'||cp.type==='phantom'){
+    if(cp.type==='snake'||cp.type==='floater'||cp.type==='knuckle'||cp.type==='phantom'||cp.type==='drunk'||cp.type==='mirage'){
       for(let j=0;j<4;j++){ const a2=Date.now()*0.01+j*Math.PI*0.5;
         X.fillStyle=`rgba(200,100,255,${0.25-j*0.05})`; X.beginPath(); X.arc(Math.cos(a2)*8,Math.sin(a2)*8,1.5,0,Math.PI*2); X.fill(); }
     }
-    if(cp.type==='curveL'||cp.type==='curveR'||cp.type==='slurve'||cp.type==='screwball'||cp.type==='gyro'){
+    if(cp.type==='curveL'||cp.type==='curveR'||cp.type==='slurve'||cp.type==='screwball'||cp.type==='gyro'||cp.type==='boomerang'||cp.type==='tornado'){
       const a3=Date.now()*0.015;
       for(let j=0;j<3;j++){
         const ang=a3+j*Math.PI*0.67;
@@ -865,7 +1038,7 @@ function drawPitchBall() {
         X.beginPath(); X.arc(-2-j*2,Math.sin(Date.now()*0.01+j)*4,1.5,0,Math.PI*2); X.fill();
       }
     }
-    if(cp.type==='zigzag'||cp.type==='wipeout'){
+    if(cp.type==='zigzag'||cp.type==='wipeout'||cp.type==='teleport'||cp.type==='shadow'){
       for(let j=0;j<3;j++){
         const sx3=(Math.random()-0.5)*16, sy3=(Math.random()-0.5)*16;
         X.strokeStyle=`rgba(200,220,255,${0.3+Math.random()*0.3})`; X.lineWidth=0.8;
@@ -875,6 +1048,21 @@ function drawPitchBall() {
     if(cp.type==='rise'||cp.type==='cutter'){
       X.fillStyle=`rgba(255,200,50,${0.1+Math.sin(Date.now()*0.01)*0.05})`;
       X.beginPath(); X.arc(0,-4,8,0,Math.PI*2); X.fill();
+    }
+    // Frozen ice crystals
+    if(cp.type==='frozen'){
+      for(let j=0;j<5;j++){
+        const a4=Date.now()*0.003+j*Math.PI*0.4;
+        X.fillStyle=`rgba(150,220,255,${0.15+Math.sin(a4)*0.1})`;
+        X.beginPath(); X.arc(Math.cos(a4)*9,Math.sin(a4)*9,1,0,Math.PI*2); X.fill();
+      }
+    }
+    // Gravity dark vortex
+    if(cp.type==='gravity'){
+      X.fillStyle='rgba(40,0,60,0.3)';
+      X.beginPath(); X.arc(0,4,10,0,Math.PI*2); X.fill();
+      X.strokeStyle='rgba(150,50,200,0.2)'; X.lineWidth=1;
+      X.beginPath(); X.arc(0,4,14+Math.sin(Date.now()*0.01)*3,0,Math.PI*2); X.stroke();
     }
   }
   X.fillStyle='#fff'; X.beginPath(); X.arc(0,0,6,0,Math.PI*2); X.fill();
@@ -989,7 +1177,8 @@ function getMagicInterval() {
 function selectPitch() {
   totalPitches++;
   const interval = getMagicInterval();
-  if(totalPitches % interval === 0) {
+  const isMagicTurn = diff.allMagic || (totalPitches % interval === 0);
+  if(isMagicTurn) {
     const pool = getMagicPitchPool();
     const mp = pool[Math.floor(Math.random()*pool.length)];
     currentPitch = {
@@ -1011,6 +1200,18 @@ function selectPitch() {
 function startPitch(){
   if(gameOver) return;
   if(ballsRemaining <= 0) { endGame(); return; }
+  // Magic bat: activate every 10th ball
+  const ballNumber = MAX_BALLS - ballsRemaining + 1;
+  if(ballNumber % 10 === 0 && !magicBat){
+    magicBat = MAGIC_BATS[Math.floor(Math.random()*MAGIC_BATS.length)];
+    magicBatTimer = 1; // active for 1 pitch
+    const mbl = document.getElementById('magic-bat-label');
+    mbl.textContent = magicBat.label;
+    mbl.style.color = magicBat.batColor1;
+    mbl.classList.add('show');
+    SFX.magicBatActivate();
+    fans.forEach(f=>f.ex=0.7); setTimeout(()=>{if(!magicBat)fans.forEach(f=>f.ex=0);},2000);
+  }
   selectPitch();
   state='pitching'; pitchT=0; batState='ready'; swingAnim=0; canSwing=true;
   SFX.pitch();
@@ -1037,19 +1238,43 @@ function doSwing(){
 
 function finishSwing(){
   batState='done';
-  const ts=timingScore;
-  if(ts>=0.75){
-    const dist=Math.round(100+ts*70+Math.random()*20);
+  let ts=timingScore;
+  const hrThreshold = diff.allMagic ? 0.90 : 0.75;
+  const hasMagicBat = !!magicBat;
+
+  // Magic bat: force perfect HR!
+  if(hasMagicBat){
+    ts = 1.0;
+    magicBatTimer--;
+    if(magicBatTimer <= 0){
+      magicBat = null;
+      document.getElementById('magic-bat-label').classList.remove('show');
+    }
+  }
+
+  if(ts>=hrThreshold || hasMagicBat){
+    const dist = hasMagicBat ? Math.round(180+Math.random()*40) : Math.round(100+ts*70+Math.random()*20);
     hrCount++; combo++; if(combo>maxCombo) maxCombo=combo;
     document.getElementById('hr-count').textContent=hrCount;
     if(dist>maxDist){maxDist=dist; document.getElementById('max-dist').textContent=maxDist+'m';}
-    ballObj.x=pX; ballObj.y=pY-20; ballObj.vx=(Math.random()-0.5)*2.5;
-    ballObj.vy=-5-ts*3; ballObj.sc=1; ballObj.vis=true; ballObj.trail=[];
+    // Random HR direction: left, center, or right field
+    const hrAngle = (Math.random()-0.5)*2.2;
+    ballObj.x=pX+hrAngle*15; ballObj.y=pY-20;
+    ballObj.vx=hrAngle*2.5+(Math.random()-0.5)*1.5;
+    ballObj.vy= hasMagicBat ? -9-Math.random()*2 : -5-ts*3-Math.random()*1.5;
+    ballObj.sc=1; ballObj.vis=true; ballObj.trail=[];
     if(ts>=1.0){
-      showHit('⚡ PERFECT ⚡<br>全壘打!!!',dist+'m');
-      shake=20; bannerText=HR_QUOTES[Math.floor(Math.random()*HR_QUOTES.length)]; bannerTimer=180;
-      SFX.perfect();
-      for(let i=0;i<8;i++)setTimeout(()=>spawnFW(W*0.15+Math.random()*W*0.7,H*0.05+Math.random()*H*0.2),i*250);
+      if(hasMagicBat){
+        showHit('💥 魔棒全壘打 💥<br>超級轟炸!!!',dist+'m');
+        shake=30; bannerText='魔棒發威！球場震撼！'; bannerTimer=240;
+        SFX.magicBatHit();
+        for(let i=0;i<14;i++)setTimeout(()=>spawnFW(W*0.05+Math.random()*W*0.9,H*0.02+Math.random()*H*0.25),i*180);
+      } else {
+        showHit('⚡ PERFECT ⚡<br>全壘打!!!',dist+'m');
+        shake=20; bannerText=HR_QUOTES[Math.floor(Math.random()*HR_QUOTES.length)]; bannerTimer=180;
+        SFX.perfect();
+        for(let i=0;i<8;i++)setTimeout(()=>spawnFW(W*0.15+Math.random()*W*0.7,H*0.05+Math.random()*H*0.2),i*250);
+      }
     } else {
       showHit('全壘打!! 💥',dist+'m');
       shake=12; bannerText=HR_QUOTES[Math.floor(Math.random()*HR_QUOTES.length)]; bannerTimer=180;
@@ -1061,7 +1286,8 @@ function finishSwing(){
     state='fly';
   } else if(ts>=0.45){
     const dist=Math.round(30+ts*50+Math.random()*15);
-    ballObj.x=pX; ballObj.y=pY-20; ballObj.vx=(Math.random()-0.5)*4;
+    const hitAngle = (Math.random()-0.5)*2.5;
+    ballObj.x=pX+hitAngle*10; ballObj.y=pY-20; ballObj.vx=hitAngle*3+(Math.random()-0.5)*2;
     ballObj.vy=-3-ts*2; ballObj.sc=1; ballObj.vis=true; ballObj.trail=[];
     combo=0; showHit('安打! 👏',dist+'m'); SFX.hitBall();
     fans.forEach(f=>f.ex=0.4); setTimeout(()=>fans.forEach(f=>f.ex=0),1500);
@@ -1118,6 +1344,8 @@ function selectDifficulty(key){
   updateBallsUI();
   ballObj.vis=false; ballObj.trail=[]; fireworks=[];
   bannerTimer=0; shake=0; batState='ready'; paused=false;
+  magicBat=null; magicBatTimer=0;
+  document.getElementById('magic-bat-label').classList.remove('show');
   document.getElementById('gameover').classList.remove('show');
   document.getElementById('pause-overlay').classList.remove('show');
   // Hide menu, start game
@@ -1182,7 +1410,7 @@ C.addEventListener('mousedown',e=>{e.preventDefault();handleSwing();});
 C.addEventListener('touchstart',e=>{e.preventDefault();handleSwing();},{passive:false});
 C.setAttribute('tabindex','0'); C.focus();
 document.addEventListener('click',e=>{
-  if(e.target.closest('#pause-btn')||e.target.closest('#restart-btn')||e.target.closest('#difficulty-select')) return;
+  if(e.target.closest('#pause-btn')||e.target.closest('#restart-btn')||e.target.closest('#difficulty-select')||e.target.closest('#home-btn')) return;
   initAudio();C.focus();window.focus();
 });
 // Pause button
@@ -1191,6 +1419,24 @@ document.getElementById('pause-btn').addEventListener('click', e=>{
 });
 document.getElementById('pause-btn').addEventListener('mousedown', e=>e.stopPropagation());
 document.getElementById('pause-btn').addEventListener('touchstart', e=>{e.stopPropagation();e.preventDefault();initAudio();togglePause();},{passive:false});
+// Home button
+function goHome(){
+  initAudio();
+  paused=false; gameOver=false;
+  document.getElementById('pause-overlay').classList.remove('show');
+  document.getElementById('gameover').classList.remove('show');
+  document.getElementById('pause-icon').style.display='';
+  document.getElementById('play-icon').style.display='none';
+  document.getElementById('difficulty-select').classList.remove('hide');
+  state='menu';
+  ballObj.vis=false; ballObj.trail=[]; fireworks=[];
+  bannerTimer=0; shake=0;
+  magicBat=null; magicBatTimer=0;
+  document.getElementById('magic-bat-label').classList.remove('show');
+}
+document.getElementById('home-btn').addEventListener('click', e=>{e.stopPropagation();goHome();});
+document.getElementById('home-btn').addEventListener('mousedown', e=>e.stopPropagation());
+document.getElementById('home-btn').addEventListener('touchstart', e=>{e.stopPropagation();e.preventDefault();goHome();},{passive:false});
 
 // ═══════════════════════════════════
 // GAME LOOP
