@@ -1,0 +1,2405 @@
+<!doctype html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>班級潔牙檢核表</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,700;0,9..144,900;1,9..144,600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Noto+Sans+TC:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="/_sdk/data_sdk.js"></script>
+  <script src="/_sdk/editing_sdk.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <style>
+    :root {
+      --mint-50: #f0fbf7;
+      --mint-100: #d9f5ea;
+      --mint-200: #b3ebd6;
+      --mint-300: #7ad9b8;
+      --mint-400: #3ec296;
+      --mint-500: #1ba87a;
+      --mint-600: #158863;
+      --mint-700: #136b50;
+      --mint-800: #114f3e;
+      --mint-900: #0d3a2e;
+
+      --cream-50: #fefbf5;
+      --cream-100: #fdf6e8;
+      --cream-200: #f9ecc9;
+
+      --coral-300: #ffb6a3;
+      --coral-400: #ff8a70;
+      --coral-500: #f56e55;
+
+      --sky-100: #e0f5ff;
+      --sky-300: #7cc9f0;
+      --sky-500: #2a95d1;
+
+      --ink-900: #0d2922;
+      --ink-700: #2d4a42;
+      --ink-500: #5a7870;
+      --ink-300: #9cb5ac;
+
+      --font-display: 'Fraunces', 'Noto Sans TC', serif;
+      --font-sans: 'Plus Jakarta Sans', 'Noto Sans TC', sans-serif;
+    }
+
+    * { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+
+    body {
+      font-family: var(--font-sans);
+      overflow: hidden;
+      color: var(--ink-900);
+      background:
+        radial-gradient(ellipse 800px 600px at 0% 0%, rgba(179, 235, 214, 0.35), transparent 60%),
+        radial-gradient(ellipse 700px 500px at 100% 100%, rgba(255, 182, 163, 0.18), transparent 55%),
+        radial-gradient(ellipse 600px 400px at 100% 0%, rgba(124, 201, 240, 0.15), transparent 50%),
+        linear-gradient(180deg, #fefbf5 0%, #f0fbf7 100%);
+    }
+
+    /* Subtle paper-grain texture overlay */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      background-image:
+        radial-gradient(circle at 20% 30%, rgba(26, 168, 122, 0.04) 1px, transparent 1px),
+        radial-gradient(circle at 70% 60%, rgba(26, 168, 122, 0.03) 1px, transparent 1px);
+      background-size: 40px 40px, 55px 55px;
+    }
+
+    .font-display { font-family: var(--font-display); font-optical-sizing: auto; }
+    .font-sans { font-family: var(--font-sans); }
+
+    /* Hand-drawn style underline SVG decoration */
+    .underline-squiggle {
+      position: absolute;
+      bottom: -8px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 60%;
+      height: 8px;
+      color: var(--coral-400);
+    }
+
+    /* Tooth interactions */
+    .tooth-bounce { animation: toothBounce .6s cubic-bezier(0.34, 1.56, 0.64, 1); }
+    @keyframes toothBounce {
+      0% { transform: scale(1) rotate(0); }
+      30% { transform: scale(1.3) rotate(-5deg); }
+      60% { transform: scale(0.9) rotate(3deg); }
+      100% { transform: scale(1) rotate(0); }
+    }
+
+    .sparkle { animation: sparkle 2s ease-in-out infinite; transform-origin: center; }
+    @keyframes sparkle {
+      0%, 100% { opacity: .3; transform: scale(.7) rotate(0); }
+      50% { opacity: 1; transform: scale(1.2) rotate(180deg); }
+    }
+
+    .wobble { animation: wobble 4s ease-in-out infinite; transform-origin: center bottom; }
+    @keyframes wobble {
+      0%, 100% { transform: rotate(-4deg); }
+      50% { transform: rotate(4deg); }
+    }
+
+    .float-gentle { animation: floatGentle 3s ease-in-out infinite; }
+    @keyframes floatGentle {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-4px); }
+    }
+
+    @keyframes starFall {
+      0% { transform: translateY(-20px) rotate(0); opacity: 1; }
+      100% { transform: translateY(120px) rotate(360deg); opacity: 0; }
+    }
+
+    .fade-in { animation: fadeIn .6s ease; }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Tooth grid cards */
+    .tooth-grid-item {
+      cursor: pointer;
+      transition: transform .2s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow .2s;
+      border-radius: 20px;
+      padding: 6px;
+      position: relative;
+    }
+    .tooth-grid-item:hover {
+      transform: translateY(-3px) scale(1.04);
+    }
+    .tooth-grid-item:active {
+      transform: translateY(-1px) scale(1.02);
+    }
+    .tooth-grid-item.brushed {
+      background: linear-gradient(155deg, rgba(217, 245, 234, 0.7) 0%, rgba(255, 255, 255, 0.95) 100%);
+      box-shadow:
+        0 4px 12px rgba(26, 168, 122, 0.15),
+        inset 0 1px 0 rgba(255, 255, 255, 0.8);
+    }
+    .tooth-grid-item.brushed > svg {
+      animation: toothBreathe 3s ease-in-out infinite;
+    }
+    @keyframes toothBreathe {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.03); }
+    }
+    .tooth-grid-item.dirty {
+      background: linear-gradient(155deg, rgba(250, 248, 240, 0.5) 0%, rgba(245, 242, 232, 0.7) 100%);
+    }
+    .tooth-grid-item.readonly { cursor: default; opacity: .65; }
+    .tooth-grid-item.readonly:hover { transform: none; }
+
+    /* Ensure SVG does not intercept clicks */
+    .tooth-grid-item svg,
+    .tooth-grid-item svg * {
+      pointer-events: none;
+    }
+
+    /* Progress bar */
+    .progress-track {
+      background: linear-gradient(90deg, rgba(13, 58, 46, 0.06), rgba(13, 58, 46, 0.1));
+      border-radius: 999px;
+      overflow: hidden;
+      position: relative;
+      box-shadow: inset 0 2px 4px rgba(13, 58, 46, 0.1);
+    }
+    .progress-fill {
+      transition: width .6s cubic-bezier(0.34, 1.56, 0.64, 1);
+      height: 100%;
+      background: linear-gradient(90deg, var(--mint-400), var(--mint-500), var(--mint-400));
+      background-size: 200% 100%;
+      border-radius: 999px;
+      position: relative;
+      animation: shimmer 3s linear infinite;
+      box-shadow: 0 0 12px rgba(26, 168, 122, 0.4);
+    }
+    @keyframes shimmer {
+      0% { background-position: 0% 50%; }
+      100% { background-position: 200% 50%; }
+    }
+    .progress-fill::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+      background-size: 50% 100%;
+      animation: sheen 2.5s linear infinite;
+    }
+    @keyframes sheen {
+      0% { background-position: -100% 0; }
+      100% { background-position: 200% 0; }
+    }
+
+    /* Cards */
+    .card {
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.9);
+      box-shadow:
+        0 1px 2px rgba(13, 58, 46, 0.04),
+        0 8px 24px rgba(13, 58, 46, 0.06);
+      border-radius: 24px;
+    }
+    .card-accent {
+      position: relative;
+      overflow: hidden;
+    }
+    .card-accent::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 4px;
+      height: 100%;
+      background: linear-gradient(180deg, var(--mint-400), var(--coral-400));
+    }
+
+    /* Toasts */
+    .toast-show { animation: toastIn .3s ease, toastOut .3s ease 2s forwards; }
+    @keyframes toastIn {
+      from { opacity: 0; transform: translate(-50%, 20px); }
+      to { opacity: 1; transform: translate(-50%, 0); }
+    }
+    @keyframes toastOut {
+      from { opacity: 1; }
+      to { opacity: 0; }
+    }
+
+    /* Celebration */
+    .celebration-overlay {
+      position: fixed;
+      inset: 0;
+      background: radial-gradient(ellipse at center, rgba(13, 58, 46, 0.7), rgba(13, 58, 46, 0.92));
+      z-index: 50;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      animation: celebIn .4s ease forwards;
+    }
+    @keyframes celebIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    .celebration-overlay.fade-out { animation: celebOut .5s ease forwards; }
+    @keyframes celebOut {
+      from { opacity: 1; }
+      to { opacity: 0; }
+    }
+    .clap-emoji {
+      font-size: 120px;
+      animation: clapPulse 0.8s ease-in-out infinite;
+      filter: drop-shadow(0 8px 24px rgba(255, 215, 0, 0.5));
+    }
+    @keyframes clapPulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.25); }
+    }
+    .firework-particle { position: absolute; pointer-events: none; will-change: transform, opacity; }
+    .celebration-text {
+      font-family: var(--font-display);
+      font-size: 56px;
+      font-weight: 900;
+      color: #fff;
+      text-align: center;
+      margin-bottom: 40px;
+      letter-spacing: -0.02em;
+      text-shadow: 0 4px 20px rgba(0,0,0,.4), 0 0 60px rgba(124, 201, 240, 0.3);
+    }
+
+    /* Seat management buttons */
+    .seat-btn {
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      font-weight: 700;
+      font-size: 13px;
+      font-family: var(--font-sans);
+      transition: all .2s cubic-bezier(0.34, 1.56, 0.64, 1);
+      cursor: pointer;
+      border: 2px solid transparent;
+    }
+    .seat-btn.active {
+      background: var(--mint-500);
+      color: #fff;
+      border-color: var(--mint-600);
+      box-shadow: 0 2px 6px rgba(26, 168, 122, 0.3);
+    }
+    .seat-btn.inactive {
+      background: #f1f0ec;
+      color: #b8b5ad;
+      border-color: #e5e3dc;
+      opacity: .6;
+    }
+    .seat-btn:hover { transform: scale(1.1) rotate(-3deg); }
+    .seat-btn.active:hover { background: var(--mint-600); }
+
+    /* Overlays */
+    .overlay-bg {
+      position: fixed;
+      inset: 0;
+      background: rgba(13, 58, 46, 0.5);
+      backdrop-filter: blur(8px);
+      z-index: 40;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .overlay-panel {
+      max-height: 90vh;
+      overflow-y: auto;
+      width: 92%;
+      max-width: 560px;
+      animation: panelIn .3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    @keyframes panelIn {
+      from { opacity: 0; transform: scale(0.95) translateY(20px); }
+      to { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
+    /* Fine scrollbar */
+    .overlay-panel::-webkit-scrollbar,
+    #tooth-grid::-webkit-scrollbar { width: 6px; }
+    .overlay-panel::-webkit-scrollbar-track,
+    #tooth-grid::-webkit-scrollbar-track { background: transparent; }
+    .overlay-panel::-webkit-scrollbar-thumb,
+    #tooth-grid::-webkit-scrollbar-thumb {
+      background: var(--mint-200);
+      border-radius: 999px;
+    }
+
+    .full-h { height: calc(100 * min(var(--vh, 1vh), 1vh)); }
+
+    /* Inputs */
+    .input-field {
+      font-family: var(--font-sans);
+      border: 2px solid var(--mint-100);
+      border-radius: 12px;
+      padding: 8px 14px;
+      font-weight: 600;
+      transition: all .2s;
+      background: #fff;
+    }
+    .input-field:focus {
+      outline: none;
+      border-color: var(--mint-400);
+      box-shadow: 0 0 0 3px rgba(62, 194, 150, 0.15);
+    }
+
+    .btn {
+      font-family: var(--font-sans);
+      font-weight: 700;
+      border-radius: 12px;
+      padding: 8px 16px;
+      font-size: 14px;
+      transition: all .2s cubic-bezier(0.34, 1.56, 0.64, 1);
+      cursor: pointer;
+      border: none;
+      letter-spacing: 0.01em;
+    }
+    .btn:hover { transform: translateY(-1px); }
+    .btn:active { transform: translateY(0); }
+    .btn-primary { background: var(--mint-500); color: #fff; box-shadow: 0 2px 6px rgba(26, 168, 122, 0.3); }
+    .btn-primary:hover { background: var(--mint-600); box-shadow: 0 4px 12px rgba(26, 168, 122, 0.4); }
+    .btn-secondary { background: var(--sky-500); color: #fff; box-shadow: 0 2px 6px rgba(42, 149, 209, 0.3); }
+    .btn-accent { background: var(--coral-500); color: #fff; box-shadow: 0 2px 6px rgba(245, 110, 85, 0.3); }
+    .btn-danger { background: #e53e5d; color: #fff; box-shadow: 0 2px 6px rgba(229, 62, 93, 0.3); }
+    .btn-ghost { background: rgba(26, 168, 122, 0.08); color: var(--mint-700); }
+    .btn-ghost:hover { background: rgba(26, 168, 122, 0.15); }
+
+    /* Hover elevation for main cards */
+    .hover-lift { transition: transform .3s, box-shadow .3s; }
+    .hover-lift:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 2px 4px rgba(13, 58, 46, 0.05), 0 16px 32px rgba(13, 58, 46, 0.08);
+    }
+
+    /* Section header badge */
+    .section-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      background: var(--mint-100);
+      color: var(--mint-700);
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    /* Giant numbers for stats */
+    .stat-number {
+      font-family: var(--font-display);
+      font-weight: 900;
+      font-feature-settings: 'tnum';
+      letter-spacing: -0.04em;
+    }
+
+    /* Decorative dots */
+    .deco-dots {
+      position: absolute;
+      pointer-events: none;
+      opacity: 0.4;
+    }
+
+    /* Quick action buttons (全勾/全清) */
+    .quick-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 5px 11px;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 700;
+      font-family: var(--font-sans);
+      border: 2px solid;
+      cursor: pointer;
+      transition: all .2s cubic-bezier(0.34, 1.56, 0.64, 1);
+      background: #fff;
+    }
+    .quick-btn:hover { transform: translateY(-1px); }
+    .quick-btn:active { transform: scale(0.95); }
+    .quick-btn-all {
+      color: var(--mint-600);
+      border-color: var(--mint-300);
+      background: var(--mint-50);
+    }
+    .quick-btn-all:hover {
+      background: var(--mint-500);
+      color: #fff;
+      border-color: var(--mint-500);
+    }
+    .quick-btn-clear {
+      color: var(--coral-500);
+      border-color: var(--coral-300);
+      background: #fff;
+    }
+    .quick-btn-clear:hover {
+      background: var(--coral-500);
+      color: #fff;
+      border-color: var(--coral-500);
+    }
+    .quick-btn > span:first-child {
+      font-size: 14px;
+      font-weight: 900;
+    }
+
+    /* ═══════════ BIG REMINDER BUTTON ═══════════ */
+    .reminder-btn {
+      border: none;
+      cursor: pointer;
+      padding: 0;
+      background: none;
+      width: 100%;
+      border-radius: 24px;
+      overflow: hidden;
+      position: relative;
+      transition: transform .2s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .reminder-btn:hover { transform: translateY(-2px) scale(1.02); }
+    .reminder-btn:active { transform: scale(0.98); }
+
+    .reminder-btn-inner {
+      background: linear-gradient(135deg, #ff6b5c 0%, #f56e55 50%, #e55a3f 100%);
+      padding: 18px 20px;
+      border-radius: 24px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      position: relative;
+      box-shadow:
+        0 8px 24px rgba(245, 110, 85, 0.45),
+        0 2px 6px rgba(245, 110, 85, 0.3),
+        inset 0 2px 0 rgba(255, 255, 255, 0.3);
+      animation: reminderBreathe 2.5s ease-in-out infinite;
+    }
+    @keyframes reminderBreathe {
+      0%, 100% { box-shadow: 0 8px 24px rgba(245, 110, 85, 0.45), 0 2px 6px rgba(245, 110, 85, 0.3), inset 0 2px 0 rgba(255, 255, 255, 0.3); }
+      50% { box-shadow: 0 12px 32px rgba(245, 110, 85, 0.6), 0 4px 12px rgba(245, 110, 85, 0.4), inset 0 2px 0 rgba(255, 255, 255, 0.3); }
+    }
+
+    /* Decorative sparkle dots inside button */
+    .reminder-btn-inner::before {
+      content: '';
+      position: absolute;
+      top: 10%;
+      right: 15%;
+      width: 6px;
+      height: 6px;
+      background: rgba(255, 255, 255, 0.6);
+      border-radius: 50%;
+      box-shadow:
+        -18px 4px 0 -2px rgba(255, 255, 255, 0.5),
+        -8px 22px 0 -3px rgba(255, 255, 255, 0.4),
+        -34px 16px 0 -2px rgba(255, 255, 255, 0.5);
+    }
+
+    .reminder-icon-wrap {
+      flex-shrink: 0;
+      width: 54px;
+      height: 54px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.95);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: inset 0 -2px 6px rgba(245, 110, 85, 0.15), 0 2px 4px rgba(0, 0, 0, 0.1);
+      animation: iconWiggle 1.4s ease-in-out infinite;
+      transform-origin: center bottom;
+    }
+    @keyframes iconWiggle {
+      0%, 100% { transform: rotate(-8deg); }
+      25% { transform: rotate(8deg); }
+      50% { transform: rotate(-5deg); }
+      75% { transform: rotate(5deg); }
+    }
+    .reminder-icon {
+      font-size: 32px;
+      line-height: 1;
+      filter: drop-shadow(0 1px 2px rgba(0,0,0,0.1));
+    }
+
+    .reminder-btn-text {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      color: #fff;
+      text-align: left;
+      flex: 1;
+      min-width: 0;
+    }
+    .reminder-btn-title {
+      font-family: var(--font-display);
+      font-weight: 900;
+      font-size: 24px;
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
+    }
+    .reminder-btn-sub {
+      font-family: var(--font-sans);
+      font-weight: 700;
+      font-size: 13px;
+      opacity: 0.95;
+      margin-top: 2px;
+      letter-spacing: 0.02em;
+    }
+
+    /* ═══════════ FULLSCREEN REMINDER OVERLAY ═══════════ */
+    .reminder-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      animation: reminderBgIn 0.3s ease forwards;
+      cursor: pointer;
+    }
+    .reminder-overlay.fade-out { animation: reminderBgOut 0.5s ease forwards; }
+    @keyframes reminderBgIn {
+      from { opacity: 0; background: rgba(255, 107, 92, 0); }
+      to { opacity: 1; background: radial-gradient(ellipse at center, rgba(245, 110, 85, 0.95), rgba(229, 90, 63, 0.98)); }
+    }
+    @keyframes reminderBgOut {
+      from { opacity: 1; }
+      to { opacity: 0; }
+    }
+
+    /* Strobe flashing layer */
+    .reminder-strobe {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      mix-blend-mode: overlay;
+      animation: strobe 0.4s linear infinite;
+    }
+    @keyframes strobe {
+      0%, 45%, 100% { background: transparent; }
+      50%, 95% { background: rgba(255, 255, 255, 0.45); }
+    }
+
+    /* Radial pulse rings expanding from center */
+    .reminder-pulse {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 100px;
+      height: 100px;
+      margin: -50px 0 0 -50px;
+      border-radius: 50%;
+      border: 4px solid rgba(255, 255, 255, 0.7);
+      pointer-events: none;
+      animation: pulseRing 1.8s ease-out infinite;
+    }
+    .reminder-pulse.delay-1 { animation-delay: 0.6s; }
+    .reminder-pulse.delay-2 { animation-delay: 1.2s; }
+    @keyframes pulseRing {
+      0% { transform: scale(0.5); opacity: 1; border-width: 6px; }
+      100% { transform: scale(12); opacity: 0; border-width: 1px; }
+    }
+
+    /* Center content */
+    .reminder-content {
+      text-align: center;
+      color: #fff;
+      z-index: 2;
+      position: relative;
+      pointer-events: none;
+      animation: reminderContentIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) 0.1s backwards;
+    }
+    @keyframes reminderContentIn {
+      from { opacity: 0; transform: scale(0.7); }
+      to { opacity: 1; transform: scale(1); }
+    }
+    .reminder-emoji {
+      font-size: 160px;
+      line-height: 1;
+      display: inline-block;
+      margin-bottom: 20px;
+      animation: reminderEmojiShake 0.5s ease-in-out infinite alternate;
+      filter: drop-shadow(0 8px 24px rgba(0, 0, 0, 0.3));
+    }
+    @keyframes reminderEmojiShake {
+      from { transform: rotate(-15deg) scale(1); }
+      to { transform: rotate(15deg) scale(1.08); }
+    }
+    .reminder-title {
+      font-family: var(--font-display);
+      font-weight: 900;
+      font-size: 88px;
+      letter-spacing: -0.03em;
+      line-height: 1;
+      margin-bottom: 18px;
+      text-shadow:
+        0 4px 12px rgba(0, 0, 0, 0.35),
+        0 0 60px rgba(255, 255, 255, 0.3);
+      animation: reminderTitlePulse 0.6s ease-in-out infinite alternate;
+    }
+    @keyframes reminderTitlePulse {
+      from { transform: scale(1); }
+      to { transform: scale(1.04); }
+    }
+    .reminder-subtitle {
+      font-family: var(--font-sans);
+      font-weight: 700;
+      font-size: 28px;
+      opacity: 0.95;
+      letter-spacing: 0.02em;
+      text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    }
+    .reminder-close-hint {
+      position: absolute;
+      bottom: 40px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: var(--font-sans);
+      font-weight: 600;
+      font-size: 14px;
+      color: rgba(255, 255, 255, 0.85);
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      z-index: 3;
+      pointer-events: none;
+      animation: reminderHintBlink 1.8s ease-in-out infinite;
+    }
+    @keyframes reminderHintBlink {
+      0%, 100% { opacity: 0.5; }
+      50% { opacity: 1; }
+    }
+
+    /* Confetti sprinkles in corners */
+    .reminder-sprinkle {
+      position: absolute;
+      pointer-events: none;
+      font-size: 36px;
+      animation: sprinkleFloat 2s ease-in-out infinite;
+    }
+    @keyframes sprinkleFloat {
+      0%, 100% { transform: translateY(0) rotate(0); }
+      50% { transform: translateY(-20px) rotate(15deg); }
+    }
+
+    /* Encouragement message */
+    .encouragement-bubble {
+      position: absolute;
+      top: -12px;
+      left: 50%;
+      transform: translateX(-50%) translateY(-100%);
+      background: linear-gradient(135deg, #fbbf24, #f59e0b);
+      color: #fff;
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-weight: 700;
+      font-size: 13px;
+      white-space: nowrap;
+      box-shadow: 0 4px 14px rgba(245, 158, 11, 0.4);
+      z-index: 30;
+      pointer-events: none;
+      animation: bubbleIn .5s cubic-bezier(0.34, 1.56, 0.64, 1), bubbleOut .4s ease 2.2s forwards;
+    }
+    .encouragement-bubble::after {
+      content: '';
+      position: absolute;
+      bottom: -6px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 0;
+      height: 0;
+      border-left: 6px solid transparent;
+      border-right: 6px solid transparent;
+      border-top: 6px solid #f59e0b;
+    }
+    @keyframes bubbleIn {
+      from { opacity: 0; transform: translateX(-50%) translateY(-80%) scale(0.7); }
+      to { opacity: 1; transform: translateX(-50%) translateY(-100%) scale(1); }
+    }
+    @keyframes bubbleOut {
+      from { opacity: 1; transform: translateX(-50%) translateY(-100%) scale(1); }
+      to { opacity: 0; transform: translateX(-50%) translateY(-120%) scale(0.9); }
+    }
+
+    /* Settings button */
+    .settings-btn {
+      background: var(--mint-500);
+      box-shadow: 0 4px 12px rgba(26, 168, 122, 0.35), 0 2px 4px rgba(26, 168, 122, 0.2);
+      transition: all .3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .settings-btn:hover {
+      background: var(--mint-600);
+      transform: scale(1.08) rotate(30deg);
+      box-shadow: 0 6px 20px rgba(26, 168, 122, 0.45);
+    }
+
+    /* Audio buttons */
+    .audio-btn {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: #fff;
+      border: 2px solid var(--mint-200);
+      box-shadow: 0 2px 8px rgba(13, 58, 46, 0.1);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      transition: all .2s cubic-bezier(0.34, 1.56, 0.64, 1);
+      padding: 0;
+    }
+    .audio-btn:hover {
+      transform: scale(1.08);
+      border-color: var(--mint-400);
+      box-shadow: 0 4px 12px rgba(26, 168, 122, 0.25);
+    }
+    .audio-btn.off {
+      background: #f3f4f6;
+      border-color: #d1d5db;
+      opacity: 0.65;
+    }
+    .audio-btn.playing {
+      background: var(--mint-100);
+      border-color: var(--mint-400);
+      animation: btnPulse 1.5s ease-in-out infinite;
+    }
+    @keyframes btnPulse {
+      0%, 100% { box-shadow: 0 2px 8px rgba(26, 168, 122, 0.2); }
+      50% { box-shadow: 0 2px 12px rgba(26, 168, 122, 0.5), 0 0 0 4px rgba(26, 168, 122, 0.1); }
+    }
+
+    /* Class name stylized */
+    .class-name-display {
+      font-family: var(--font-display);
+      font-weight: 900;
+      font-style: italic;
+      color: var(--mint-800);
+      letter-spacing: -0.03em;
+      line-height: 0.95;
+      position: relative;
+      display: inline-block;
+    }
+
+    /* Navigation arrows in date picker */
+    .nav-arrow {
+      width: 36px;
+      height: 36px;
+      border-radius: 12px;
+      background: var(--mint-100);
+      color: var(--mint-700);
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all .2s;
+      cursor: pointer;
+      border: none;
+      font-size: 18px;
+    }
+    .nav-arrow:hover:not(:disabled) { background: var(--mint-200); transform: scale(1.05); }
+    .nav-arrow:disabled { opacity: .3; cursor: not-allowed; }
+
+    /* Date chip display */
+    .date-chip {
+      background: #fff;
+      border: 2px solid var(--mint-100);
+      padding: 8px 16px;
+      border-radius: 12px;
+      font-weight: 700;
+      color: var(--ink-900);
+      min-width: 160px;
+      text-align: center;
+      font-size: 14px;
+    }
+    .date-chip.viewing-past {
+      background: var(--cream-100);
+      border-color: var(--coral-300);
+      color: var(--ink-700);
+    }
+
+    /* Viewing mode banner */
+    .view-banner {
+      background: linear-gradient(90deg, rgba(255, 182, 163, 0.15), rgba(255, 182, 163, 0.05));
+      border-left: 3px solid var(--coral-400);
+      color: var(--ink-700);
+      padding: 6px 12px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+  </style>
+  <script src="/_sdk/resizing_sdk.js" type="text/javascript"></script>
+</head>
+<body data-template-id="__page-root" class="w-full full-h overflow-hidden">
+
+  <!-- Decorative background shapes -->
+  <svg class="fixed top-0 right-0 w-[240px] h-[240px] opacity-30 pointer-events-none z-0" viewBox="0 0 200 200">
+    <circle cx="160" cy="40" r="80" fill="none" stroke="#3ec296" stroke-width="1" stroke-dasharray="2 6" opacity="0.6"/>
+    <circle cx="170" cy="50" r="40" fill="#d9f5ea" opacity="0.5"/>
+  </svg>
+
+  <div class="w-full full-h flex flex-col lg:flex-row relative z-10">
+
+    <!-- ═══════════ LEFT SIDEBAR ═══════════ -->
+    <aside class="w-full lg:w-[32%] flex flex-col p-3 gap-2.5 overflow-y-auto flex-shrink-0">
+
+      <!-- Header -->
+      <header class="text-center pt-2 pb-1 relative">
+        <div class="section-badge mb-2" data-template-id="section-badge">
+          <span>🦷</span>
+          <span data-template-id="badge-label">DAILY DENTAL CHECK</span>
+        </div>
+        <div class="relative inline-block">
+          <h1 id="class-name-display" data-template-id="class-name" class="class-name-display canva-text" style="font-size: 72px;">我的班級</h1>
+          <!-- Hand-drawn squiggle underline -->
+          <svg class="absolute left-1/2 -translate-x-1/2" style="bottom: -6px; width: 85%; height: 10px;" viewBox="0 0 200 10" preserveAspectRatio="none">
+            <path d="M2 5 Q 25 1, 50 5 T 100 5 T 150 5 T 198 5" fill="none" stroke="#ff8a70" stroke-width="2.5" stroke-linecap="round" opacity="0.75"/>
+          </svg>
+        </div>
+        <p id="header-date" data-template-id="page-subtitle" class="canva-text mt-3 font-semibold" style="color: var(--ink-500); font-size: 14px; letter-spacing: 0.02em;"></p>
+        <!-- Streak badge -->
+        <div id="streak-badge" class="hidden mt-2 inline-flex items-center gap-1.5 px-3 py-1 rounded-full canva-text" data-template-id="streak-badge" style="background: linear-gradient(135deg, #fef3c7, #fde68a); color: #92400e; font-size: 12px; font-weight: 700; box-shadow: 0 2px 4px rgba(245, 158, 11, 0.2);">
+          <span>🔥</span>
+          <span id="streak-text">連續 0 天全班達成</span>
+        </div>
+        <!-- decorative mini icons -->
+        <div class="flex items-center justify-center gap-3 mt-2 text-xl float-gentle">
+          <span style="color: var(--mint-400)">🪥</span>
+          <span style="color: var(--coral-400)">✨</span>
+          <span style="color: var(--sky-500)">💧</span>
+        </div>
+      </header>
+
+      <!-- Stats Hero Card -->
+      <section data-template-id="stats-section" class="card card-accent p-4 hover-lift canva-section relative overflow-visible">
+        <!-- Floating achievement medal (top-right, reserved space) -->
+        <div id="achievement-medal" class="hidden absolute w-12 h-12 rounded-full flex items-center justify-center z-20" style="top: 10px; right: 10px; background: linear-gradient(135deg, #fbbf24, #f59e0b); box-shadow: 0 4px 12px rgba(245, 158, 11, 0.45); animation: floatGentle 2s ease-in-out infinite; border: 2.5px solid #fff;">
+          <span id="medal-emoji" style="font-size: 22px; filter: drop-shadow(0 1px 2px rgba(0,0,0,0.2));">🥉</span>
+        </div>
+        <div class="mb-1" style="padding-right: 58px;">
+          <span data-template-id="stats-label" class="canva-text font-bold uppercase tracking-wider" style="color: var(--ink-500); font-size: 11px; letter-spacing: 0.12em;">今日完成度</span>
+        </div>
+        <div class="flex items-end gap-2 mb-3 flex-wrap">
+          <span id="stats-count" class="stat-number" style="color: var(--ink-900); font-size: 68px; line-height: 0.9;">0</span>
+          <span id="stats-total" class="stat-number" style="color: var(--ink-300); font-size: 32px; padding-bottom: 8px;">/ 0</span>
+          <div class="flex flex-col items-start ml-1" style="padding-bottom: 4px;">
+            <span data-template-id="stats-unit" class="canva-text font-sans font-semibold" style="color: var(--ink-500); font-size: 14px;">位同學完成</span>
+            <span data-template-id="stats-percent" id="stats-percent" class="canva-text font-display font-black" style="color: var(--mint-500); font-size: 22px; line-height: 1;">0%</span>
+          </div>
+        </div>
+        <div class="progress-track" style="height: 14px;">
+          <div id="progress-bar-fill" class="progress-fill" style="width: 0%"></div>
+        </div>
+        <!-- Milestone markers -->
+        <div class="relative mt-1" style="height: 16px;">
+          <div class="absolute inset-x-0 flex justify-between px-[2px]">
+            <div class="flex flex-col items-center" style="margin-left: 0%;">
+              <span class="text-[9px] font-bold" style="color: var(--ink-300);">0%</span>
+            </div>
+            <div class="flex flex-col items-center" id="milestone-50">
+              <span class="text-[9px] font-bold" style="color: var(--ink-300);">50%</span>
+            </div>
+            <div class="flex flex-col items-center" id="milestone-80">
+              <span class="text-[9px] font-bold" style="color: var(--ink-300);">80%</span>
+            </div>
+            <div class="flex flex-col items-center">
+              <span class="text-[9px] font-bold" style="color: var(--ink-300);">100%</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Incomplete list -->
+      <section class="card p-3.5 hover-lift">
+        <div class="flex items-center gap-2 mb-2">
+          <div class="w-8 h-8 rounded-xl flex items-center justify-center" style="background: var(--cream-100); color: var(--coral-500);">
+            <span style="font-size: 16px;">📝</span>
+          </div>
+          <h3 data-template-id="incomplete-seats-title" class="canva-text font-display font-black" style="color: var(--ink-900); font-size: 18px; letter-spacing: -0.01em;">待完成座號</h3>
+        </div>
+        <p id="incomplete-seats-list" data-template-id="incomplete-seats-text" class="canva-text leading-relaxed font-semibold" style="color: var(--ink-700); font-size: 15px; word-break: break-all;"></p>
+      </section>
+
+      <!-- BIG Reminder Button -->
+      <button id="reminder-btn" class="canva-button reminder-btn" onclick="triggerReminder()" data-template-id="reminder-btn" aria-label="提醒潔牙">
+        <div class="reminder-btn-inner">
+          <div class="reminder-icon-wrap">
+            <span class="reminder-icon">🪥</span>
+          </div>
+          <div class="reminder-btn-text">
+            <span class="reminder-btn-title" data-template-id="reminder-btn-title">該刷牙囉！</span>
+            <span class="reminder-btn-sub" data-template-id="reminder-btn-sub">點我大聲提醒全班 🔔</span>
+          </div>
+        </div>
+      </button>
+
+      <!-- Daily Tip -->
+      <section data-template-id="tips-section" class="card p-4 canva-section relative overflow-hidden" style="background: linear-gradient(140deg, #fefbf5 0%, #f0fbf7 100%);">
+        <!-- Decorative corner shape -->
+        <svg class="absolute -right-4 -top-4 w-20 h-20 opacity-10 pointer-events-none" viewBox="0 0 100 100">
+          <circle cx="50" cy="50" r="45" fill="none" stroke="#1ba87a" stroke-width="2" stroke-dasharray="4 4"/>
+          <circle cx="50" cy="50" r="30" fill="#1ba87a"/>
+        </svg>
+        <div class="flex items-start gap-2.5 relative z-10">
+          <div class="wobble flex-shrink-0 mt-1">
+            <svg width="44" height="54" viewBox="0 0 80 100">
+              <!-- Sparkles -->
+              <text x="6" y="14" font-size="10" class="sparkle" style="animation-delay:0s">⭐</text>
+              <text x="64" y="12" font-size="9" class="sparkle" style="animation-delay:.5s">✨</text>
+              <!-- Graduation cap -->
+              <rect x="26" y="6" width="28" height="7" rx="2" fill="#0d2922"/>
+              <ellipse cx="40" cy="12" rx="16" ry="10" fill="#0d2922"/>
+              <circle cx="33" cy="0" r="2.5" fill="#ffb6a3"/>
+              <line x1="33" y1="1" x2="33" y2="8" stroke="#ffb6a3" stroke-width="1.5"/>
+              <!-- Tooth body -->
+              <path d="M40 20C26 20 17 29 15 38C13 48 17 60 25 72C30 78 36 82 40 82C44 82 50 78 55 72C63 60 67 48 65 38C63 29 54 20 40 20Z" fill="white" stroke="#d9f5ea" stroke-width="2"/>
+              <!-- Smile face -->
+              <circle cx="32" cy="42" r="2.5" fill="#0d2922"/>
+              <circle cx="48" cy="42" r="2.5" fill="#0d2922"/>
+              <circle cx="31" cy="41" r="0.8" fill="#fff"/>
+              <circle cx="47" cy="41" r="0.8" fill="#fff"/>
+              <ellipse cx="24" cy="52" rx="3.5" ry="2.5" fill="#ffb6a3" opacity="0.7"/>
+              <ellipse cx="56" cy="52" rx="3.5" ry="2.5" fill="#ffb6a3" opacity="0.7"/>
+              <path d="M32 55 Q40 64 48 55" fill="#ff8a70" stroke="#f56e55" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <div class="flex-1 min-w-0">
+            <div class="flex items-center justify-between gap-2 mb-1.5 flex-wrap">
+              <p data-template-id="tip-bubble-label" class="canva-text font-display font-black" style="color: var(--mint-700); font-size: 20px; letter-spacing: -0.01em;">💡 今日小常識</p>
+              <button id="next-tip-btn" class="canva-button flex-shrink-0 text-[11px] font-bold px-2.5 py-1 rounded-full transition hover:scale-105" style="background: var(--mint-100); color: var(--mint-700); border: none; cursor: pointer;" title="換一則">↻ 換一則</button>
+            </div>
+            <p id="daily-tip" data-template-id="daily-tip-text" class="canva-text font-bold leading-snug" style="color: var(--ink-900); font-size: 19px; letter-spacing: 0.01em; line-height: 1.5;"></p>
+          </div>
+        </div>
+      </section>
+
+    </aside>
+
+    <!-- ═══════════ RIGHT MAIN GRID ═══════════ -->
+    <main class="flex-1 flex flex-col p-3 min-h-0 relative gap-2.5">
+
+      <!-- Settings icon button -->
+      <button data-template-id="manage-icon-btn" class="canva-button settings-btn absolute top-4 right-4 z-30 w-11 h-11 rounded-full flex items-center justify-center" onclick="openManageOverlay()" aria-label="管理設定">
+        <i data-lucide="settings" style="width: 20px; height: 20px; color: white;"></i>
+      </button>
+
+      <!-- Audio controls -->
+      <div class="absolute top-4 z-30 flex items-center gap-2" style="right: 68px;">
+        <button id="bgm-toggle-btn" class="audio-btn" onclick="toggleBGMBtn(this)" aria-label="切換背景音樂" title="背景音樂">
+          <span id="bgm-icon">🎵</span>
+        </button>
+        <button id="mute-toggle-btn" class="audio-btn" onclick="toggleMuteBtn(this)" aria-label="靜音" title="音效">
+          <span id="mute-icon">🔊</span>
+        </button>
+      </div>
+
+      <!-- Main grid card -->
+      <section data-template-id="grid-section" class="card flex-1 flex flex-col relative overflow-hidden min-h-0 canva-section" style="padding: 18px 18px 14px 18px;">
+
+        <!-- Grid header -->
+        <div class="flex items-center justify-between mb-3 pr-14 flex-wrap gap-2">
+          <div class="flex items-center gap-2">
+            <div class="w-9 h-9 rounded-xl flex items-center justify-center" style="background: var(--mint-100); color: var(--mint-700);">
+              <span id="grid-icon" style="font-size: 17px;">🪥</span>
+            </div>
+            <div>
+              <h2 id="grid-heading-text" data-template-id="grid-heading" class="canva-text font-display font-black" style="color: var(--ink-900); font-size: 20px; letter-spacing: -0.02em;">全班座號表</h2>
+              <p id="grid-sub" class="canva-text text-[11px] font-semibold hidden" style="color: var(--coral-500); letter-spacing: 0.02em;">🧪 今天是週二 · 漱口水日</p>
+            </div>
+          </div>
+          <div class="flex items-center gap-2 flex-wrap">
+            <div id="grid-badge-container" class="hidden">
+              <span id="grid-title-el" class="view-banner">
+                <i data-lucide="eye" style="width: 14px; height: 14px;"></i>
+                <span></span>
+              </span>
+            </div>
+            <div id="quick-action-group" class="flex items-center gap-1.5">
+              <button id="mark-all-btn" class="quick-btn quick-btn-all" onclick="markAll()" title="全班完成">
+                <span>✓</span>
+                <span class="quick-btn-label" data-template-id="mark-all-label">全勾</span>
+              </button>
+              <button id="clear-all-btn" class="quick-btn quick-btn-clear" onclick="clearAll()" title="全部清除">
+                <span>↺</span>
+                <span class="quick-btn-label" data-template-id="clear-all-label">全清</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tooth grid -->
+        <div id="tooth-grid" class="flex-1 grid gap-2 justify-items-center content-start overflow-y-auto pr-1" style="grid-template-columns: repeat(6, 1fr);"></div>
+
+        <!-- Complete message -->
+        <p data-template-id="complete-msg" class="canva-text font-display font-black text-center mt-2 hidden" id="complete-msg" style="color: var(--mint-600); font-size: 18px; letter-spacing: -0.01em;">
+          ✨ 全班都完成了！超棒的！✨
+        </p>
+
+        <div id="celebration" class="absolute inset-0 pointer-events-none"></div>
+      </section>
+
+    </main>
+
+    <!-- ═══════════ MANAGE OVERLAY ═══════════ -->
+    <div id="manage-overlay" class="overlay-bg hidden" data-template-id="manage-overlay" onclick="closeOverlayBg(event)">
+      <div data-template-id="manage-panel-bg" class="canva-section overlay-panel card p-6" onclick="event.stopPropagation()" style="background: var(--cream-50);">
+
+        <div class="flex items-center justify-between mb-5">
+          <div class="flex items-center gap-2">
+            <div class="w-10 h-10 rounded-xl flex items-center justify-center" style="background: var(--mint-100); color: var(--mint-700);">
+              <i data-lucide="settings" style="width: 18px; height: 18px;"></i>
+            </div>
+            <h3 data-template-id="manage-title" class="canva-text font-display font-black" style="color: var(--ink-900); font-size: 22px; letter-spacing: -0.02em;">管理設定</h3>
+          </div>
+        </div>
+
+        <!-- Class name -->
+        <div class="mb-5">
+          <h4 data-template-id="class-name-label" class="canva-text font-bold mb-2 uppercase tracking-wider" style="color: var(--ink-500); font-size: 11px; letter-spacing: 0.1em;">班級名稱</h4>
+          <div class="flex gap-2">
+            <input id="class-name-input" type="text" maxlength="20" class="input-field flex-1 text-sm">
+            <button data-template-id="class-name-save-btn" class="btn btn-primary canva-button" onclick="saveClassName()">保存</button>
+          </div>
+        </div>
+
+        <!-- Date navigation -->
+        <div class="mb-5 pt-5" style="border-top: 1px dashed var(--mint-200);">
+          <h4 data-template-id="date-nav-label" class="canva-text font-bold mb-3 uppercase tracking-wider" style="color: var(--ink-500); font-size: 11px; letter-spacing: 0.1em;">查看日期</h4>
+          <div class="flex items-center justify-center gap-2 flex-wrap">
+            <button id="prev-day-btn" class="nav-arrow" aria-label="前一天">‹</button>
+            <span id="view-date-display" class="date-chip"></span>
+            <button id="next-day-btn" class="nav-arrow" aria-label="後一天">›</button>
+            <button data-template-id="today-btn" class="btn btn-secondary canva-button" id="today-btn" onclick="goToday()">回到今天</button>
+          </div>
+        </div>
+
+        <!-- Seat management -->
+        <div class="mb-5 pt-5" style="border-top: 1px dashed var(--mint-200);">
+          <h4 data-template-id="manage-seat-label" class="canva-text font-bold mb-2 uppercase tracking-wider" style="color: var(--ink-500); font-size: 11px; letter-spacing: 0.1em;">座號管理</h4>
+          <p data-template-id="manage-desc" class="canva-text mb-3 font-medium" style="color: var(--ink-500); font-size: 13px;">點擊座號可以停用或啟用，停用的座號不會出現在檢核表中。</p>
+          <div id="seat-grid" class="grid grid-cols-10 gap-1.5 justify-items-center mb-3"></div>
+          <div class="flex items-center justify-center gap-2 flex-wrap">
+            <span data-template-id="quick-set-label" class="canva-text font-bold" style="color: var(--ink-700); font-size: 13px;">快速設定：</span>
+            <input id="quick-set-input" type="number" min="1" max="60" value="30" class="input-field w-20 text-center" style="padding: 6px 8px;">
+            <button data-template-id="quick-apply-btn" class="btn btn-secondary canva-button" onclick="quickApply()">套用</button>
+          </div>
+        </div>
+
+        <!-- Tips management -->
+        <div class="mb-5 pt-5" style="border-top: 1px dashed var(--mint-200);">
+          <h4 data-template-id="tips-manage-label" class="canva-text font-bold mb-3 uppercase tracking-wider" style="color: var(--ink-500); font-size: 11px; letter-spacing: 0.1em;">小常識管理</h4>
+          <label data-template-id="tips-textarea-label" class="canva-text text-xs block mb-1.5 font-semibold" style="color: var(--ink-700);">編輯小常識（每行一條）：</label>
+          <textarea id="tips-textarea" class="input-field w-full text-xs h-32 resize-none leading-relaxed" style="font-family: var(--font-sans);"></textarea>
+          <div class="flex gap-2 mt-2">
+            <button data-template-id="tips-reset-btn" class="btn btn-ghost canva-button flex-1" onclick="resetTipsToDefault()">恢復預設</button>
+            <button data-template-id="tips-save-btn" class="btn btn-primary canva-button flex-1" onclick="saveTips()">保存</button>
+          </div>
+        </div>
+
+        <!-- Reminder messages management -->
+        <div class="mb-5 pt-5" style="border-top: 1px dashed var(--mint-200);">
+          <h4 data-template-id="reminders-manage-label" class="canva-text font-bold mb-1.5 uppercase tracking-wider" style="color: var(--ink-500); font-size: 11px; letter-spacing: 0.1em;">🔔 提醒訊息管理</h4>
+          <p data-template-id="reminders-manage-desc" class="canva-text text-xs mb-2 font-medium" style="color: var(--ink-500);">按下「該刷牙囉！」按鈕時隨機顯示。格式：<span style="background: #fff; padding: 1px 5px; border-radius: 4px; color: var(--mint-700); font-weight: 700;">表情｜主標題｜副標題</span>（用「｜」分隔，每行一則）</p>
+          <textarea id="reminders-textarea" class="input-field w-full text-xs h-32 resize-none leading-relaxed" style="font-family: var(--font-sans);" placeholder="🪥｜該刷牙囉！｜拿好你的牙刷"></textarea>
+          <div class="flex gap-2 mt-2">
+            <button data-template-id="reminders-reset-btn" class="btn btn-ghost canva-button flex-1" onclick="resetRemindersToDefault()">恢復預設</button>
+            <button data-template-id="reminders-save-btn" class="btn btn-primary canva-button flex-1" onclick="saveReminders()">保存</button>
+          </div>
+        </div>
+
+        <!-- Reset / Export -->
+        <div class="flex items-center justify-center gap-2 flex-wrap mb-3 pt-5" style="border-top: 1px dashed var(--mint-200);">
+          <button data-template-id="reset-btn" class="btn btn-danger canva-button" id="reset-btn" onclick="showResetConfirm()">全部重置</button>
+          <button data-template-id="export-btn" class="btn btn-accent canva-button" onclick="exportRecord()">📋 匯出紀錄</button>
+        </div>
+
+        <div id="reset-confirm" class="hidden flex items-center justify-center gap-2 rounded-xl px-3 py-2 mb-3" style="background: #fff5f5; border: 1px solid #ffdcdc;">
+          <span style="color: #e53e5d; font-size: 13px; font-weight: 700;">確定要重置？</span>
+          <button class="btn btn-danger" style="padding: 4px 12px; font-size: 12px;" onclick="doReset()">確定</button>
+          <button class="btn btn-ghost" style="padding: 4px 12px; font-size: 12px;" onclick="hideResetConfirm()">取消</button>
+        </div>
+
+        <div class="text-center">
+          <button data-template-id="manage-close-btn" class="btn btn-primary canva-button" style="padding: 10px 28px;" onclick="closeManageOverlay()">完成</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Toasts -->
+    <div id="error-toast" class="fixed bottom-4 left-1/2 -translate-x-1/2 px-4 py-2.5 rounded-xl shadow-lg hidden z-50" style="background: #e53e5d; color: #fff; font-weight: 700; font-size: 14px;"></div>
+    <div id="limit-warning" class="fixed bottom-4 left-1/2 -translate-x-1/2 px-4 py-2.5 rounded-xl shadow-lg hidden z-50" style="background: var(--coral-500); color: #fff; font-weight: 700; font-size: 14px;">
+      已達到紀錄上限（999筆），請先刪除舊紀錄。
+    </div>
+    <div id="copy-toast" class="fixed bottom-4 left-1/2 -translate-x-1/2 hidden z-50">
+      <span data-template-id="copy-toast-msg" class="canva-text px-5 py-2.5 rounded-xl shadow-lg inline-block font-bold" style="background: var(--mint-500); color: #fff; font-size: 14px;">✅ 已複製到剪貼簿！</span>
+    </div>
+
+  </div>
+
+  <script>
+    // ═══════════ AUDIO ENGINE ═══════════
+    const Audio = (() => {
+      let ctx = null;
+      let masterGain = null;
+      let muted = localStorage.getItem('tooth_muted') === '1';
+      let bgmOn = localStorage.getItem('tooth_bgm') === '1';
+      let bgmNodes = null;
+
+      function ensureCtx() {
+        if (!ctx) {
+          try {
+            ctx = new (window.AudioContext || window.webkitAudioContext)();
+            masterGain = ctx.createGain();
+            masterGain.gain.value = muted ? 0 : 0.7;
+            masterGain.connect(ctx.destination);
+          } catch (e) { console.warn('AudioContext not supported'); }
+        }
+        if (ctx && ctx.state === 'suspended') ctx.resume();
+        return ctx;
+      }
+
+      function setMuted(m) {
+        muted = m;
+        localStorage.setItem('tooth_muted', m ? '1' : '0');
+        if (masterGain) masterGain.gain.value = m ? 0 : 0.7;
+      }
+
+      // ── 點擊牙齒「叮」── 清脆短音（類似 iOS 訊息通知）
+      function playDing() {
+        const c = ensureCtx(); if (!c) return;
+        const now = c.currentTime;
+        // Two stacked oscillators for a bell-like timbre
+        [[1200, 0.06], [1800, 0.04]].forEach(([freq, vol]) => {
+          const osc = c.createOscillator();
+          const gain = c.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(freq, now);
+          osc.frequency.exponentialRampToValueAtTime(freq * 0.7, now + 0.15);
+          gain.gain.setValueAtTime(0, now);
+          gain.gain.linearRampToValueAtTime(vol, now + 0.005);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.18);
+          osc.connect(gain); gain.connect(masterGain);
+          osc.start(now); osc.stop(now + 0.2);
+        });
+      }
+
+      // ── 取消/移除 ── 較低沉的一聲
+      function playPop() {
+        const c = ensureCtx(); if (!c) return;
+        const now = c.currentTime;
+        const osc = c.createOscillator();
+        const gain = c.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(500, now);
+        osc.frequency.exponentialRampToValueAtTime(200, now + 0.1);
+        gain.gain.setValueAtTime(0, now);
+        gain.gain.linearRampToValueAtTime(0.1, now + 0.005);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.12);
+        osc.connect(gain); gain.connect(masterGain);
+        osc.start(now); osc.stop(now + 0.13);
+      }
+
+      // ── 換一則小常識「唰」── 短促白噪聲掃音
+      function playSwoosh() {
+        const c = ensureCtx(); if (!c) return;
+        const now = c.currentTime;
+        const bufSize = c.sampleRate * 0.25;
+        const buf = c.createBuffer(1, bufSize, c.sampleRate);
+        const data = buf.getChannelData(0);
+        for (let i = 0; i < bufSize; i++) {
+          data[i] = (Math.random() * 2 - 1) * (1 - i / bufSize);
+        }
+        const src = c.createBufferSource();
+        src.buffer = buf;
+        const filter = c.createBiquadFilter();
+        filter.type = 'bandpass';
+        filter.frequency.setValueAtTime(2500, now);
+        filter.frequency.exponentialRampToValueAtTime(800, now + 0.2);
+        filter.Q.value = 3;
+        const gain = c.createGain();
+        gain.gain.setValueAtTime(0, now);
+        gain.gain.linearRampToValueAtTime(0.15, now + 0.02);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.22);
+        src.connect(filter); filter.connect(gain); gain.connect(masterGain);
+        src.start(now);
+      }
+
+      // ── 提醒鐘聲 ── 響亮的學校警示鐘（叮咚叮咚）
+      function playAlarm() {
+        const c = ensureCtx(); if (!c) return;
+        const now = c.currentTime;
+        // Two alternating bell-like tones ringing 3 times
+        const pattern = [
+          [880, 0], [659.25, 0.25],   // Ding-Dong
+          [880, 0.7], [659.25, 0.95], // Ding-Dong
+          [880, 1.4], [659.25, 1.65], // Ding-Dong
+        ];
+        pattern.forEach(([freq, delay]) => {
+          const t = now + delay;
+          // Bell-like: sine + triangle with long decay
+          [['sine', 0.25, 0], ['triangle', 0.1, 0], ['sine', 0.08, 2]].forEach(([type, vol, octave]) => {
+            const osc = c.createOscillator();
+            const gain = c.createGain();
+            osc.type = type;
+            osc.frequency.setValueAtTime(freq * (octave === 2 ? 2 : 1), t);
+            gain.gain.setValueAtTime(0, t);
+            gain.gain.linearRampToValueAtTime(vol, t + 0.01);
+            gain.gain.exponentialRampToValueAtTime(0.001, t + 0.5);
+            osc.connect(gain); gain.connect(masterGain);
+            osc.start(t); osc.stop(t + 0.55);
+          });
+        });
+        // Add a background "whistle" sweep to feel urgent
+        const sweep = c.createOscillator();
+        const sweepGain = c.createGain();
+        sweep.type = 'sine';
+        sweep.frequency.setValueAtTime(1200, now);
+        sweep.frequency.exponentialRampToValueAtTime(2400, now + 0.4);
+        sweep.frequency.exponentialRampToValueAtTime(1200, now + 0.8);
+        sweepGain.gain.setValueAtTime(0, now);
+        sweepGain.gain.linearRampToValueAtTime(0.06, now + 0.05);
+        sweepGain.gain.exponentialRampToValueAtTime(0.001, now + 0.9);
+        sweep.connect(sweepGain); sweepGain.connect(masterGain);
+        sweep.start(now); sweep.stop(now + 0.95);
+      }
+
+      // ── 慶祝勝利 ── 上行音階 + 和弦
+      function playVictory() {
+        const c = ensureCtx(); if (!c) return;
+        const now = c.currentTime;
+        // Fanfare: C-E-G-C ascending, each note slightly overlapping
+        const notes = [523.25, 659.25, 783.99, 1046.50, 1318.51]; // C5-E5-G5-C6-E6
+        notes.forEach((freq, i) => {
+          const t = now + i * 0.12;
+          ['sine', 'triangle'].forEach((type, j) => {
+            const osc = c.createOscillator();
+            const gain = c.createGain();
+            osc.type = type;
+            osc.frequency.setValueAtTime(freq, t);
+            gain.gain.setValueAtTime(0, t);
+            gain.gain.linearRampToValueAtTime(j === 0 ? 0.15 : 0.08, t + 0.02);
+            gain.gain.exponentialRampToValueAtTime(0.001, t + 0.4);
+            osc.connect(gain); gain.connect(masterGain);
+            osc.start(t); osc.stop(t + 0.42);
+          });
+        });
+        // Final chord
+        const chordT = now + notes.length * 0.12 + 0.1;
+        [523.25, 659.25, 783.99, 1046.50].forEach(freq => {
+          const osc = c.createOscillator();
+          const gain = c.createGain();
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(freq, chordT);
+          gain.gain.setValueAtTime(0, chordT);
+          gain.gain.linearRampToValueAtTime(0.1, chordT + 0.03);
+          gain.gain.exponentialRampToValueAtTime(0.001, chordT + 1.5);
+          osc.connect(gain); gain.connect(masterGain);
+          osc.start(chordT); osc.stop(chordT + 1.5);
+        });
+        // Clap sound for texture
+        for (let i = 0; i < 6; i++) {
+          const t = now + 0.6 + i * 0.12;
+          const bufSize = c.sampleRate * 0.05;
+          const buf = c.createBuffer(1, bufSize, c.sampleRate);
+          const data = buf.getChannelData(0);
+          for (let j = 0; j < bufSize; j++) data[j] = (Math.random() * 2 - 1) * (1 - j / bufSize);
+          const src = c.createBufferSource();
+          src.buffer = buf;
+          const filter = c.createBiquadFilter();
+          filter.type = 'bandpass';
+          filter.frequency.value = 1500;
+          filter.Q.value = 2;
+          const gain = c.createGain();
+          gain.gain.setValueAtTime(0.25, t);
+          gain.gain.exponentialRampToValueAtTime(0.001, t + 0.08);
+          src.connect(filter); filter.connect(gain); gain.connect(masterGain);
+          src.start(t);
+        }
+      }
+
+      // ── 背景 BGM ── 柔和循環（水晶琶音）
+      function startBGM() {
+        if (bgmNodes) return;
+        const c = ensureCtx(); if (!c) return;
+
+        bgmNodes = { stopFns: [], scheduler: null };
+        const bgmGain = c.createGain();
+        bgmGain.gain.value = 0;
+        bgmGain.gain.linearRampToValueAtTime(0.12, c.currentTime + 1); // fade in
+        bgmGain.connect(masterGain);
+        bgmNodes.mainGain = bgmGain;
+
+        // Pentatonic scale C major (no dissonance)
+        const scale = [261.63, 293.66, 329.63, 392.00, 440.00, 523.25, 587.33, 659.25];
+        // Chord progression roots (I-vi-IV-V feel, but all pentatonic)
+        const chordRoots = [0, 3, 2, 4]; // indexes into scale
+        let barIdx = 0;
+        let noteIdx = 0;
+
+        const beatInterval = 0.45; // seconds per note
+        let nextNoteTime = c.currentTime + 0.2;
+
+        function scheduleNote(time) {
+          const root = chordRoots[barIdx % chordRoots.length];
+          // Pick notes around root in arpeggio pattern
+          const offsets = [0, 2, 4, 2];
+          const idx = (root + offsets[noteIdx % offsets.length]) % scale.length;
+          const freq = scale[idx];
+
+          // Soft sine + triangle blend
+          [['sine', 0.15], ['triangle', 0.05]].forEach(([type, vol]) => {
+            const osc = c.createOscillator();
+            const g = c.createGain();
+            osc.type = type;
+            osc.frequency.setValueAtTime(freq, time);
+            g.gain.setValueAtTime(0, time);
+            g.gain.linearRampToValueAtTime(vol, time + 0.05);
+            g.gain.exponentialRampToValueAtTime(0.001, time + 0.8);
+            osc.connect(g); g.connect(bgmGain);
+            osc.start(time); osc.stop(time + 0.85);
+          });
+
+          noteIdx++;
+          if (noteIdx % 4 === 0) barIdx++;
+        }
+
+        // Lookahead scheduler
+        function scheduler() {
+          if (!bgmNodes) return;
+          while (nextNoteTime < c.currentTime + 0.3) {
+            scheduleNote(nextNoteTime);
+            nextNoteTime += beatInterval;
+          }
+        }
+
+        bgmNodes.scheduler = setInterval(scheduler, 100);
+        bgmOn = true;
+        localStorage.setItem('tooth_bgm', '1');
+      }
+
+      function stopBGM() {
+        if (!bgmNodes) return;
+        if (bgmNodes.scheduler) clearInterval(bgmNodes.scheduler);
+        if (bgmNodes.mainGain && ctx) {
+          const now = ctx.currentTime;
+          bgmNodes.mainGain.gain.cancelScheduledValues(now);
+          bgmNodes.mainGain.gain.setValueAtTime(bgmNodes.mainGain.gain.value, now);
+          bgmNodes.mainGain.gain.linearRampToValueAtTime(0, now + 0.5);
+          setTimeout(() => { try { bgmNodes.mainGain.disconnect(); } catch (e) {} }, 600);
+        }
+        bgmNodes = null;
+        bgmOn = false;
+        localStorage.setItem('tooth_bgm', '0');
+      }
+
+      function toggleBGM() {
+        if (bgmOn) stopBGM(); else startBGM();
+        return bgmOn;
+      }
+
+      return {
+        ding: playDing,
+        pop: playPop,
+        swoosh: playSwoosh,
+        victory: playVictory,
+        alarm: playAlarm,
+        toggleBGM,
+        isBGMOn: () => bgmOn,
+        isMuted: () => muted,
+        setMuted,
+        // Expose for auto-start after user gesture
+        initOnGesture: ensureCtx,
+      };
+    })();
+
+    // ═══════════ DATA SDK POLYFILL (for local testing) ═══════════
+    // When running locally (file:// or without Canva SDK), fall back to localStorage
+    // so the app still works for preview/testing.
+    if (typeof window.dataSdk === 'undefined') {
+      console.warn('[dataSdk] SDK not available, using localStorage polyfill');
+      const STORAGE_KEY = 'tooth_records_fallback';
+      let _records = [];
+      let _handler = null;
+      let _nextId = 1;
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (raw) {
+          _records = JSON.parse(raw);
+          _nextId = _records.reduce((m, r) => Math.max(m, r.id || 0), 0) + 1;
+        }
+      } catch (e) { _records = []; }
+      const _save = () => {
+        try { localStorage.setItem(STORAGE_KEY, JSON.stringify(_records)); } catch (e) {}
+      };
+      const _notify = () => { if (_handler && _handler.onDataChanged) _handler.onDataChanged([..._records]); };
+      window.dataSdk = {
+        async init(handler) {
+          _handler = handler;
+          setTimeout(() => _notify(), 0);
+          return { isOk: true };
+        },
+        async create(record) {
+          const newRec = { ...record, id: _nextId++ };
+          _records.push(newRec);
+          _save();
+          _notify();
+          return { isOk: true, data: newRec };
+        },
+        async update(record) {
+          const idx = _records.findIndex(r =>
+            r.id === record.id ||
+            (r.date === record.date && r.student_number === record.student_number)
+          );
+          if (idx >= 0) {
+            _records[idx] = { ..._records[idx], ...record };
+            _save();
+            _notify();
+            return { isOk: true, data: _records[idx] };
+          }
+          return { isOk: false };
+        },
+        async delete(record) {
+          const idx = _records.findIndex(r =>
+            r.id === record.id ||
+            (r.date === record.date && r.student_number === record.student_number)
+          );
+          if (idx >= 0) {
+            _records.splice(idx, 1);
+            _save();
+            _notify();
+            return { isOk: true };
+          }
+          return { isOk: false };
+        }
+      };
+    }
+
+    const TIPS = [
+      "每次刷牙至少要刷 2 分鐘喔！",
+      "刷牙時別忘了刷舌頭，可以減少口臭！",
+      "牙線可以清潔牙刷刷不到的牙縫！",
+      "每 3 個月要換一次牙刷喔！",
+      "睡前刷牙最重要，因為睡覺時細菌最活躍！",
+      "刷牙力道不要太大，以免傷害牙齦！",
+      "含氟牙膏可以幫助預防蛀牙！",
+      "飯後等 30 分鐘再刷牙，保護琺瑯質！",
+      "定期看牙醫，每半年一次最理想！",
+      "喝完酸性飲料後先漱口，不要馬上刷牙！"
+    ];
+
+    let allRecords = [], viewRecords = [], isOperating = false;
+    let activeSeats = JSON.parse(localStorage.getItem('tooth_active_seats') || 'null');
+    if (!activeSeats) {
+      activeSeats = [];
+      for (let i = 1; i <= 30; i++) activeSeats.push(i);
+      localStorage.setItem('tooth_active_seats', JSON.stringify(activeSeats));
+    }
+
+    let customTips = [...TIPS];
+    const saved = localStorage.getItem('tooth_custom_tips');
+    if (saved) customTips = saved.split('\n').filter(t => t.trim().length > 0);
+
+    let className = localStorage.getItem('tooth_class_name') || '我的班級';
+    document.getElementById('class-name-display').textContent = className;
+
+    const today = new Date(), todayStr = formatDate(today);
+    const weekDays = ['日', '一', '二', '三', '四', '五', '六'];
+    let viewDate = new Date(today), viewDateStr = todayStr;
+
+    function formatDate(d) { return d.toISOString().split('T')[0]; }
+    function displayDate(d) { return `${d.getFullYear()}/${d.getMonth() + 1}/${d.getDate()} 星期${weekDays[d.getDay()]}`; }
+
+    document.getElementById('header-date').textContent = displayDate(today);
+    document.getElementById('daily-tip').textContent = customTips[today.getDate() % customTips.length];
+
+    function saveActiveSeats() { localStorage.setItem('tooth_active_seats', JSON.stringify(activeSeats)); }
+
+    function saveClassName() {
+      const v = document.getElementById('class-name-input').value.trim();
+      if (!v) return;
+      className = v;
+      localStorage.setItem('tooth_class_name', className);
+      document.getElementById('class-name-display').textContent = className;
+    }
+
+    function openManageOverlay() {
+      document.getElementById('manage-overlay').classList.remove('hidden');
+      document.getElementById('tips-textarea').value = customTips.join('\n');
+      document.getElementById('reminders-textarea').value = customReminders.join('\n');
+      document.getElementById('class-name-input').value = className;
+      renderSeatGrid();
+      if (typeof lucide !== 'undefined') lucide.createIcons();
+    }
+    function closeManageOverlay() { document.getElementById('manage-overlay').classList.add('hidden'); hideResetConfirm(); }
+    function closeOverlayBg(e) { if (e.target === e.currentTarget) closeManageOverlay(); }
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeManageOverlay(); });
+
+    function renderSeatGrid() {
+      const g = document.getElementById('seat-grid');
+      if (g.children.length === 60) {
+        for (let i = 1; i <= 60; i++) {
+          const b = g.children[i - 1];
+          b.className = 'seat-btn ' + (activeSeats.includes(i) ? 'active' : 'inactive');
+        }
+        return;
+      }
+      g.innerHTML = '';
+      for (let i = 1; i <= 60; i++) {
+        const b = document.createElement('button');
+        b.type = 'button';
+        b.className = 'seat-btn ' + (activeSeats.includes(i) ? 'active' : 'inactive');
+        b.textContent = i;
+        b.setAttribute('aria-label', `座號 ${i}`);
+        b.addEventListener('click', () => {
+          const idx = activeSeats.indexOf(i);
+          if (idx >= 0) activeSeats.splice(idx, 1);
+          else activeSeats.push(i);
+          activeSeats.sort((a, b) => a - b);
+          saveActiveSeats();
+          b.className = 'seat-btn ' + (activeSeats.includes(i) ? 'active' : 'inactive');
+          renderAll();
+        });
+        g.appendChild(b);
+      }
+    }
+
+    function quickApply() {
+      const v = parseInt(document.getElementById('quick-set-input').value);
+      if (!v || v < 1 || v > 60) return;
+      activeSeats = [];
+      for (let i = 1; i <= v; i++) activeSeats.push(i);
+      saveActiveSeats();
+      renderSeatGrid();
+      renderAll();
+    }
+
+    function updateViewDateUI() {
+      viewDateStr = formatDate(viewDate);
+      document.getElementById('view-date-display').textContent = displayDate(viewDate);
+      const isToday = viewDateStr === todayStr;
+      document.getElementById('view-date-display').classList.toggle('viewing-past', !isToday);
+      document.getElementById('today-btn').classList.toggle('hidden', isToday);
+      document.getElementById('next-day-btn').disabled = isToday;
+      const minDate = new Date(today); minDate.setDate(minDate.getDate() - 30);
+      const atMin = viewDate <= minDate;
+      document.getElementById('prev-day-btn').disabled = atMin;
+      viewRecords = allRecords.filter(r => r.date === viewDateStr);
+      const badgeContainer = document.getElementById('grid-badge-container');
+      const titleEl = document.getElementById('grid-title-el');
+      if (!isToday) {
+        titleEl.querySelector('span').textContent = '查看模式 · ' + displayDate(viewDate);
+        badgeContainer.classList.remove('hidden');
+      } else {
+        badgeContainer.classList.add('hidden');
+      }
+      renderAll();
+      if (typeof lucide !== 'undefined') lucide.createIcons();
+    }
+
+    document.getElementById('prev-day-btn').addEventListener('click', () => {
+      const minDate = new Date(today); minDate.setDate(minDate.getDate() - 30);
+      if (viewDate > minDate) { viewDate.setDate(viewDate.getDate() - 1); updateViewDateUI(); }
+    });
+    document.getElementById('next-day-btn').addEventListener('click', () => {
+      if (viewDateStr !== todayStr) { viewDate.setDate(viewDate.getDate() + 1); updateViewDateUI(); }
+    });
+    // ═══════════ ENCOURAGEMENT MESSAGES ═══════════
+    const ENCOURAGEMENTS = {
+      25: ['好的開始！👍', '繼續加油！', '大家動起來！'],
+      50: ['一半了！💪', '已經過半！', '超棒的！繼續！'],
+      80: ['就快達成！🌟', '只差一點點！', '衝最後的！'],
+      100: ['全班完成！🎉', '超讚的大家！', '完美達陣！✨']
+    };
+
+    let lastEncouragementLevel = -1;
+
+    function maybeShowEncouragement(pct, prevPct) {
+      const thresholds = [100, 80, 50, 25];
+      let newLevel = -1;
+      for (const t of thresholds) {
+        if (pct >= t) { newLevel = t; break; }
+      }
+      let prevLevel = -1;
+      for (const t of thresholds) {
+        if (prevPct >= t) { prevLevel = t; break; }
+      }
+      // Only show when crossing UP to a new level
+      if (newLevel > prevLevel && newLevel > 0 && newLevel !== 100) {
+        const msgs = ENCOURAGEMENTS[newLevel];
+        const msg = msgs[Math.floor(Math.random() * msgs.length)];
+        showEncouragementBubble(msg);
+      }
+    }
+
+    function showEncouragementBubble(msg) {
+      const statsCard = document.querySelector('[data-template-id="stats-section"]');
+      if (!statsCard) return;
+      // Remove existing bubble
+      const existing = statsCard.querySelector('.encouragement-bubble');
+      if (existing) existing.remove();
+      const bubble = document.createElement('div');
+      bubble.className = 'encouragement-bubble';
+      bubble.textContent = msg;
+      statsCard.appendChild(bubble);
+      setTimeout(() => bubble.remove(), 2800);
+    }
+
+    // ═══════════ BULK ACTIONS ═══════════
+    async function markAll() {
+      if (isOperating || !isViewingToday()) return;
+      const btn = document.getElementById('mark-all-btn');
+      if (btn) btn.disabled = true;
+      isOperating = true;
+      try {
+        const brushed = getBrushedSet();
+        const toMark = activeSeats.filter(n => !brushed.has(n));
+        if (toMark.length === 0) {
+          showError('大家都已經完成了！🎉');
+          return;
+        }
+        Audio.ding();
+        for (const num of toMark) {
+          const rec = viewRecords.find(r => r.student_number === num);
+          if (rec) {
+            await window.dataSdk.update({ ...rec, brushed: true });
+          } else {
+            if (allRecords.length >= 999) {
+              document.getElementById('limit-warning').classList.remove('hidden');
+              setTimeout(() => document.getElementById('limit-warning').classList.add('hidden'), 3000);
+              break;
+            }
+            await window.dataSdk.create({ date: todayStr, student_number: num, brushed: true });
+          }
+        }
+      } catch (err) {
+        console.error('[markAll] error:', err);
+        showError('操作發生錯誤');
+      } finally {
+        isOperating = false;
+        if (btn) btn.disabled = false;
+      }
+    }
+
+    async function clearAll() {
+      if (isOperating || !isViewingToday()) return;
+      const brushed = getBrushedSet();
+      const toClear = viewRecords.filter(r => r.brushed);
+      if (toClear.length === 0) {
+        showError('沒有資料可以清除');
+        return;
+      }
+      // Simple inline confirm with a toast-style click
+      const btn = document.getElementById('clear-all-btn');
+      if (btn.dataset.confirming !== '1') {
+        btn.dataset.confirming = '1';
+        const originalHtml = btn.innerHTML;
+        btn.innerHTML = '<span>⚠</span><span class="quick-btn-label">再點一次確認</span>';
+        btn.style.background = '#fee2e2';
+        btn.style.borderColor = '#f87171';
+        btn.style.color = '#dc2626';
+        setTimeout(() => {
+          if (btn.dataset.confirming === '1') {
+            btn.dataset.confirming = '0';
+            btn.innerHTML = originalHtml;
+            btn.style.background = '';
+            btn.style.borderColor = '';
+            btn.style.color = '';
+          }
+        }, 2500);
+        return;
+      }
+      // Confirmed — proceed
+      btn.dataset.confirming = '0';
+      btn.style.background = '';
+      btn.style.borderColor = '';
+      btn.style.color = '';
+      btn.innerHTML = '<span>↺</span><span class="quick-btn-label" data-template-id="clear-all-label">全清</span>';
+
+      isOperating = true;
+      btn.disabled = true;
+      try {
+        Audio.pop();
+        for (const r of toClear) {
+          await window.dataSdk.update({ ...r, brushed: false });
+        }
+        lastEncouragementLevel = -1;
+      } catch (err) {
+        console.error('[clearAll] error:', err);
+        showError('操作發生錯誤');
+      } finally {
+        isOperating = false;
+        btn.disabled = false;
+      }
+    }
+
+    // ═══════════ REMINDER OVERLAY ═══════════
+    const DEFAULT_REMINDERS = [
+      '🪥｜該刷牙囉！｜拿好你的牙刷，跟老師一起潔牙！',
+      '🦷｜潔牙時間！｜保護我們的牙齒，上下左右仔細刷！',
+      '✨｜刷刷刷！｜每顆牙齒都要刷到，加油！',
+      '🎶｜開始刷牙了！｜兩分鐘，把細菌通通趕走！'
+    ];
+    const DEFAULT_TUESDAY_REMINDER = '🧪｜漱口時間！｜今天是漱口水日，含30秒再吐掉唷！';
+
+    let customReminders = [...DEFAULT_REMINDERS];
+    const savedReminders = localStorage.getItem('tooth_custom_reminders');
+    if (savedReminders) {
+      const lines = savedReminders.split('\n').filter(t => t.trim().length > 0);
+      if (lines.length > 0) customReminders = lines;
+    }
+
+    function parseReminderLine(line) {
+      // Format: emoji｜title｜subtitle (with either full-width ｜ or half-width |)
+      const parts = line.split(/[｜|]/).map(p => p.trim());
+      if (parts.length >= 3) {
+        return { emoji: parts[0] || '🪥', title: parts[1] || '該刷牙囉！', subtitle: parts[2] || '' };
+      }
+      if (parts.length === 2) {
+        return { emoji: '🪥', title: parts[0], subtitle: parts[1] };
+      }
+      return { emoji: '🪥', title: parts[0] || '該刷牙囉！', subtitle: '' };
+    }
+
+    function resetRemindersToDefault() {
+      customReminders = [...DEFAULT_REMINDERS];
+      localStorage.setItem('tooth_custom_reminders', customReminders.join('\n'));
+      document.getElementById('reminders-textarea').value = customReminders.join('\n');
+    }
+
+    function saveReminders() {
+      const val = document.getElementById('reminders-textarea').value;
+      const lines = val.split('\n').filter(t => t.trim().length > 0);
+      if (lines.length === 0) { showError('提醒訊息不能為空'); return; }
+      customReminders = lines;
+      localStorage.setItem('tooth_custom_reminders', customReminders.join('\n'));
+      showError('✅ 提醒訊息已保存');
+    }
+
+    let _reminderActive = false;
+    function triggerReminder() {
+      if (_reminderActive) return;
+      _reminderActive = true;
+
+      const isTuesday = viewDate.getDay() === 2;
+      let msg;
+      if (isTuesday) {
+        // Check if any custom reminder contains 漱口 / mouthwash keywords; otherwise use default
+        const tuesdayMatch = customReminders.find(r => /漱口|漱嘴|mouthwash/i.test(r));
+        msg = parseReminderLine(tuesdayMatch || DEFAULT_TUESDAY_REMINDER);
+      } else {
+        const line = customReminders[Math.floor(Math.random() * customReminders.length)];
+        msg = parseReminderLine(line);
+      }
+
+      Audio.initOnGesture();
+      Audio.alarm();
+      setTimeout(() => { if (_reminderActive) Audio.alarm(); }, 2200);
+
+      const overlay = document.createElement('div');
+      overlay.className = 'reminder-overlay';
+
+      // Strobe
+      const strobe = document.createElement('div');
+      strobe.className = 'reminder-strobe';
+      overlay.appendChild(strobe);
+
+      // Pulse rings
+      ['', 'delay-1', 'delay-2'].forEach(cls => {
+        const pulse = document.createElement('div');
+        pulse.className = 'reminder-pulse ' + cls;
+        overlay.appendChild(pulse);
+      });
+
+      // Sprinkle emojis in corners
+      const sprinkles = ['🦷', '🪥', '✨', '💫', '⭐', '🫧'];
+      const positions = [
+        { top: '8%', left: '6%' }, { top: '12%', right: '8%' },
+        { bottom: '20%', left: '5%' }, { bottom: '18%', right: '6%' },
+        { top: '30%', left: '10%' }, { top: '28%', right: '12%' },
+        { bottom: '35%', left: '15%' }, { bottom: '32%', right: '14%' },
+      ];
+      positions.forEach((pos, i) => {
+        const sp = document.createElement('div');
+        sp.className = 'reminder-sprinkle';
+        sp.textContent = sprinkles[i % sprinkles.length];
+        Object.assign(sp.style, pos);
+        sp.style.animationDelay = (i * 0.15) + 's';
+        overlay.appendChild(sp);
+      });
+
+      // Main content
+      const content = document.createElement('div');
+      content.className = 'reminder-content';
+      content.innerHTML = `
+        <div class="reminder-emoji">${escapeHtml(msg.emoji)}</div>
+        <div class="reminder-title">${escapeHtml(msg.title)}</div>
+        <div class="reminder-subtitle">${escapeHtml(msg.subtitle)}</div>
+      `;
+      overlay.appendChild(content);
+
+      // Close hint
+      const hint = document.createElement('div');
+      hint.className = 'reminder-close-hint';
+      hint.textContent = '點擊任意處關閉';
+      overlay.appendChild(hint);
+
+      document.body.appendChild(overlay);
+
+      const close = () => {
+        if (!_reminderActive) return;
+        _reminderActive = false;
+        overlay.classList.add('fade-out');
+        setTimeout(() => overlay.remove(), 500);
+      };
+
+      overlay.addEventListener('click', close);
+      setTimeout(close, 5000);
+    }
+
+    function escapeHtml(s) {
+      if (!s) return '';
+      return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+    }
+
+    function goToday() { viewDate = new Date(today); updateViewDateUI(); }
+
+    // ═══════════ TOOTH SVG ICONS (simple cute style, BIG number) ═══════════
+
+    // Dirty tooth: pale yellow-beige, simple sad face
+    function dirtyToothSVG(n) {
+      return `<svg width="82" height="108" viewBox="0 0 82 108" xmlns="http://www.w3.org/2000/svg">
+        <!-- tooth body -->
+        <path d="M41 12 C 56 12, 66 20, 66 34 L 66 58 C 66 72, 58 80, 41 80 C 24 80, 16 72, 16 58 L 16 34 C 16 20, 26 12, 41 12 Z" fill="#f0e4c2" stroke="#c9b682" stroke-width="2.5" stroke-linejoin="round"/>
+        <!-- Sad eyes -->
+        <circle cx="30" cy="40" r="4" fill="#3d2e15"/>
+        <circle cx="52" cy="40" r="4" fill="#3d2e15"/>
+        <!-- Sad mouth -->
+        <path d="M 32 58 Q 41 52 50 58" fill="none" stroke="#3d2e15" stroke-width="2.8" stroke-linecap="round"/>
+        <!-- BIG Number badge -->
+        <circle cx="41" cy="92" r="15" fill="#fff" stroke="#c9b682" stroke-width="3"/>
+        <text x="41" y="99" text-anchor="middle" fill="#8b7842" font-size="20" font-weight="900" font-family="Plus Jakarta Sans, sans-serif" letter-spacing="-0.02em">${n}</text>
+      </svg>`;
+    }
+
+    // Clean tooth: bright white, big happy eyes, rosy cheeks
+    function cleanToothSVG(n) {
+      return `<svg width="82" height="108" viewBox="0 0 82 108" xmlns="http://www.w3.org/2000/svg">
+        <!-- sparkle -->
+        <g class="sparkle" style="animation-delay: 0.3s; transform-origin: 67px 20px;">
+          <path d="M67 14 L68.5 18.5 L73 20 L68.5 21.5 L67 26 L65.5 21.5 L61 20 L65.5 18.5 Z" fill="#ffc85a"/>
+        </g>
+        <!-- tooth body -->
+        <path d="M41 12 C 56 12, 66 20, 66 34 L 66 58 C 66 72, 58 80, 41 80 C 24 80, 16 72, 16 58 L 16 34 C 16 20, 26 12, 41 12 Z" fill="#ffffff" stroke="#7ad9b8" stroke-width="2.5" stroke-linejoin="round"/>
+        <!-- Happy eyes with highlight -->
+        <circle cx="30" cy="40" r="4.5" fill="#1f1f1f"/>
+        <circle cx="31.5" cy="38.5" r="1.5" fill="#fff"/>
+        <circle cx="52" cy="40" r="4.5" fill="#1f1f1f"/>
+        <circle cx="53.5" cy="38.5" r="1.5" fill="#fff"/>
+        <!-- Rosy cheeks -->
+        <circle cx="22" cy="52" r="3.5" fill="#ffb6a3" opacity="0.85"/>
+        <circle cx="60" cy="52" r="3.5" fill="#ffb6a3" opacity="0.85"/>
+        <!-- Happy smile -->
+        <path d="M 32 52 Q 41 62 50 52" fill="none" stroke="#1f1f1f" stroke-width="2.8" stroke-linecap="round"/>
+        <!-- BIG Number badge (mint, glowing) -->
+        <circle cx="41" cy="92" r="15" fill="#1ba87a" stroke="#fff" stroke-width="3"/>
+        <text x="41" y="99" text-anchor="middle" fill="#fff" font-size="20" font-weight="900" font-family="Plus Jakarta Sans, sans-serif" letter-spacing="-0.02em">${n}</text>
+      </svg>`;
+    }
+
+    // Dirty mouthwash day: sad tooth + empty cup
+    function dirtyMouthwashSVG(n) {
+      return `<svg width="82" height="108" viewBox="0 0 82 108" xmlns="http://www.w3.org/2000/svg">
+        <!-- tooth body (left) -->
+        <path d="M25 14 C 36 14, 43 20, 43 30 L 43 50 C 43 60, 37 66, 25 66 C 13 66, 7 60, 7 50 L 7 30 C 7 20, 14 14, 25 14 Z" fill="#f0e4c2" stroke="#c9b682" stroke-width="2.2" stroke-linejoin="round"/>
+        <!-- sad eyes -->
+        <circle cx="18" cy="35" r="3" fill="#3d2e15"/>
+        <circle cx="32" cy="35" r="3" fill="#3d2e15"/>
+        <!-- sad mouth -->
+        <path d="M 19 50 Q 25 45 31 50" fill="none" stroke="#3d2e15" stroke-width="2.2" stroke-linecap="round"/>
+        <!-- Empty cup (right) -->
+        <path d="M51 22 Q51 20, 53 20 L 74 20 Q 76 20, 76 22 L 72 64 Q 71.5 66, 69 66 L 56 66 Q 53.5 66, 53 64 Z" fill="#ececec" stroke="#a0a0a0" stroke-width="2.2" stroke-linejoin="round"/>
+        <!-- BIG Number badge -->
+        <circle cx="41" cy="92" r="15" fill="#fff" stroke="#c9b682" stroke-width="3"/>
+        <text x="41" y="99" text-anchor="middle" fill="#8b7842" font-size="20" font-weight="900" font-family="Plus Jakarta Sans, sans-serif" letter-spacing="-0.02em">${n}</text>
+      </svg>`;
+    }
+
+    // Clean mouthwash day: happy tooth + cup with blue liquid
+    function cleanMouthwashSVG(n) {
+      return `<svg width="82" height="108" viewBox="0 0 82 108" xmlns="http://www.w3.org/2000/svg">
+        <!-- sparkle -->
+        <g class="sparkle" style="animation-delay: 0.3s; transform-origin: 66px 14px;">
+          <path d="M66 10 L67 12.5 L69.5 13.5 L67 14.5 L66 17 L65 14.5 L62.5 13.5 L65 12.5 Z" fill="#ffc85a"/>
+        </g>
+        <!-- tooth body (left) -->
+        <path d="M25 14 C 36 14, 43 20, 43 30 L 43 50 C 43 60, 37 66, 25 66 C 13 66, 7 60, 7 50 L 7 30 C 7 20, 14 14, 25 14 Z" fill="#ffffff" stroke="#7ad9b8" stroke-width="2.2" stroke-linejoin="round"/>
+        <!-- happy eyes with highlight -->
+        <circle cx="18" cy="35" r="3.2" fill="#1f1f1f"/>
+        <circle cx="19" cy="34" r="1" fill="#fff"/>
+        <circle cx="32" cy="35" r="3.2" fill="#1f1f1f"/>
+        <circle cx="33" cy="34" r="1" fill="#fff"/>
+        <!-- cheeks -->
+        <circle cx="11" cy="46" r="2.5" fill="#ffb6a3" opacity="0.85"/>
+        <circle cx="39" cy="46" r="2.5" fill="#ffb6a3" opacity="0.85"/>
+        <!-- happy smile -->
+        <path d="M 19 46 Q 25 54 31 46" fill="none" stroke="#1f1f1f" stroke-width="2.2" stroke-linecap="round"/>
+        <!-- Cup with liquid (right) -->
+        <path d="M51 22 Q51 20, 53 20 L 74 20 Q 76 20, 76 22 L 72 64 Q 71.5 66, 69 66 L 56 66 Q 53.5 66, 53 64 Z" fill="#fff" stroke="#0d9488" stroke-width="2.2" stroke-linejoin="round"/>
+        <path d="M52 26 L 75 26 L 71.7 63 Q 71.3 64.5, 69 64.5 L 56 64.5 Q 53.7 64.5, 53.3 63 Z" fill="#7cc9f0" opacity="0.9"/>
+        <!-- rising bubbles -->
+        <circle cx="62" cy="40" r="1.8" fill="#fff" opacity="0.85">
+          <animate attributeName="cy" values="62;28" dur="2.5s" repeatCount="indefinite"/>
+          <animate attributeName="opacity" values="0;0.85;0" dur="2.5s" repeatCount="indefinite"/>
+        </circle>
+        <circle cx="68" cy="48" r="1.3" fill="#fff" opacity="0.8">
+          <animate attributeName="cy" values="63;30" dur="3s" repeatCount="indefinite" begin="0.8s"/>
+          <animate attributeName="opacity" values="0;0.8;0" dur="3s" repeatCount="indefinite" begin="0.8s"/>
+        </circle>
+        <!-- BIG Number badge -->
+        <circle cx="41" cy="92" r="15" fill="#1ba87a" stroke="#fff" stroke-width="3"/>
+        <text x="41" y="99" text-anchor="middle" fill="#fff" font-size="20" font-weight="900" font-family="Plus Jakarta Sans, sans-serif" letter-spacing="-0.02em">${n}</text>
+      </svg>`;
+    }
+
+    function getBrushedSet() {
+      const s = new Set();
+      viewRecords.forEach(r => { if (r.brushed) s.add(r.student_number); });
+      return s;
+    }
+    function isViewingToday() { return viewDateStr === todayStr; }
+
+    function renderGrid() {
+      const grid = document.getElementById('tooth-grid');
+      const brushed = getBrushedSet();
+      const ro = !isViewingToday();
+      const isTuesday = viewDate.getDay() === 2;
+      const existing = new Map([...grid.children].map(el => [parseInt(el.dataset.num), el]));
+      const sorted = [...activeSeats].sort((a, b) => a - b);
+
+      sorted.forEach(i => {
+        const ib = brushed.has(i);
+        let el = existing.get(i);
+        const svgHtml = isTuesday
+          ? (ib ? cleanMouthwashSVG(i) : dirtyMouthwashSVG(i))
+          : (ib ? cleanToothSVG(i) : dirtyToothSVG(i));
+
+        if (el) {
+          el.innerHTML = svgHtml;
+          el.className = 'tooth-grid-item ' + (ib ? 'brushed' : 'dirty') + (ro ? ' readonly' : '');
+          existing.delete(i);
+        } else {
+          el = document.createElement('div');
+          el.className = 'tooth-grid-item ' + (ib ? 'brushed' : 'dirty') + (ro ? ' readonly' : '');
+          el.dataset.num = i;
+          el.setAttribute('role', 'button');
+          el.setAttribute('aria-label', `座號 ${i}`);
+          el.innerHTML = svgHtml;
+          el.addEventListener('click', () => {
+            if (!isViewingToday()) return;
+            toggleBrush(parseInt(el.dataset.num));
+          });
+          grid.appendChild(el);
+        }
+      });
+      existing.forEach(el => el.remove());
+      [...grid.children].forEach(el => {
+        if (!activeSeats.includes(parseInt(el.dataset.num))) el.remove();
+      });
+    }
+
+    let _prevPct = 0;
+    function renderStats() {
+      const brushed = getBrushedSet();
+      const count = [...brushed].filter(n => activeSeats.includes(n)).length;
+      const total = activeSeats.length;
+      document.getElementById('stats-count').textContent = count;
+      document.getElementById('stats-total').textContent = `/ ${total}`;
+      const pct = total > 0 ? Math.round(count / total * 100) : 0;
+      document.getElementById('stats-percent').textContent = pct + '%';
+      document.getElementById('progress-bar-fill').style.width = pct + '%';
+
+      // Trigger encouragement when viewing today and crossing thresholds (not on initial load)
+      if (isViewingToday() && _prevPct !== null) {
+        maybeShowEncouragement(pct, _prevPct);
+      }
+      _prevPct = pct;
+
+      // Achievement medal
+      const medal = document.getElementById('achievement-medal');
+      const medalEmoji = document.getElementById('medal-emoji');
+      if (pct >= 100 && total > 0) {
+        medal.classList.remove('hidden');
+        medalEmoji.textContent = '🏆';
+        medal.style.background = 'linear-gradient(135deg, #fbbf24, #f59e0b)';
+      } else if (pct >= 80) {
+        medal.classList.remove('hidden');
+        medalEmoji.textContent = '🥇';
+        medal.style.background = 'linear-gradient(135deg, #fbbf24, #f59e0b)';
+      } else if (pct >= 50) {
+        medal.classList.remove('hidden');
+        medalEmoji.textContent = '🥈';
+        medal.style.background = 'linear-gradient(135deg, #d1d5db, #9ca3af)';
+      } else if (pct >= 25) {
+        medal.classList.remove('hidden');
+        medalEmoji.textContent = '🥉';
+        medal.style.background = 'linear-gradient(135deg, #fb923c, #c2410c)';
+      } else {
+        medal.classList.add('hidden');
+      }
+
+      // Stats color based on progress
+      const pctEl = document.getElementById('stats-percent');
+      if (pct >= 80) pctEl.style.color = 'var(--mint-500)';
+      else if (pct >= 50) pctEl.style.color = 'var(--sky-500)';
+      else pctEl.style.color = 'var(--coral-500)';
+
+      const incompleteSorted = [];
+      for (const n of activeSeats) { if (!brushed.has(n)) incompleteSorted.push(n); }
+      const incompleteList = document.getElementById('incomplete-seats-list');
+      if (incompleteSorted.length === 0) {
+        incompleteList.innerHTML = '<span style="color: var(--mint-600); font-weight: 700;">🎉 全部完成！</span>';
+      } else {
+        incompleteList.textContent = incompleteSorted.join('、');
+      }
+
+      const msg = document.getElementById('complete-msg');
+      const celeb = document.getElementById('celebration');
+      if (count === total && total > 0) {
+        msg.classList.remove('hidden');
+        msg.classList.add('fade-in');
+        triggerCelebration(celeb);
+      } else {
+        msg.classList.add('hidden');
+        celeb.innerHTML = '';
+      }
+    }
+
+    function updateMouthwashIndicator() {
+      const isTuesday = viewDate.getDay() === 2;
+      const gridIcon = document.getElementById('grid-icon');
+      const gridSub = document.getElementById('grid-sub');
+      const gridHeading = document.getElementById('grid-heading-text');
+      if (isTuesday) {
+        gridIcon.textContent = '🧪';
+        gridSub.classList.remove('hidden');
+        gridHeading.textContent = '漱口水日';
+      } else {
+        gridIcon.textContent = '🪥';
+        gridSub.classList.add('hidden');
+        gridHeading.textContent = '全班座號表';
+      }
+    }
+
+    function triggerCelebration(c) {
+      const overlay = document.createElement('div');
+      overlay.className = 'celebration-overlay';
+      const content = document.createElement('div');
+      content.style.textAlign = 'center';
+      content.style.zIndex = '51';
+      content.style.pointerEvents = 'none';
+      const textEl = document.createElement('div');
+      textEl.className = 'celebration-text';
+      textEl.textContent = '✨ 全班都完成了！✨';
+      content.appendChild(textEl);
+      const clapEl = document.createElement('div');
+      clapEl.className = 'clap-emoji';
+      clapEl.textContent = '🎉';
+      content.appendChild(clapEl);
+      overlay.appendChild(content);
+      document.body.appendChild(overlay);
+      createFireworks(overlay, content);
+      Audio.victory();
+      setTimeout(() => {
+        overlay.classList.add('fade-out');
+        setTimeout(() => overlay.remove(), 500);
+      }, 5000);
+      overlay.addEventListener('click', () => {
+        overlay.classList.add('fade-out');
+        setTimeout(() => overlay.remove(), 500);
+      });
+    }
+
+    function createFireworks(overlay, content) {
+      const colors = ['#1ba87a', '#ffb6a3', '#7cc9f0', '#ffd54f', '#ff8a70'];
+      const particleCount = 50;
+      const centerX = overlay.offsetWidth / 2;
+      const centerY = overlay.offsetHeight / 2 - 60;
+      for (let i = 0; i < particleCount; i++) {
+        const p = document.createElement('div');
+        p.className = 'firework-particle';
+        const angle = (Math.PI * 2 * i) / particleCount;
+        const speed = 3 + Math.random() * 4;
+        const vx = Math.cos(angle) * speed;
+        const vy = Math.sin(angle) * speed - 2;
+        const life = 1.5 + Math.random() * 1;
+        const color = colors[Math.floor(Math.random() * colors.length)];
+        p.style.left = centerX + 'px';
+        p.style.top = centerY + 'px';
+        p.style.width = '12px';
+        p.style.height = '12px';
+        p.style.backgroundColor = color;
+        p.style.borderRadius = '50%';
+        p.style.boxShadow = `0 0 12px ${color}`;
+        overlay.appendChild(p);
+        let x = centerX, y = centerY, vx_ = vx, vy_ = vy;
+        const gravity = .15;
+        const startTime = Date.now();
+        const anim = setInterval(() => {
+          const elapsed = (Date.now() - startTime) / 1000;
+          if (elapsed > life) { clearInterval(anim); p.remove(); return; }
+          x += vx_; y += vy_; vy_ += gravity;
+          const prog = elapsed / life;
+          p.style.opacity = Math.max(0, 1 - prog);
+          p.style.transform = `translate(${x - centerX}px, ${y - centerY}px)`;
+        }, 16);
+      }
+      const emojis = ['⭐', '✨', '🌟', '💫', '🪥', '🦷'];
+      for (let i = 0; i < 24; i++) {
+        const e = document.createElement('span');
+        e.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+        e.style.position = 'absolute';
+        e.style.left = Math.random() * 100 + '%';
+        e.style.top = Math.random() * 100 + '%';
+        e.style.fontSize = '28px';
+        e.style.animation = `starFall ${1.5 + Math.random()}s ease-in forwards`;
+        e.style.zIndex = '50';
+        overlay.appendChild(e);
+      }
+    }
+
+    function renderAll() {
+      try { renderGrid(); } catch (e) { console.error('renderGrid error:', e); }
+      try { renderStats(); } catch (e) { console.error('renderStats error:', e); }
+      try { updateMouthwashIndicator(); } catch (e) { console.error('updateMouthwashIndicator error:', e); }
+      try { updateStreakBadge(); } catch (e) { console.error('updateStreakBadge error:', e); }
+    }
+
+    function updateStreakBadge() {
+      // Count consecutive days with 100% completion ending today (or day before if today has no records)
+      if (!allRecords || allRecords.length === 0) {
+        document.getElementById('streak-badge').classList.add('hidden');
+        return;
+      }
+      let streak = 0;
+      const checkDate = new Date(today);
+      for (let i = 0; i < 60; i++) {
+        const ds = formatDate(checkDate);
+        const dayRecs = allRecords.filter(r => r.date === ds && r.brushed);
+        const dayBrushed = new Set(dayRecs.map(r => r.student_number));
+        const activeDone = [...dayBrushed].filter(n => activeSeats.includes(n)).length;
+        if (activeDone === activeSeats.length && activeSeats.length > 0) {
+          streak++;
+        } else {
+          if (i === 0 && dayRecs.length === 0) {
+            checkDate.setDate(checkDate.getDate() - 1);
+            continue;
+          }
+          break;
+        }
+        checkDate.setDate(checkDate.getDate() - 1);
+      }
+      const badge = document.getElementById('streak-badge');
+      const txt = document.getElementById('streak-text');
+      if (streak >= 2) {
+        txt.textContent = `連續 ${streak} 天全班達成`;
+        badge.classList.remove('hidden');
+      } else {
+        badge.classList.add('hidden');
+      }
+    }
+
+    // Next tip button
+    document.getElementById('next-tip-btn').addEventListener('click', () => {
+      if (customTips.length <= 1) return;
+      Audio.swoosh();
+      const current = document.getElementById('daily-tip').textContent;
+      let next;
+      do {
+        next = customTips[Math.floor(Math.random() * customTips.length)];
+      } while (next === current && customTips.length > 1);
+      const tipEl = document.getElementById('daily-tip');
+      tipEl.style.transition = 'opacity 0.2s, transform 0.2s';
+      tipEl.style.opacity = '0';
+      tipEl.style.transform = 'translateY(6px)';
+      setTimeout(() => {
+        tipEl.textContent = next;
+        tipEl.style.opacity = '1';
+        tipEl.style.transform = 'translateY(0)';
+      }, 200);
+    });
+
+    function showError(m) {
+      const t = document.getElementById('error-toast');
+      t.textContent = m;
+      t.classList.remove('hidden');
+      setTimeout(() => t.classList.add('hidden'), 3000);
+    }
+
+    function showResetConfirm() {
+      document.getElementById('reset-confirm').classList.remove('hidden');
+      document.getElementById('reset-btn').classList.add('hidden');
+    }
+    function hideResetConfirm() {
+      document.getElementById('reset-confirm').classList.add('hidden');
+      document.getElementById('reset-btn').classList.remove('hidden');
+    }
+
+    function resetTipsToDefault() {
+      customTips = [...TIPS];
+      localStorage.setItem('tooth_custom_tips', customTips.join('\n'));
+      document.getElementById('tips-textarea').value = customTips.join('\n');
+      document.getElementById('daily-tip').textContent = customTips[today.getDate() % customTips.length];
+    }
+
+    function saveTips() {
+      const val = document.getElementById('tips-textarea').value;
+      const lines = val.split('\n').filter(t => t.trim().length > 0);
+      if (lines.length === 0) { showError('小常識不能為空'); return; }
+      customTips = lines;
+      localStorage.setItem('tooth_custom_tips', customTips.join('\n'));
+      document.getElementById('daily-tip').textContent = customTips[today.getDate() % customTips.length];
+      showError('✅ 小常識已保存');
+    }
+
+    async function doReset() {
+      hideResetConfirm();
+      if (isOperating) return;
+      isOperating = true;
+      try {
+        for (const r of viewRecords.filter(r => r.brushed)) {
+          const res = await window.dataSdk.update({ ...r, brushed: false });
+          if (!res.isOk) { showError('重置失敗'); break; }
+        }
+      } finally { isOperating = false; }
+    }
+
+    async function toggleBrush(num) {
+      if (isOperating || !isViewingToday()) return;
+      isOperating = true;
+      const el = document.querySelector(`.tooth-grid-item[data-num="${num}"]`);
+      if (el) {
+        el.classList.add('tooth-bounce');
+        setTimeout(() => el.classList.remove('tooth-bounce'), 600);
+      }
+      try {
+        const rec = viewRecords.find(r => r.student_number === num);
+        if (rec) {
+          const willBeBrushed = !rec.brushed;
+          const res = await window.dataSdk.update({ ...rec, brushed: willBeBrushed });
+          if (!res || !res.isOk) showError('更新失敗，請再試一次');
+          else { willBeBrushed ? Audio.ding() : Audio.pop(); }
+        } else {
+          if (allRecords.length >= 970) {
+            const cut = new Date(); cut.setDate(cut.getDate() - 30);
+            const cs = formatDate(cut);
+            const old = allRecords.filter(r => r.date < cs);
+            for (const o of old.slice(0, 60)) await window.dataSdk.delete(o);
+          }
+          if (allRecords.length >= 999) {
+            document.getElementById('limit-warning').classList.remove('hidden');
+            setTimeout(() => document.getElementById('limit-warning').classList.add('hidden'), 3000);
+            return;
+          }
+          const res = await window.dataSdk.create({ date: todayStr, student_number: num, brushed: true });
+          if (!res || !res.isOk) showError('儲存失敗，請再試一次');
+          else { Audio.ding(); }
+        }
+      } catch (err) {
+        console.error('[toggleBrush] error:', err);
+        showError('操作發生錯誤');
+      } finally {
+        isOperating = false;
+      }
+    }
+
+    function exportRecord() {
+      const brushed = getBrushedSet();
+      const sorted = [...activeSeats].sort((a, b) => a - b);
+      const brushedNums = [], unbrushedNums = [];
+      for (const i of sorted) { if (brushed.has(i)) brushedNums.push(i); else unbrushedNums.push(i); }
+      const pct = sorted.length > 0 ? Math.round(brushedNums.length / sorted.length * 100) : 0;
+      const text = `${className} ${viewDateStr} 潔牙紀錄\n已刷牙：${brushedNums.join(', ') || '無'}\n未刷牙：${unbrushedNums.join(', ') || '無'}\n完成率：${pct}%`;
+      navigator.clipboard.writeText(text).then(() => {
+        const toast = document.getElementById('copy-toast');
+        toast.classList.remove('hidden');
+        toast.querySelector('span').classList.add('toast-show');
+        setTimeout(() => {
+          toast.classList.add('hidden');
+          toast.querySelector('span').classList.remove('toast-show');
+        }, 2500);
+      }).catch(() => showError('複製失敗'));
+    }
+
+    function toggleMuteBtn(btn) {
+      Audio.initOnGesture();
+      const nowMuted = !Audio.isMuted();
+      Audio.setMuted(nowMuted);
+      updateAudioButtons();
+      if (!nowMuted) Audio.ding(); // test sound
+    }
+
+    function toggleBGMBtn(btn) {
+      Audio.initOnGesture();
+      const on = Audio.toggleBGM();
+      updateAudioButtons();
+    }
+
+    function updateAudioButtons() {
+      const muteBtn = document.getElementById('mute-toggle-btn');
+      const muteIcon = document.getElementById('mute-icon');
+      if (Audio.isMuted()) {
+        muteBtn.classList.add('off');
+        muteIcon.textContent = '🔇';
+      } else {
+        muteBtn.classList.remove('off');
+        muteIcon.textContent = '🔊';
+      }
+      const bgmBtn = document.getElementById('bgm-toggle-btn');
+      const bgmIcon = document.getElementById('bgm-icon');
+      if (Audio.isBGMOn()) {
+        bgmBtn.classList.remove('off');
+        bgmBtn.classList.add('playing');
+        bgmIcon.textContent = '🎵';
+      } else {
+        bgmBtn.classList.add('off');
+        bgmBtn.classList.remove('playing');
+        bgmIcon.textContent = '🔕';
+      }
+    }
+
+    // Initialize audio button state on load
+    updateAudioButtons();
+
+    const dataHandler = {
+      onDataChanged(data) {
+        allRecords = data;
+        viewRecords = data.filter(r => r.date === viewDateStr);
+        renderAll();
+      }
+    };
+
+    (async () => {
+      try {
+        const res = await window.dataSdk.init(dataHandler);
+        if (!res || !res.isOk) showError('無法連接資料庫');
+      } catch (e) {
+        console.error('[init] dataSdk.init threw:', e);
+        showError('無法連接資料庫');
+      }
+      updateViewDateUI();
+      if (typeof lucide !== 'undefined') lucide.createIcons();
+    })();
+  </script>
+</body>
+</html>
