@@ -1,0 +1,977 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>成語貪食蛇</title>
+<style>body{margin:0;padding:0;background:#040408;overflow:hidden}#root{min-height:100vh}</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.9/babel.min.js"></script>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+const { useState, useEffect, useCallback, useRef } = React;
+
+// Grade-organized idiom pools
+const IDIOMS_BY_GRADE = {
+  "三年級": ["口若懸河","一暴十寒","守株待兔","投桃報李","行雲流水","滴水穿石","寸草春暉","一字千金","臨渴掘井","按部就班","一鼓作氣","牛角掛書","發憤忘食","名落孫山","春風化雨","千鈞一髮","維妙維肖","見賢思齊","杯弓蛇影","進退維谷","防微杜漸","班門弄斧","耳濡目染","車水馬龍","同舟共濟","宜室宜家","沉魚落雁","生意盎然","金蘭之交","一片冰心","不世之材","伯仲之間","披星戴月","指鹿為馬","美輪美奐","甘之如飴","洞燭先機","孤掌難鳴","鬼斧神工","笑容可掬"],
+  "四年級": ["迎刃而解","二八年華","道貌岸然","匹夫之勇","燃眉之急","捕風捉影","吳下阿蒙","口碑載道","臥薪嘗膽","千里鵝毛","張冠李戴","如雷貫耳","唾手可得","暮鼓晨鐘","拋磚引玉","鳳毛麟角","疊床架屋","模稜兩可","三人成虎","慎終追遠","戰戰兢兢","並駕齊驅","刮目相看","無遠弗屆","破鏡重圓","撥雲見日","既往不咎","夜不閉戶","眾口鑠金","好整以暇","曲突徙薪","大家風範","緣木求魚","自怨自艾","明察秋毫","一傅眾咻","邯鄲學步","晨昏定省","風行草偃","芒刺在背","斷章取義","望塵莫及","退避三舍","錙銖必較","門可羅雀","孜孜不倦","奇貨可居","江郎才盡","甚囂塵上","字字珠璣","披肝瀝膽","濫竽充數","從善如流","趨之若鶩","毛遂自薦","咎由自取","滄海一粟","物換星移","焚琴煮鶴","前倨後恭"],
+  "五年級": ["怒髮衝冠","功虧一簣","出類拔萃","半斤八兩","四面楚歌","外強中乾","目不識丁","百折不撓","每下愈況","汗牛充棟","有志竟成","肝膽相照","含飴弄孫","沆瀣一氣","走馬看花","知己知彼","河東獅吼","門庭若市","南轅北轍","洛陽紙貴","胸有成竹","兔死狗烹","風聲鶴唳","乘風破浪","高枕無憂","草木皆兵","鬥志昂揚","偃旗息鼓","眾志成城","得隴望蜀","魚目混珠","望梅止渴","莫逆之交","雪中送炭","鹿死誰手","畫龍點睛","開誠布公","飲水思源","愛屋及烏","萬眾一心","過河拆橋","對牛彈琴","旗鼓相當","熟能生巧","罄竹難書","赴湯蹈火","適得其反","養虎遺患","擢髮難數","頭頭是道","鍾鼎山林","雞犬不寧","懸崖勒馬","騎虎難下","顧名思義","趕鴨子上架","鐵杵磨針","聞雞起舞","畫蛇添足","亡羊補牢","指桑罵槐","舐犢情深","韜光養晦","東施效顰","剛愎自用","韋編三絕","信誓旦旦","中流砥柱","滄海桑田","年高德劭","管鮑之交","相形見絀","人謀不臧","叱吒風雲","含英咀華","梨園子弟","嘔心瀝血","草菅人命","談笑風生","古道熱腸","病入膏肓","野人獻曝","循循善誘","義憤填膺","買櫝還珠","杞人憂天","黔驢技窮","瞠目結舌","妄自菲薄","鍥而不捨","破釜沉舟","一言九鼎","童叟無欺","讓棗推梨","駑馬十駕","臨淵羨魚","譁眾取寵","削足適履","大快朵頤","面面相覷"],
+};
+
+
+// Backward-compatible flat list (all grades combined)
+const ALL_IDIOMS = [...IDIOMS_BY_GRADE["三年級"], ...IDIOMS_BY_GRADE["四年級"], ...IDIOMS_BY_GRADE["五年級"]];
+
+
+
+const G = 15, C = 36, B = G * C;
+// Difficulty: 1=簡單 2=普通 3=困難
+const DIFF_CFG = {
+  1: { spd: 420, inc: 1, min: 280, wrongs: 2, target: 5, label: '簡單', emoji: '🌱', color: '#7dff6a', desc: '速度慢・干擾字少' },
+  2: { spd: 340, inc: 2, min: 220, wrongs: 3, target: 8, label: '普通', emoji: '⚔️', color: '#ffe14d', desc: '標準速度・適中挑戰' },
+  3: { spd: 260, inc: 3, min: 160, wrongs: 5, target: 12, label: '困難', emoji: '🔥', color: '#ff2d95', desc: '極速・干擾字多' },
+};
+const DIR = { UP:{x:0,y:-1}, DOWN:{x:0,y:1}, LEFT:{x:-1,y:0}, RIGHT:{x:1,y:0} };
+const OPP = { UP:"DOWN", DOWN:"UP", LEFT:"RIGHT", RIGHT:"LEFT" };
+const NEON = ["#00fff5","#ff2d95","#ffe14d","#7dff6a","#a78bfa","#ff6b6b","#38bdf8","#fb923c","#f472b6","#34d399"];
+
+const ri = (n) => Math.floor(Math.random() * n);
+const rp = (a) => a[ri(a.length)];
+
+// ═══ 排行榜設定 ═══
+// ⚠️ 把這個換成你部署的 GAS 網址！
+const GAS_URL = "https://script.google.com/macros/s/AKfycbx0qUDMIOb6hloa7ZISH-3UaQHvNEljeqRpZcI0mPmBG75nbnOvDnpWjX1byMo8JxvU/exec";
+
+// 稱號系統（前端也有一份，確保離線時也能顯示）
+const TITLE_TABLE = {
+  1: [{min:0,t:"🐣 成語小雞"},{min:50,t:"🐥 成語幼鳥"},{min:100,t:"🦊 成語小狐"},{min:200,t:"🦁 成語猛獅"},{min:350,t:"🐲 成語飛龍"},{min:500,t:"👑 成語王者"}],
+  2: [{min:0,t:"⚔️ 成語劍士"},{min:100,t:"🛡️ 成語騎士"},{min:200,t:"🏹 成語獵人"},{min:400,t:"🧙 成語法師"},{min:600,t:"⚡ 成語戰神"},{min:800,t:"🏆 成語霸主"}],
+  3: [{min:0,t:"🔥 烈焰新星"},{min:150,t:"💎 鑽石勇者"},{min:300,t:"🌟 星辰大師"},{min:500,t:"🐉 神龍至尊"},{min:800,t:"👹 魔王終結者"},{min:1200,t:"🌌 宇宙主宰"}],
+};
+function getTitle(score, diff) {
+  const list = TITLE_TABLE[diff] || TITLE_TABLE[2];
+  let r = list[0].t;
+  for (const x of list) { if (score >= x.min) r = x.t; }
+  return r;
+}
+
+// 不雅文字前端檢查
+const BAD_LIST = ["87","78","56","038","幹","靠北","靠杯","媽的","他媽","你媽","垃圾","白痴","智障","腦殘","廢物","去死","混蛋","笨蛋","變態","屌","機掰","雞掰","婊","賤","fuck","shit","ass","dick","bitch","idiot","stupid","sex","porn","kill","die"];
+function isNameOk(name) {
+  if (!name || name.trim().length < 1 || name.trim().length > 10) return false;
+  const l = name.toLowerCase().replace(/\s/g,"");
+  for (const b of BAD_LIST) { if (l.includes(b.toLowerCase())) return false; }
+  if (/(.)\1{2,}/.test(l)) return false;
+  return true;
+}
+
+function freeCell(snk, fds) {
+  const occ = new Set();
+  snk.forEach(s => occ.add(s.x + "," + s.y));
+  fds.forEach(f => occ.add(f.x + "," + f.y));
+  let x, y;
+  do { x = ri(G); y = ri(G); } while (occ.has(x + "," + y));
+  return { x, y };
+}
+
+function makeFoods(snk, idiom, idx, wrongCount = 3, pool = ALL_IDIOMS) {
+  const t = idiom[idx];
+  const fds = [];
+  fds.push({ ...freeCell(snk, fds), char: t, ok: true });
+  for (let i = 0; i < wrongCount; i++) {
+    let w = rp(pool)[ri(4)];
+    while (w === t) w = rp(pool)[ri(4)];
+    fds.push({ ...freeCell(snk, fds), char: w, ok: false });
+  }
+  return fds;
+}
+
+// Simple audio via AudioContext
+const audioCtx = { current: null };
+function beep(freq, dur, type = "sine", vol = 0.15) {
+  try {
+    if (!audioCtx.current) audioCtx.current = new (window.AudioContext || window.webkitAudioContext)();
+    const ctx = audioCtx.current;
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.type = type;
+    osc.frequency.value = freq;
+    gain.gain.value = vol;
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + dur);
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.start();
+    osc.stop(ctx.currentTime + dur);
+  } catch (e) {}
+}
+function sfxEat(c) { const f = [523, 587, 659, 698, 784, 880, 988]; beep(f[Math.min(c, 6) % 7], 0.12); }
+function sfxWrong() { beep(150, 0.25, "sawtooth", 0.1); }
+function sfxComplete() { [523, 659, 784, 1047].forEach((f, i) => setTimeout(() => beep(f, 0.2, "triangle", 0.12), i * 60)); setTimeout(() => beep(1318, 0.3, "sine", 0.08), 300); }
+function sfxDie() { beep(100, 0.5, "sawtooth", 0.12); setTimeout(() => beep(80, 0.4, "sawtooth", 0.08), 100); setTimeout(() => beep(60, 0.5, "sawtooth", 0.06), 250); }
+
+// BGM - chiptune loop via AudioContext
+const bgm = { playing: false, iv: null, step: 0 };
+const BGM_NOTES = [
+  // A catchy 8-bit loop: pentatonic melody with rhythm
+  [392,0.15],[0,0.05],[440,0.15],[0,0.05],[523,0.15],[0,0.05],[587,0.15],[0,0.05],
+  [659,0.3],[0,0.1],[587,0.15],[0,0.05],[523,0.3],[0,0.1],
+  [440,0.15],[0,0.05],[523,0.15],[0,0.05],[392,0.3],[0,0.1],
+  [349,0.15],[0,0.05],[392,0.15],[0,0.05],[440,0.15],[0,0.05],[523,0.15],[0,0.05],
+  [587,0.3],[0,0.1],[523,0.15],[0,0.05],[440,0.3],[0,0.1],
+  [392,0.15],[0,0.05],[349,0.15],[0,0.05],[330,0.3],[0,0.2],
+];
+function startBGM() {
+  if (bgm.playing) return;
+  bgm.playing = true;
+  bgm.step = 0;
+  function playNext() {
+    if (!bgm.playing) return;
+    const [freq, dur] = BGM_NOTES[bgm.step % BGM_NOTES.length];
+    if (freq > 0) beep(freq, dur, "square", 0.04);
+    bgm.step++;
+    bgm.iv = setTimeout(playNext, dur * 1000 + 20);
+  }
+  playNext();
+}
+function stopBGM() {
+  bgm.playing = false;
+  if (bgm.iv) { clearTimeout(bgm.iv); bgm.iv = null; }
+}
+
+function App() {
+  const [gs, setGs] = useState("menu"); // menu, playing, paused, gameover, victory
+  const [snake, setSnake] = useState([]);
+  const [dir, setDir] = useState("RIGHT");
+  const [foods, setFoods] = useState([]);
+  const [idiom, setIdiom] = useState("");
+  const [ci, setCi] = useState(0);
+  const [score, setScore] = useState(0);
+  const [done, setDone] = useState([]);
+  const [speed, setSpeed] = useState(DIFF_CFG[2].spd);
+  const [flash, setFlash] = useState(null);
+  const [colIdx, setColIdx] = useState(0);
+  const [combo, setCombo] = useState(0);
+  const [diff, setDiff] = useState(2); // 1=簡單 2=普通 3=困難
+  const [grades, setGrades] = useState({"三年級": true, "四年級": true, "五年級": false}); // grade checkboxes
+  
+  
+  const [particles, setParticles] = useState([]);
+  const [shaking, setShaking] = useState(false);
+  const [scrFlash, setScrFlash] = useState(null);
+  const [trail, setTrail] = useState([]);
+  const [popups, setPopups] = useState([]);
+  const [bgmOn, setBgmOn] = useState(true);
+  const [playerName, setPlayerName] = useState("");
+  const [nameError, setNameError] = useState("");
+  const [myTitle, setMyTitle] = useState("");
+  const [myRank, setMyRank] = useState(-1);
+  const [leaderboard, setLeaderboard] = useState({});
+  const [submitting, setSubmitting] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+  const [showLB, setShowLB] = useState(false); // show leaderboard modal on menu
+
+
+  const goHome = useCallback(() => {
+    clearInterval(loopR.current);
+    stopBGM();
+    setGs("menu"); R.current.gs = "menu";
+    setFlash(null);
+    setParticles([]);
+    setPopups([]);
+    setSubmitted(false);
+    setPlayerName("");
+    setNameError("");
+    setMyRank(-1);
+  }, []);
+
+  // 讀取排行榜
+  const fetchLB = useCallback(async () => {
+    if (!GAS_URL || GAS_URL === "https://script.google.com/macros/s/AKfycbx0qUDMIOb6hloa7ZISH-3UaQHvNEljeqRpZcI0mPmBG75nbnOvDnpWjX1byMo8JxvU/exec") return;
+    try {
+      const res = await fetch(GAS_URL + "?action=getAll");
+      const data = await res.json();
+      if (data.success) setLeaderboard(data.leaderboard);
+    } catch (e) { console.log("LB fetch error", e); }
+  }, []);
+
+  // 提交分數
+  const submitScore = async () => {
+    if (!playerName.trim()) { setNameError("請輸入名字"); return; }
+    if (!isNameOk(playerName)) { setNameError("名字包含不適當內容，請重新輸入"); return; }
+    if (!GAS_URL || GAS_URL === "https://script.google.com/macros/s/AKfycbx0qUDMIOb6hloa7ZISH-3UaQHvNEljeqRpZcI0mPmBG75nbnOvDnpWjX1byMo8JxvU/exec") {
+      setMyTitle(getTitle(score, diff));
+      setSubmitted(true);
+      return;
+    }
+    setSubmitting(true); setNameError("");
+    try {
+      const cfg = DIFF_CFG[diff];
+      const res = await fetch(GAS_URL, {
+        method: "POST",
+        headers: { "Content-Type": "text/plain" },
+        body: JSON.stringify({ name: playerName.trim(), score, difficulty: cfg.label, idiomsCount: done.length }),
+      });
+      const data = await res.json();
+      if (data.success) {
+        setMyTitle(data.title);
+        setMyRank(data.rank);
+        setSubmitted(true);
+        if (data.leaderboard) {
+          setLeaderboard(prev => ({ ...prev, [cfg.label]: data.leaderboard }));
+        }
+      } else {
+        setNameError(data.error || "提交失敗");
+        if (data.filtered) setPlayerName("");
+      }
+    } catch (e) { setNameError("網路錯誤，請稍後再試"); }
+    setSubmitting(false);
+  };
+
+  // 首頁載入排行榜
+  useEffect(() => { fetchLB(); }, [fetchLB]);
+
+  const R = useRef({});
+  const loopR = useRef(null);
+  const dq = useRef([]);
+  const pid = useRef(0);
+
+  // Sync all state to ref
+  useEffect(() => {
+    R.current = { gs, snake, dir, foods, idiom, ci, score, done, speed, combo, diff, trail };
+  });
+
+  const getPool = useCallback(() => {
+    let pool = [];
+    if (grades["三年級"]) pool = pool.concat(IDIOMS_BY_GRADE["三年級"]);
+    if (grades["四年級"]) pool = pool.concat(IDIOMS_BY_GRADE["四年級"]);
+    if (grades["五年級"]) pool = pool.concat(IDIOMS_BY_GRADE["五年級"]);
+    return pool.length > 0 ? pool : ALL_IDIOMS;
+  }, [grades]);
+
+  const pickIdiom = useCallback((exc) => {
+    const pl = getPool();
+    const p = pl.filter(i => !exc.has(i));
+    return p.length ? rp(p) : rp(pl);
+  }, [getPool]);
+
+  const startIdiom = useCallback((snk, completed) => {
+    const id = pickIdiom(new Set(completed));
+    const d = R.current.diff || 2;
+    const f = makeFoods(snk, id, 0, DIFF_CFG[d].wrongs, getPool());
+    setIdiom(id); setCi(0); setFoods(f);
+    R.current.idiom = id; R.current.ci = 0; R.current.foods = f;
+  }, [pickIdiom]);
+
+  const burst = (x, y, color, count = 12) => {
+    const px = x * C + C / 2, py = y * C + C / 2;
+    const ps = Array.from({ length: count }, (_, i) => ({
+      id: Date.now() + i + Math.random(),
+      x: px, y: py,
+      vx: (Math.random() - 0.5) * 8,
+      vy: (Math.random() - 0.5) * 8,
+      life: 1, color, size: 3 + Math.random() * 4,
+    }));
+    setParticles(prev => [...prev, ...ps]);
+  };
+
+  const addPopup = (x, y, text, color) => {
+    setPopups(prev => [...prev, { id: pid.current++, x: x * C + C / 2, y: y * C, text, color, life: 1 }]);
+  };
+
+  const doShake = () => { setShaking(true); setTimeout(() => setShaking(false), 200); };
+  const doScrFlash = (c) => { setScrFlash(c); setTimeout(() => setScrFlash(null), 150); };
+
+  // Animate particles
+  useEffect(() => {
+    const iv = setInterval(() => {
+      setParticles(p => p.map(v => ({ ...v, x: v.x + v.vx, y: v.y + v.vy, vy: v.vy + 0.3, life: v.life - 0.04 })).filter(v => v.life > 0));
+      setPopups(p => p.map(v => ({ ...v, y: v.y - 1.5, life: v.life - 0.025 })).filter(v => v.life > 0));
+    }, 30);
+    return () => clearInterval(iv);
+  }, []);
+
+  const startGame = useCallback((d = 2) => {
+    try { if (!audioCtx.current) audioCtx.current = new (window.AudioContext || window.webkitAudioContext)(); } catch (e) {}
+    const cfg = DIFF_CFG[d];
+    const mid = Math.floor(G / 2);
+    const s = [{ x: mid, y: mid }, { x: mid - 1, y: mid }, { x: mid - 2, y: mid }];
+    setSnake(s); setDir("RIGHT"); dq.current = [];
+    setScore(0); setDone([]); setSpeed(cfg.spd); setCombo(0);
+    setDiff(d); R.current.diff = d;
+    setColIdx(ri(NEON.length));
+    setParticles([]); setTrail([]); setPopups([]); setFlash(null);
+    R.current.snake = s; R.current.dir = "RIGHT"; R.current.score = 0;
+    R.current.done = []; R.current.speed = cfg.spd; R.current.combo = 0; R.current.trail = [];
+    startIdiom(s, []);
+    setGs("playing"); R.current.gs = "playing";
+    stopBGM();
+    setTimeout(() => { if (R.current.gs === "playing" && bgmOn) startBGM(); }, 100);
+  }, [startIdiom, bgmOn]);
+
+  const step = useCallback(() => {
+    const $ = R.current;
+    if ($.gs !== "playing") return;
+
+    // Process direction queue
+    if (dq.current.length > 0) {
+      const nd = dq.current.shift();
+      if (OPP[nd] !== $.dir) { $.dir = nd; setDir(nd); }
+    }
+
+    const d = DIR[$.dir], h = $.snake[0];
+    const nh = { x: (h.x + d.x + G) % G, y: (h.y + d.y + G) % G };
+
+    // Self collision
+    if ($.snake.some(s => s.x === nh.x && s.y === nh.y)) {
+      sfxDie(); doShake(); doScrFlash("#ff2d95");
+      burst(nh.x, nh.y, "#ff2d95", 30);
+      burst(nh.x, nh.y, "#ff6b6b", 15);
+      stopBGM();
+      setGs("gameover"); $.gs = "gameover";
+      return;
+    }
+
+    // Trail
+    const nt = [{ x: h.x, y: h.y, age: 0 }, ...($.trail || []).map(t => ({ ...t, age: t.age + 1 }))].slice(0, 8);
+    setTrail(nt); $.trail = nt;
+
+    let ns = [nh, ...$.snake];
+    let ate = false;
+    const fh = $.foods.find(f => f.x === nh.x && f.y === nh.y);
+
+    if (fh) {
+      ate = true;
+      if (fh.ok) {
+        const ni = $.ci + 1;
+        const nc = $.combo + 1;
+        $.combo = nc; setCombo(nc);
+        sfxEat(nc);
+        burst(nh.x, nh.y, rp(NEON), 10 + nc * 3);
+
+        if (ni >= 4) {
+          // Complete an idiom!
+          const nd2 = [...$.done, $.idiom];
+          $.done = nd2; setDone(nd2);
+          const bonus = 100 + nc * 20;
+          $.score += bonus; setScore($.score);
+          sfxComplete();
+          doScrFlash("#ffe14d");
+          burst(nh.x, nh.y, "#ffe14d", 40);
+          burst(nh.x, nh.y, "#fff", 15);
+          addPopup(nh.x, nh.y, `+${bonus}`, "#ffe14d");
+
+          const cfg = DIFF_CFG[$.diff || 2];
+
+          // Check if target reached
+          if (nd2.length >= cfg.target) {
+            // Victory!
+            stopBGM();
+            setFlash(null);
+            setGs("victory"); $.gs = "victory";
+          } else {
+            setFlash({ type: "complete", text: $.idiom }); setTimeout(() => setFlash(null), 1500);
+            $.speed = Math.max(cfg.min, $.speed - cfg.inc * 2); setSpeed($.speed);
+            setColIdx(prev => (prev + 1) % NEON.length);
+            startIdiom(ns.slice(0, -1), nd2);
+          }
+        } else {
+          const pts = 25 + nc * 5;
+          $.score += pts; setScore($.score);
+          $.ci = ni; setCi(ni);
+          addPopup(nh.x, nh.y, `+${pts}`, rp(NEON));
+          setFlash({ type: "correct", text: $.idiom[ni - 1] }); setTimeout(() => setFlash(null), 600);
+          const cfg2 = DIFF_CFG[$.diff || 2];
+          const nf = makeFoods(ns.slice(0, -1), $.idiom, ni, cfg2.wrongs, getPool());
+          $.foods = nf; setFoods(nf);
+          $.speed = Math.max(cfg2.min, $.speed - cfg2.inc); setSpeed($.speed);
+        }
+      } else {
+        sfxWrong();
+        $.combo = 0; setCombo(0);
+        $.score = Math.max(0, $.score - 15); setScore($.score);
+        doShake(); doScrFlash("#ff2d95");
+        burst(nh.x, nh.y, "#ff6b6b", 10);
+        addPopup(nh.x, nh.y, "-15", "#ff6b6b");
+        setFlash({ type: "wrong", text: `要找「${$.idiom[$.ci]}」` }); setTimeout(() => setFlash(null), 1000);
+        const cfgW = DIFF_CFG[$.diff || 2];
+        const nf = makeFoods(ns.slice(0, -1), $.idiom, $.ci, cfgW.wrongs, getPool());
+        $.foods = nf; setFoods(nf);
+      }
+    }
+
+    if (!ate) ns = ns.slice(0, -1);
+    $.snake = ns; setSnake(ns);
+  }, [startIdiom]);
+
+  // Game loop
+  useEffect(() => {
+    if (gs === "playing") {
+      clearInterval(loopR.current);
+      loopR.current = setInterval(step, R.current.speed || 340);
+    } else {
+      clearInterval(loopR.current);
+    }
+    return () => clearInterval(loopR.current);
+  }, [gs, speed, step]);
+
+  // Keyboard
+  useEffect(() => {
+    const h = (e) => {
+      const $ = R.current;
+      if ($.gs === "menu") { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); startGame(R.current.diff || 2); } return; }
+      if ($.gs === "gameover") { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); startGame(R.current.diff || 2); } return; }
+      if ($.gs === "victory") { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); startGame(R.current.diff || 2); } return; }
+      if (e.key === "Escape" || e.key === "p" || e.key === "P") {
+        if ($.gs === "playing") { setGs("paused"); $.gs = "paused"; stopBGM(); }
+        else if ($.gs === "paused") { setGs("playing"); $.gs = "playing"; startBGM(); }
+        return;
+      }
+      const km = { ArrowUp: "UP", ArrowDown: "DOWN", ArrowLeft: "LEFT", ArrowRight: "RIGHT", w: "UP", s: "DOWN", a: "LEFT", d: "RIGHT", W: "UP", S: "DOWN", A: "LEFT", D: "RIGHT" };
+      const nd = km[e.key];
+      if (nd && $.gs === "playing") {
+        e.preventDefault();
+        const last = dq.current.length > 0 ? dq.current[dq.current.length - 1] : $.dir;
+        if (OPP[nd] !== last && nd !== last) { dq.current.push(nd); if (dq.current.length > 3) dq.current.shift(); }
+      }
+    };
+    window.addEventListener("keydown", h);
+    return () => window.removeEventListener("keydown", h);
+  }, [startGame]);
+
+  // Touch
+  const ts = useRef(null);
+  const onTS = (e) => { ts.current = { x: e.touches[0].clientX, y: e.touches[0].clientY }; };
+  const onTE = (e) => {
+    if (!ts.current) return;
+    const dx = e.changedTouches[0].clientX - ts.current.x;
+    const dy = e.changedTouches[0].clientY - ts.current.y;
+    ts.current = null;
+    if (Math.abs(dx) < 20 && Math.abs(dy) < 20) return;
+    const nd = Math.abs(dx) > Math.abs(dy) ? (dx > 0 ? "RIGHT" : "LEFT") : (dy > 0 ? "DOWN" : "UP");
+    if (R.current.gs === "playing") {
+      const last = dq.current.length > 0 ? dq.current[dq.current.length - 1] : R.current.dir;
+      if (OPP[nd] !== last && nd !== last) dq.current.push(nd);
+    }
+  };
+
+  const dBtn = (nd) => {
+    if (R.current.gs !== "playing") return;
+    const last = dq.current.length > 0 ? dq.current[dq.current.length - 1] : R.current.dir;
+    if (OPP[nd] !== last && nd !== last) dq.current.push(nd);
+  };
+
+  const mc = NEON[colIdx];
+
+  const CSS = `
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;700;900&family=Press+Start+2P&display=swap');
+    *{box-sizing:border-box;user-select:none;-webkit-user-select:none}
+    body{margin:0;overflow-x:hidden;background:#040408}
+    @keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.12)}}
+    @keyframes nPulse{0%,100%{filter:brightness(1)}50%{filter:brightness(1.4)}}
+    @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
+    @keyframes tGlow{0%,100%{text-shadow:0 0 20px #ffe14d55,0 0 40px #ffe14d22}50%{text-shadow:0 0 40px #ffe14dcc,0 0 80px #ffe14d55}}
+    @keyframes flashIn{from{opacity:0;transform:translate(-50%,-50%) scale(.5) rotate(-3deg)}to{opacity:1;transform:translate(-50%,-50%) scale(1) rotate(0)}}
+    @keyframes compFlash{0%{transform:translate(-50%,-50%) scale(.3);opacity:0}15%{transform:translate(-50%,-50%) scale(1.3);opacity:1}30%{transform:translate(-50%,-50%) scale(.9)}50%{transform:translate(-50%,-50%) scale(1.05)}100%{transform:translate(-50%,-50%) scale(1);opacity:1}}
+    @keyframes scan{0%{transform:translateY(-100%)}100%{transform:translateY(100%)}}
+    @keyframes shake{0%,100%{transform:translate(0)}20%{transform:translate(-5px,3px)}40%{transform:translate(5px,-3px)}60%{transform:translate(-3px,5px)}80%{transform:translate(3px,-5px)}}
+    @keyframes cFire{0%,100%{text-shadow:0 0 6px #ff6b6b,0 0 12px #ff4500}50%{text-shadow:0 0 14px #ff6b6b,0 0 28px #ff4500,0 0 42px #ff0000}}
+    @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
+    @keyframes menuBg{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+    @keyframes borderGlow{0%,100%{box-shadow:0 0 15px ${mc}33,inset 0 0 30px rgba(0,0,0,.5)}50%{box-shadow:0 0 30px ${mc}55,inset 0 0 30px rgba(0,0,0,.5)}}
+    @keyframes foodSpin{0%{transform:translateY(0) rotate(0deg)}25%{transform:translateY(-3px) rotate(3deg)}50%{transform:translateY(0) rotate(0deg)}75%{transform:translateY(-2px) rotate(-3deg)}100%{transform:translateY(0) rotate(0deg)}}
+    @keyframes correctPop{0%{transform:translate(-50%,-50%) scale(0) rotate(-10deg);opacity:0}40%{transform:translate(-50%,-50%) scale(1.4) rotate(3deg);opacity:1}70%{transform:translate(-50%,-50%) scale(.9) rotate(-1deg)}100%{transform:translate(-50%,-50%) scale(1) rotate(0);opacity:1}}
+    @keyframes wrongShake{0%,100%{transform:translate(-50%,-50%)}20%{transform:translate(calc(-50% - 8px),-50%)}40%{transform:translate(calc(-50% + 8px),-50%)}60%{transform:translate(calc(-50% - 4px),-50%)}80%{transform:translate(calc(-50% + 4px),-50%)}}
+    @keyframes starTwinkle{0%,100%{opacity:.2}50%{opacity:.8}}
+    @keyframes headGlow{0%,100%{box-shadow:0 0 12px ${mc}88,0 0 4px ${mc}}50%{box-shadow:0 0 24px ${mc}cc,0 0 8px ${mc},0 0 40px ${mc}44}}
+    @keyframes comboScale{0%{transform:scale(1)}50%{transform:scale(1.3)}100%{transform:scale(1)}}
+    @keyframes progressFill{from{transform:scale(.5);opacity:0}to{transform:scale(1);opacity:1}}
+  `;
+
+  // ═══════════ MENU ═══════════
+  if (gs === "menu") {
+    return (
+      <div style={{ minHeight: "100vh", background: "linear-gradient(135deg,#050510,#0a0a2e,#150530,#0a0a2e,#050510)", backgroundSize: "400% 400%", animation: "menuBg 12s ease infinite", display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "'Noto Serif TC',serif", padding: 20, position: "relative", overflow: "hidden" }}>
+        <style>{CSS}</style>
+        <div style={{ position: "absolute", inset: 0, overflow: "hidden", opacity: 0.03, fontSize: 26, color: "#fff", fontWeight: 900, lineHeight: "40px", wordBreak: "break-all", padding: 20, letterSpacing: 4 }}>
+          {ALL_IDIOMS.join("").repeat(2)}
+        </div>
+        <div style={{ textAlign: "center", zIndex: 1, maxWidth: 520 }}>
+          <div style={{ fontSize: 80, marginBottom: 4, animation: "float 3s ease-in-out infinite", filter: "drop-shadow(0 0 20px rgba(255,225,77,.3))" }}>🐍</div>
+          <h1 style={{ fontSize: 46, fontWeight: 900, color: "#ffe14d", margin: "0 0 4px", animation: "tGlow 3s ease-in-out infinite", letterSpacing: 8 }}>成語貪食蛇</h1>
+          <p style={{ color: "#6a6a8e", fontSize: 15, margin: "0 0 12px", letterSpacing: 2 }}>按順序吃字・完成成語・挑戰高分</p>
+          <p style={{ color: "#555", fontSize: 13, margin: "0 0 20px" }}>三～五年級共 200 個成語</p>
+
+          {/* 年級勾選 */}
+          <div style={{ display: "flex", gap: 10, justifyContent: "center", marginBottom: 20, flexWrap: "wrap" }}>
+            {["三年級","四年級","五年級"].map(g => {
+              const on = grades[g];
+              const cnt = IDIOMS_BY_GRADE[g].length;
+              const clr = g === "三年級" ? "#7dff6a" : g === "四年級" ? "#ffe14d" : "#a78bfa";
+              return (
+                <button key={g} onClick={() => setGrades(prev => {
+                  const nv = { ...prev, [g]: !prev[g] };
+                  if (!nv["三年級"] && !nv["四年級"] && !nv["五年級"]) return prev;
+                  return nv;
+                })} style={{
+                  padding: "8px 16px", borderRadius: 8,
+                  border: on ? `2px solid ${clr}` : "2px solid #2a2a4a",
+                  background: on ? `${clr}15` : "transparent",
+                  color: on ? clr : "#444", fontSize: 14, fontWeight: 700, cursor: "pointer",
+                  fontFamily: "'Noto Serif TC',serif", transition: "all .2s",
+                }}>
+                  {on ? "✓ " : ""}{g} ({cnt})
+                </button>
+              );
+            })}
+          </div>
+          <div style={{ color: "#444", fontSize: 11, marginBottom: 20 }}>
+            已選 {Object.entries(grades).filter(([_,v]) => v).map(([k]) => k).join("＋")} 共 {(() => { let n = 0; if (grades["三年級"]) n += 40; if (grades["四年級"]) n += 60; if (grades["五年級"]) n += 100; return n; })()} 個成語
+          </div>
+
+          <div style={{ display: "flex", flexDirection: "column", gap: 12, alignItems: "center", marginBottom: 28 }}>
+            <div style={{ color: "#8888aa", fontSize: 11, marginBottom: 2, letterSpacing: 3, fontFamily: "'Press Start 2P',monospace" }}>SELECT DIFFICULTY</div>
+
+            {[1, 2, 3].map(d => {
+              const cfg = DIFF_CFG[d];
+              return (
+                <button key={d} onClick={() => startGame(d)} style={{
+                  width: 320, padding: "16px 24px", borderRadius: 14, border: `2px solid ${cfg.color}`,
+                  background: `linear-gradient(135deg,${cfg.color}12,${cfg.color}04)`, cursor: "pointer",
+                  fontFamily: "'Noto Serif TC',serif", transition: "all .3s", textAlign: "left",
+                  boxShadow: `0 0 20px ${cfg.color}15`,
+                }}
+                  onMouseEnter={e => { e.currentTarget.style.boxShadow = `0 0 35px ${cfg.color}30`; e.currentTarget.style.transform = "scale(1.03)"; }}
+                  onMouseLeave={e => { e.currentTarget.style.boxShadow = `0 0 20px ${cfg.color}15`; e.currentTarget.style.transform = "scale(1)"; }}
+                >
+                  <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                    <div>
+                      <div style={{ fontFamily: "'Press Start 2P',monospace", fontSize: 10, color: cfg.color, letterSpacing: 2, marginBottom: 6 }}>{cfg.emoji} {cfg.label}</div>
+                      <div style={{ fontSize: 14, color: "#888", marginTop: 2 }}>{cfg.desc}</div>
+                      <div style={{ fontSize: 12, color: "#555", marginTop: 4 }}>目標：完成 {cfg.target} 個成語</div>
+                    </div>
+                    <div style={{ fontSize: 36 }}>{cfg.emoji}</div>
+                  </div>
+                </button>
+              );
+            })}
+          </div>
+
+          {/* Audio & Leaderboard */}
+          <div style={{ marginBottom: 16, display: "flex", gap: 10, justifyContent: "center" }}>
+            <button onClick={() => setBgmOn(v => { if (v) stopBGM(); return !v; })} style={{ fontFamily: "'Press Start 2P',monospace", fontSize: 8, padding: "5px 14px", borderRadius: 4, border: "1px solid #333", background: "transparent", color: bgmOn ? "#ffe14d" : "#444", cursor: "pointer" }}>
+              {bgmOn ? "♪ BGM ON" : "♪ BGM OFF"}
+            </button>
+            <button onClick={() => { fetchLB(); setShowLB(true); }} style={{ fontFamily: "'Press Start 2P',monospace", fontSize: 8, padding: "5px 14px", borderRadius: 4, border: "1px solid #333", background: "transparent", color: "#a78bfa", cursor: "pointer" }}>
+              🏆 排行榜
+            </button>
+          </div>
+
+          {/* 排行榜彈窗 */}
+          {showLB && (
+            <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,.85)", zIndex: 100, display: "flex", alignItems: "center", justifyContent: "center", padding: 20 }} onClick={() => setShowLB(false)}>
+              <div onClick={e => e.stopPropagation()} style={{ background: "#12122a", borderRadius: 16, border: "2px solid #3a3a6a", padding: "20px 24px", maxWidth: 460, width: "100%", maxHeight: "80vh", overflowY: "auto" }}>
+                <div style={{ fontFamily: "'Press Start 2P',monospace", fontSize: 12, color: "#ffe14d", letterSpacing: 3, marginBottom: 16, textAlign: "center" }}>🏆 排行榜</div>
+                {["簡單","普通","困難"].map((d,di) => {
+                  const items = leaderboard[d] || [];
+                  const clr = ["#7dff6a","#ffe14d","#ff2d95"][di];
+                  return (
+                    <div key={d} style={{ marginBottom: 16 }}>
+                      <div style={{ fontFamily: "'Press Start 2P',monospace", fontSize: 9, color: clr, letterSpacing: 2, marginBottom: 6 }}>{["🌱","⚔️","🔥"][di]} {d}</div>
+                      {items.length === 0 ? (
+                        <div style={{ fontSize: 12, color: "#444", marginBottom: 4 }}>尚無記錄</div>
+                      ) : (
+                        <div style={{ background: "rgba(255,255,255,.02)", borderRadius: 6, border: "1px solid #1a1a3a", overflow: "hidden" }}>
+                          {items.map((e, i) => (
+                            <div key={i} style={{ display: "flex", alignItems: "center", padding: "5px 10px", borderBottom: i < items.length - 1 ? "1px solid #111" : "none" }}>
+                              <span style={{ fontFamily: "'Press Start 2P',monospace", fontSize: 9, color: i < 3 ? ["#ffe14d","#c0c0c0","#cd7f32"][i] : "#444", width: 28, textAlign: "center" }}>{["🥇","🥈","🥉"][i] || `${i+1}`}</span>
+                              <span style={{ flex: 1, fontSize: 13, fontWeight: 700, color: "#ccc", marginLeft: 6 }}>{e.name}</span>
+                              <span style={{ fontSize: 10, color: "#666", marginRight: 6 }}>{e.title}</span>
+                              <span style={{ fontFamily: "'Press Start 2P',monospace", fontSize: 9, color: clr, width: 45, textAlign: "right" }}>{e.score}</span>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
+                <button onClick={() => setShowLB(false)} style={{ width: "100%", padding: "10px", borderRadius: 8, border: "1px solid #444", background: "transparent", color: "#888", fontSize: 14, cursor: "pointer", fontFamily: "'Noto Serif TC',serif", marginTop: 8 }}>關閉</button>
+              </div>
+            </div>
+          )}
+
+          <div style={{ color: "#445", fontSize: 11, lineHeight: 2.4, fontFamily: "'Press Start 2P',monospace", letterSpacing: 1 }}>
+            <div style={{ color: "#667" }}>WASD / 方向鍵 / 滑動</div>
+            <div style={{ color: "#556" }}>按順序吃字組成語</div>
+            <div style={{ color: "#445" }}>連擊加分 COMBO!</div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // ═══════════ VICTORY / GAME OVER (結果畫面) ═══════════
+  if (gs === "victory" || gs === "gameover") {
+    const cfg = DIFF_CFG[diff];
+    const isWin = gs === "victory";
+    const titleStr = myTitle || getTitle(score, diff);
+    const lbData = leaderboard[cfg.label] || [];
+
+    // Name input + submit form
+    const nameForm = !submitted ? (
+      <div style={{ marginTop: 16, marginBottom: 12 }}>
+        <div style={{ fontFamily: "'Press Start 2P',monospace", fontSize: 8, color: "#888", marginBottom: 8, letterSpacing: 1 }}>輸入名字登錄排行榜</div>
+        <div style={{ display: "flex", gap: 8, justifyContent: "center", alignItems: "center" }}>
+          <input value={playerName} onChange={e => { setPlayerName(e.target.value); setNameError(""); }}
+            placeholder="你的名字 (最多10字)"
+            maxLength={10}
+            style={{ width: 180, padding: "10px 14px", borderRadius: 8, border: "2px solid #3a3a5a", background: "#12122a", color: "#fff", fontSize: 16, fontFamily: "'Noto Serif TC',serif", fontWeight: 700, outline: "none", textAlign: "center" }}
+            onKeyDown={e => { if (e.key === "Enter") submitScore(); }}
+          />
+          <button onClick={submitScore} disabled={submitting} style={{
+            padding: "10px 20px", borderRadius: 8, border: "2px solid #ffe14d",
+            background: submitting ? "#333" : "linear-gradient(135deg,#ffe14d,#ffa94d)",
+            color: "#0a0a1a", fontSize: 14, fontWeight: 900, cursor: submitting ? "wait" : "pointer",
+            fontFamily: "'Noto Serif TC',serif",
+          }}>{submitting ? "..." : "送出"}</button>
+        </div>
+        {nameError && <div style={{ color: "#ff6b6b", fontSize: 13, marginTop: 6 }}>{nameError}</div>}
+      </div>
+    ) : (
+      <div style={{ marginTop: 12, marginBottom: 8 }}>
+        <div style={{ fontSize: 28, marginBottom: 4 }}>{titleStr}</div>
+        {myRank > 0 && <div style={{ fontFamily: "'Press Start 2P',monospace", fontSize: 10, color: "#ffe14d", marginTop: 4 }}>🏅 排行榜第 {myRank} 名！</div>}
+        {myRank < 0 && GAS_URL !== "https://script.google.com/macros/s/AKfycbx0qUDMIOb6hloa7ZISH-3UaQHvNEljeqRpZcI0mPmBG75nbnOvDnpWjX1byMo8JxvU/exec" && <div style={{ fontSize: 12, color: "#666", marginTop: 4 }}>未進入前10名</div>}
+      </div>
+    );
+
+    // Leaderboard table
+    const lbTable = lbData.length > 0 ? (
+      <div style={{ marginTop: 12, width: "100%", maxWidth: 400 }}>
+        <div style={{ fontFamily: "'Press Start 2P',monospace", fontSize: 8, color: "#888", letterSpacing: 2, marginBottom: 6 }}>🏆 {cfg.label}模式 TOP 10</div>
+        <div style={{ background: "rgba(255,255,255,.03)", borderRadius: 8, border: "1px solid #2a2a4a", overflow: "hidden" }}>
+          {lbData.map((entry, i) => (
+            <div key={i} style={{ display: "flex", alignItems: "center", padding: "6px 12px", borderBottom: i < lbData.length - 1 ? "1px solid #1a1a3a" : "none", background: entry.name === playerName ? "rgba(255,225,77,.08)" : "transparent" }}>
+              <span style={{ fontFamily: "'Press Start 2P',monospace", fontSize: 10, color: i < 3 ? ["#ffe14d","#c0c0c0","#cd7f32"][i] : "#555", width: 30, textAlign: "center" }}>{["🥇","🥈","🥉"][i] || `${i+1}`}</span>
+              <span style={{ flex: 1, fontSize: 14, fontWeight: 700, color: entry.name === playerName ? "#ffe14d" : "#ccc", marginLeft: 8 }}>{entry.name}</span>
+              <span style={{ fontSize: 11, color: "#888", marginRight: 8 }}>{entry.title}</span>
+              <span style={{ fontFamily: "'Press Start 2P',monospace", fontSize: 10, color: "#ffe14d", width: 50, textAlign: "right" }}>{entry.score}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    ) : null;
+
+    return (
+      <div style={{ minHeight: "100vh", background: isWin ? "radial-gradient(ellipse at center,#1a1a00,#0a0a10 60%,#030308)" : "radial-gradient(ellipse at center,#1a0a1e,#0a0510 60%,#050508)", display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "'Noto Serif TC',serif", padding: 20 }}>
+        <style>{CSS}</style>
+        <div style={{ textAlign: "center", maxWidth: 520, width: "100%" }}>
+          <div style={{ fontSize: 72, marginBottom: 8, animation: "float 2s ease-in-out infinite" }}>{isWin ? "🏆" : "💀"}</div>
+          <div style={{ fontFamily: "'Press Start 2P',monospace", fontSize: 16, color: isWin ? "#ffe14d" : "#ff2d95", letterSpacing: 4, marginBottom: 4, animation: isWin ? "tGlow 2s ease-in-out infinite" : "none" }}>{isWin ? "YOU WIN!" : "GAME OVER"}</div>
+          <div style={{ fontSize: 16, color: cfg.color, marginBottom: 8, fontWeight: 700 }}>{cfg.emoji} {cfg.label}模式</div>
+          <div style={{ fontSize: 56, fontWeight: 900, color: "#ffe14d", margin: "4px 0", textShadow: "0 0 30px #ffe14d66" }}>{score}</div>
+          <div style={{ fontFamily: "'Press Start 2P',monospace", fontSize: 10, color: "#666", letterSpacing: 2, marginBottom: 8 }}>SCORE</div>
+          <div style={{ color: "#8888aa", fontSize: 16, marginBottom: 4 }}>
+            完成 <span style={{ color: isWin ? "#7dff6a" : mc, fontWeight: 900, fontSize: 22 }}>{done.length}</span> / {cfg.target} 個成語
+          </div>
+
+          {/* 稱號 & 名字輸入 */}
+          {nameForm}
+
+          {/* 完成的成語 */}
+          {done.length > 0 && (
+            <div style={{ display: "flex", flexWrap: "wrap", gap: 6, justifyContent: "center", margin: "8px auto 12px", maxHeight: 80, overflowY: "auto", maxWidth: 440 }}>
+              {done.map((id, i) => (
+                <span key={i} style={{ padding: "3px 10px", borderRadius: 6, background: `${NEON[i % NEON.length]}15`, border: `1px solid ${NEON[i % NEON.length]}44`, color: NEON[i % NEON.length], fontSize: 13, fontWeight: 700 }}>{id}</span>
+              ))}
+            </div>
+          )}
+
+          {/* 排行榜 */}
+          {lbTable}
+
+          {/* 按鈕 */}
+          <div style={{ display: "flex", gap: 14, justifyContent: "center", flexWrap: "wrap", marginTop: 16 }}>
+            <button onClick={() => { setSubmitted(false); setPlayerName(""); setNameError(""); setMyRank(-1); startGame(diff); }} style={{
+              padding: "12px 36px", borderRadius: 12, border: "2px solid #ffe14d",
+              background: "linear-gradient(135deg,#ffe14d,#ffa94d)", color: "#0a0a1a",
+              fontSize: 18, fontWeight: 900, cursor: "pointer", fontFamily: "'Noto Serif TC',serif",
+              boxShadow: "0 0 30px rgba(255,225,77,.3)", letterSpacing: 2,
+            }}>{isWin ? "再玩一次" : "RETRY"}</button>
+            <button onClick={goHome} style={{
+              padding: "12px 24px", borderRadius: 12, border: "2px solid #555",
+              background: "transparent", color: "#888", fontSize: 16, cursor: "pointer",
+              fontFamily: "'Noto Serif TC',serif",
+            }}>🏠 首頁</button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // ═══════════ PLAYING / PAUSED ═══════════
+  const progress = (
+    <div style={{ display: "flex", gap: 8, justifyContent: "center", marginBottom: 6 }}>
+      {idiom && idiom.split("").map((ch, i) => {
+        const filled = i < ci, active = i === ci;
+        return (
+          <div key={i} style={{
+            width: 56, height: 56, display: "flex", alignItems: "center", justifyContent: "center",
+            fontSize: 28, fontWeight: 900, borderRadius: 10, fontFamily: "'Noto Serif TC',serif",
+            border: active ? `2px solid ${mc}` : "2px solid #2a2a4a",
+            background: filled ? mc : active ? "rgba(255,255,255,.05)" : "rgba(255,255,255,.02)",
+            color: filled ? "#0a0a1a" : active ? "#fff" : "#333",
+            transition: "all .3s cubic-bezier(.34,1.56,.64,1)",
+            transform: active ? "scale(1.12)" : "scale(1)",
+            boxShadow: filled ? `0 0 24px ${mc}88, inset 0 0 10px rgba(255,255,255,.2)` : active ? `0 0 18px ${mc}44` : "none",
+            animation: filled ? "progressFill .4s ease-out" : active ? "pulse 1.5s ease-in-out infinite" : "none",
+          }}>
+            {filled ? ch : active ? <span style={{ opacity: 0.4, fontSize: 18 }}>?</span> : ""}
+          </div>
+        );
+      })}
+    </div>
+  );
+
+  const board = (
+    <div style={{ position: "relative", animation: shaking ? "shake .2s ease" : "none" }}>
+      <div onTouchStart={onTS} onTouchEnd={onTE} style={{
+        width: B, height: B, position: "relative",
+        background: "radial-gradient(ellipse at 30% 30%,#12122a,#0a0a18 60%,#060610)",
+        borderRadius: 14, border: `2px solid ${mc}44`, overflow: "hidden", touchAction: "none",
+        animation: "borderGlow 3s ease-in-out infinite",
+      }}>
+        {/* CRT */}
+        <div style={{ position: "absolute", inset: 0, background: "repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,.04) 2px,rgba(0,0,0,.04) 4px)", zIndex: 15, pointerEvents: "none" }} />
+        <div style={{ position: "absolute", left: 0, width: "100%", height: 80, background: "linear-gradient(180deg,transparent,rgba(255,255,255,.015),transparent)", animation: "scan 4s linear infinite", zIndex: 15, pointerEvents: "none" }} />
+        {/* Vignette */}
+        <div style={{ position: "absolute", inset: 0, background: "radial-gradient(ellipse at center,transparent 50%,rgba(0,0,0,.4) 100%)", zIndex: 14, pointerEvents: "none" }} />
+        {/* Starfield */}
+        <svg width={B} height={B} style={{ position: "absolute", top: 0, left: 0, opacity: 0.4, zIndex: 0 }}>
+          {Array.from({ length: 30 }, (_, i) => {
+            const sx = (i * 137 + 43) % B, sy = (i * 89 + 17) % B, sr = 0.5 + (i % 3) * 0.5;
+            return <circle key={`star${i}`} cx={sx} cy={sy} r={sr} fill="#fff" style={{ animation: `starTwinkle ${2 + i % 3}s ease-in-out ${i * 0.3}s infinite` }} />;
+          })}
+        </svg>
+
+        {/* Grid dots */}
+        <svg width={B} height={B} style={{ position: "absolute", top: 0, left: 0, opacity: 0.06 }}>
+          {Array.from({ length: G }, (_, x) => Array.from({ length: G }, (_, y) => (
+            <circle key={`${x}-${y}`} cx={x * C + C / 2} cy={y * C + C / 2} r={1} fill="#fff" />
+          )))}
+        </svg>
+
+        {/* Screen flash */}
+        {scrFlash && <div style={{ position: "absolute", inset: 0, background: scrFlash, opacity: 0.15, zIndex: 14, pointerEvents: "none", borderRadius: 12 }} />}
+
+        {/* Trail */}
+        {trail.map((t, i) => (
+          <div key={`t${i}`} style={{
+            position: "absolute", left: t.x * C + 3, top: t.y * C + 3, width: C - 6, height: C - 6,
+            borderRadius: 7, background: `radial-gradient(circle,${mc}44,${mc}11)`, opacity: Math.max(0, 0.2 - t.age * 0.022),
+            zIndex: 1, pointerEvents: "none", filter: "blur(3px)",
+            boxShadow: `0 0 ${10 - t.age}px ${mc}33`,
+          }} />
+        ))}
+
+        {/* Foods */}
+        {foods.map((f, i) => (
+          <div key={`f${i}`} style={{
+            position: "absolute", left: f.x * C, top: f.y * C, width: C, height: C,
+            display: "flex", alignItems: "center", justifyContent: "center", zIndex: 3,
+            animation: `foodSpin ${1.8 + i * 0.15}s ease-in-out infinite`,
+          }}>
+            {/* Glow ring for correct food */}
+            {f.ok && <div style={{ position: "absolute", inset: -3, borderRadius: 12, border: "2px solid rgba(255,225,77,.2)", animation: "pulse 2s ease-in-out infinite", pointerEvents: "none" }} />}
+            <div style={{
+              width: C - 3, height: C - 3, borderRadius: 9, display: "flex", alignItems: "center", justifyContent: "center",
+              fontSize: 23, fontWeight: 900, fontFamily: "'Noto Serif TC',serif",
+              color: f.ok ? "#ffe14d" : "#555",
+              background: f.ok ? "radial-gradient(circle,rgba(255,225,77,.25) 0%,rgba(255,225,77,.05) 70%,transparent)" : "rgba(255,255,255,.03)",
+              border: f.ok ? "1.5px solid rgba(255,225,77,.5)" : "1px solid rgba(255,255,255,.06)",
+              boxShadow: f.ok ? "0 0 18px rgba(255,225,77,.35), inset 0 0 8px rgba(255,225,77,.1)" : "none",
+              animation: f.ok ? "nPulse 2s ease-in-out infinite" : "none",
+              textShadow: f.ok ? "0 0 8px rgba(255,225,77,.6)" : "none",
+            }}>
+              {f.char}
+            </div>
+          </div>
+        ))}
+
+        {/* Snake */}
+        {snake.map((s, i) => {
+          const head = i === 0;
+          const op = 1 - i / Math.max(snake.length, 1) * 0.55;
+          const sz = head ? C - 1 : C - 3 - Math.min(i * 0.4, 6);
+          const off = head ? 0.5 : (C - sz) / 2;
+          const hueShift = (i * 25) % 360;
+          const segColor = head ? mc : `hsl(${(parseInt(mc.slice(1), 16) * 0.001 * 360 + hueShift) % 360}, 80%, 55%)`;
+          return (
+            <div key={`s${i}`} style={{
+              position: "absolute", left: s.x * C + off, top: s.y * C + off, width: sz, height: sz,
+              borderRadius: head ? 10 : Math.max(4, 8 - i * 0.3),
+              background: head ? `linear-gradient(135deg,${mc},#fff3,${mc})` : segColor,
+              opacity: op, zIndex: 4,
+              boxShadow: head ? `0 0 20px ${mc}cc,0 0 6px ${mc},0 0 40px ${mc}44` : `0 0 ${Math.max(0, 8 - i)}px ${segColor}66`,
+              display: "flex", alignItems: "center", justifyContent: "center",
+              animation: head ? "headGlow 1.5s ease-in-out infinite" : "none",
+              transition: "box-shadow .3s",
+            }}>
+              {head && <div style={{ fontSize: 16, lineHeight: 1, color: "#000", fontWeight: 900, filter: "drop-shadow(0 1px 2px rgba(255,255,255,.5))" }}>
+                {dir === "RIGHT" ? "➤" : dir === "LEFT" ? "◄" : dir === "UP" ? "▲" : "▼"}
+              </div>}
+            </div>
+          );
+        })}
+
+        {/* Particles */}
+        {particles.map(p => (
+          <div key={p.id} style={{
+            position: "absolute", left: p.x - p.size / 2, top: p.y - p.size / 2,
+            width: p.size, height: p.size, borderRadius: "50%",
+            background: `radial-gradient(circle,#fff,${p.color})`, opacity: p.life,
+            boxShadow: `0 0 ${p.size * 3}px ${p.color}, 0 0 ${p.size}px #fff`,
+            zIndex: 12, pointerEvents: "none",
+          }} />
+        ))}
+
+        {/* Score popups */}
+        {popups.map(p => (
+          <div key={p.id} style={{
+            position: "absolute", left: p.x, top: p.y,
+            fontSize: 14, fontWeight: 900, color: p.color,
+            fontFamily: "'Press Start 2P',monospace",
+            opacity: p.life, transform: `translateY(${(1 - p.life) * -30}px)`,
+            zIndex: 13, pointerEvents: "none", textShadow: `0 0 10px ${p.color}`,
+          }}>{p.text}</div>
+        ))}
+
+        {/* Flash */}
+        {flash && (
+          <div style={{
+            position: "absolute", top: "50%", left: "50%",
+            animation: flash.type === "complete" ? "compFlash .6s ease-out forwards" : flash.type === "correct" ? "correctPop .4s ease-out" : "wrongShake .4s ease-out",
+            transform: "translate(-50%,-50%)", zIndex: 16, textAlign: "center",
+          }}>
+            {flash.type === "complete" ? (
+              <div style={{ padding: "20px 40px", borderRadius: 18, background: "rgba(10,10,20,.95)", border: `3px solid #ffe14d`, boxShadow: "0 0 60px rgba(255,225,77,.4), 0 0 120px rgba(255,225,77,.15)", maxWidth: 400 }}>
+                <div style={{ fontSize: 14, color: "#ffe14d", fontFamily: "'Press Start 2P',monospace", letterSpacing: 3, marginBottom: 10, textShadow: "0 0 10px #ffe14d88" }}>✨ COMPLETE! ✨</div>
+                <div style={{ fontSize: 38, fontWeight: 900, color: "#fff", fontFamily: "'Noto Serif TC',serif", textShadow: `0 0 30px ${mc}, 0 0 60px ${mc}66`, letterSpacing: 8, whiteSpace: "nowrap" }}>{flash.text}</div>
+                
+              </div>
+            ) : flash.type === "correct" ? (
+              <div style={{ padding: "12px 32px", borderRadius: 14, background: "linear-gradient(135deg,rgba(125,255,106,.95),rgba(80,200,70,.95))", color: "#0a1a0a", fontSize: 30, fontWeight: 900, fontFamily: "'Noto Serif TC',serif", boxShadow: "0 0 30px rgba(125,255,106,.5), 0 0 60px rgba(125,255,106,.2)", textShadow: "0 1px 2px rgba(0,0,0,.2)" }}>
+                ✓ {flash.text}
+              </div>
+            ) : (
+              <div style={{ padding: "12px 32px", borderRadius: 14, background: "linear-gradient(135deg,rgba(255,45,149,.95),rgba(200,30,120,.95))", color: "#fff", fontSize: 22, fontWeight: 900, fontFamily: "'Noto Serif TC',serif", boxShadow: "0 0 30px rgba(255,45,149,.5), 0 0 60px rgba(255,45,149,.2)" }}>
+                ✗ {flash.text}
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Pause */}
+        {gs === "paused" && (
+          <div style={{ position: "absolute", inset: 0, background: "rgba(5,5,16,.92)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 20, flexDirection: "column", gap: 16 }}>
+            <div style={{ fontFamily: "'Press Start 2P',monospace", fontSize: 16, color: "#ffe14d", letterSpacing: 4 }}>PAUSED</div>
+            <button onClick={() => { setGs("playing"); R.current.gs = "playing"; if (bgmOn) startBGM(); }} style={{
+              padding: "12px 36px", borderRadius: 10, border: `2px solid ${mc}`,
+              background: "transparent", color: mc, fontSize: 16, cursor: "pointer",
+              fontFamily: "'Press Start 2P',monospace", letterSpacing: 2,
+            }}>RESUME</button>
+            <div style={{ display: "flex", gap: 12, marginTop: 4 }}>
+              <button onClick={() => { setBgmOn(v => { const nv = !v; if (!nv) stopBGM(); return nv; }); }}
+                style={{ padding: "8px 20px", borderRadius: 8, border: "1.5px solid #444", background: "transparent", color: bgmOn ? "#ffe14d" : "#555", fontSize: 14, cursor: "pointer", fontFamily: "'Noto Serif TC',serif" }}>
+                {bgmOn ? "🔊 音樂 ON" : "🔇 音樂 OFF"}
+              </button>
+              <button onClick={goHome}
+                style={{ padding: "8px 20px", borderRadius: 8, border: "1.5px solid #444", background: "transparent", color: "#888", fontSize: 14, cursor: "pointer", fontFamily: "'Noto Serif TC',serif" }}>
+                🏠 回首頁
+              </button>
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+
+  const ds = {
+    width: 56, height: 56, borderRadius: 14, border: `1.5px solid ${mc}33`,
+    background: "rgba(255,255,255,.03)", color: mc, fontSize: 22, cursor: "pointer",
+    display: "flex", alignItems: "center", justifyContent: "center",
+    WebkitTapHighlightColor: "transparent", touchAction: "manipulation",
+  };
+
+  return (
+    <div style={{ minHeight: "100vh", background: "radial-gradient(ellipse at 50% 30%,#0f0f28,#080816 60%,#040408)", display: "flex", flexDirection: "column", alignItems: "center", fontFamily: "'Noto Serif TC',serif", padding: "10px 8px", gap: 4 }}>
+      <style>{CSS}</style>
+
+      {/* HUD */}
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", width: B, marginBottom: 4 }}>
+        <div style={{ display: "flex", alignItems: "baseline", gap: 6 }}>
+          <div style={{ padding: "2px 8px", borderRadius: 6, background: `${DIFF_CFG[diff].color}15`, border: `1px solid ${DIFF_CFG[diff].color}44`, marginRight: 4 }}>
+            <span style={{ fontFamily: "'Press Start 2P',monospace", fontSize: 8, color: DIFF_CFG[diff].color }}>{DIFF_CFG[diff].emoji}{DIFF_CFG[diff].label}</span>
+          </div>
+          <span style={{ fontSize: 24, fontWeight: 900, color: "#ffe14d", fontFamily: "'Press Start 2P',monospace", textShadow: "0 0 10px #ffe14d44" }}>{score}</span>
+        </div>
+        <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+          {combo > 1 && (
+            <div style={{ padding: "3px 12px", borderRadius: 8, background: combo > 5 ? "rgba(255,45,149,.2)" : "rgba(255,45,149,.12)", border: `1px solid ${combo > 5 ? "rgba(255,45,149,.5)" : "rgba(255,45,149,.3)"}`, animation: combo > 3 ? "cFire .8s ease-in-out infinite, comboScale .5s ease-out" : "comboScale .5s ease-out" }}>
+              <span style={{ fontFamily: "'Press Start 2P',monospace", fontSize: combo > 5 ? 13 : 11, color: "#ff2d95" }}>🔥x{combo}</span>
+            </div>
+          )}
+          <div style={{ padding: "3px 10px", borderRadius: 8, background: "rgba(255,255,255,.04)", border: "1px solid #2a2a4a" }}>
+            <span style={{ fontFamily: "'Press Start 2P',monospace", fontSize: 9, color: "#666" }}>{done.length}/{DIFF_CFG[diff].target}</span>
+          </div>
+        </div>
+        <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+          <button onClick={() => { setBgmOn(v => { const nv = !v; if (nv) startBGM(); else stopBGM(); return nv; }); }}
+            style={{ width: 38, height: 38, borderRadius: 10, border: "1.5px solid #2a2a4a", background: "rgba(255,255,255,.03)", color: bgmOn ? "#ffe14d" : "#444", fontSize: 16, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}
+            title={bgmOn ? "關閉音樂" : "開啟音樂"}>
+            {bgmOn ? "🔊" : "🔇"}
+          </button>
+          <button onClick={() => {
+            if (R.current.gs === "playing") { setGs("paused"); R.current.gs = "paused"; stopBGM(); }
+            else if (R.current.gs === "paused") { setGs("playing"); R.current.gs = "playing"; if (bgmOn) startBGM(); }
+          }} style={{ width: 38, height: 38, borderRadius: 10, border: "1.5px solid #2a2a4a", background: "rgba(255,255,255,.03)", color: "#555", fontSize: 14, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}>
+            ⏸
+          </button>
+          <button onClick={goHome}
+            style={{ width: 38, height: 38, borderRadius: 10, border: "1.5px solid #2a2a4a", background: "rgba(255,255,255,.03)", color: "#555", fontSize: 14, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}
+            title="回首頁">
+            🏠
+          </button>
+        </div>
+      </div>
+
+      {progress}
+
+      <div style={{ fontSize: 15, color: "#556", marginBottom: 4, textAlign: "center" }}>
+        <span style={{ fontFamily: "'Press Start 2P',monospace", fontSize: 10, letterSpacing: 1 }}>FIND </span>
+        <span style={{ color: mc, fontSize: 24, fontWeight: 900, textShadow: `0 0 10px ${mc}66` }}>{idiom ? idiom[ci] : ""}</span>
+      </div>
+
+      {board}
+
+      {/* D-Pad */}
+      <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 4, marginTop: 10 }}>
+        <button onClick={() => dBtn("UP")} onTouchStart={(e) => { e.preventDefault(); dBtn("UP"); }} style={ds}>▲</button>
+        <div style={{ display: "flex", gap: 4 }}>
+          <button onClick={() => dBtn("LEFT")} onTouchStart={(e) => { e.preventDefault(); dBtn("LEFT"); }} style={ds}>◀</button>
+          <div style={{ width: 56, height: 56 }} />
+          <button onClick={() => dBtn("RIGHT")} onTouchStart={(e) => { e.preventDefault(); dBtn("RIGHT"); }} style={ds}>▶</button>
+        </div>
+        <button onClick={() => dBtn("DOWN")} onTouchStart={(e) => { e.preventDefault(); dBtn("DOWN"); }} style={ds}>▼</button>
+      </div>
+    </div>
+  );
+}
+
+
+ReactDOM.createRoot(document.getElementById('root')).render(React.createElement(App));
+</script>
+</body>
+</html>
