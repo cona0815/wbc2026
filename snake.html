@@ -22,6 +22,209 @@ const IDIOMS_BY_GRADE = {
 };
 
 
+const IDIOM_DESC = {
+  "口若懸河":"形容口才好，說話滔滔不絕",
+  "一暴十寒":"比喻做事不能持之以恆",
+  "守株待兔":"比喻不知變通，坐等好運",
+  "投桃報李":"比喻禮尚往來，互相贈答",
+  "行雲流水":"形容文章或技藝自然流暢",
+  "滴水穿石":"比喻持之以恆，終能成功",
+  "寸草春暉":"比喻父母恩情深重，難以回報",
+  "一字千金":"形容文辭精妙，價值極高",
+  "臨渴掘井":"比喻事到臨頭才想辦法，太晚了",
+  "按部就班":"按照一定的步驟循序漸進",
+  "一鼓作氣":"比喻趁著勇氣旺盛時一口氣完成",
+  "牛角掛書":"形容勤奮好學，把握時間讀書",
+  "發憤忘食":"形容用功讀書或工作十分勤奮",
+  "名落孫山":"比喻考試或選拔沒有被錄取",
+  "春風化雨":"比喻良好的教育如春風般感化人",
+  "千鈞一髮":"形容情況極為危急",
+  "維妙維肖":"形容描寫或模仿非常逼真",
+  "見賢思齊":"看到賢能的人就想向他看齊",
+  "杯弓蛇影":"比喻疑神疑鬼，自相驚擾",
+  "進退維谷":"形容進退兩難的困境",
+  "防微杜漸":"在事情還小的時候就加以防範",
+  "班門弄斧":"在行家面前賣弄本領",
+  "耳濡目染":"經常接觸而受到影響",
+  "車水馬龍":"形容車馬往來繁忙熱鬧",
+  "同舟共濟":"比喻同心協力，共度難關",
+  "宜室宜家":"形容女子有美德，適合成家",
+  "沉魚落雁":"形容女子容貌極美",
+  "生意盎然":"形容生命力旺盛，充滿朝氣",
+  "金蘭之交":"形容朋友之間情誼深厚",
+  "一片冰心":"形容心地純潔，不受外物影響",
+  "不世之材":"形容非常傑出的人才",
+  "伯仲之間":"比喻水準相當，難分高下",
+  "披星戴月":"形容早出晚歸，非常辛勞",
+  "指鹿為馬":"比喻故意顛倒黑白、混淆是非",
+  "美輪美奐":"形容建築物高大華麗",
+  "甘之如飴":"甘心承受艱苦，像吃糖一樣",
+  "洞燭先機":"能預先察覺事情的發展趨勢",
+  "孤掌難鳴":"比喻一個人力量薄弱難以成事",
+  "鬼斧神工":"形容技藝精巧，非人力所及",
+  "笑容可掬":"形容滿臉笑容，和藹可親",
+  "迎刃而解":"比喻事情很容易處理",
+  "二八年華":"形容十六歲的青春年紀",
+  "道貌岸然":"形容外表莊嚴正經，實則虛偽",
+  "匹夫之勇":"形容只有蠻力而缺乏智謀的勇氣",
+  "燃眉之急":"形容事情非常緊急",
+  "捕風捉影":"比喻說話做事沒有根據",
+  "吳下阿蒙":"比喻學識淺薄的人",
+  "口碑載道":"形容眾人稱讚，好評如潮",
+  "臥薪嘗膽":"形容刻苦自勵，發奮圖強",
+  "千里鵝毛":"比喻禮物雖輕但情意深重",
+  "張冠李戴":"比喻弄錯了對象或事實",
+  "如雷貫耳":"形容名聲很大，人人皆知",
+  "唾手可得":"形容非常容易就能得到",
+  "暮鼓晨鐘":"比喻能使人警醒的言語",
+  "拋磚引玉":"謙稱自己的意見引出更好的見解",
+  "鳳毛麟角":"比喻極其珍貴稀少的事物",
+  "疊床架屋":"比喻重複累贅，多此一舉",
+  "模稜兩可":"形容態度含糊，不明確表態",
+  "三人成虎":"比喻謠言說多了就會被當真",
+  "慎終追遠":"慎重辦理喪事，追念祖先",
+  "戰戰兢兢":"形容非常謹慎小心的樣子",
+  "並駕齊驅":"比喻齊頭並進，不分先後",
+  "刮目相看":"用新的眼光來看待某人",
+  "無遠弗屆":"不管多遠都能到達",
+  "破鏡重圓":"比喻夫妻離散後重新團聚",
+  "撥雲見日":"比喻衝破困難，看到光明",
+  "既往不咎":"對過去的過錯不再追究",
+  "夜不閉戶":"形容社會治安良好",
+  "眾口鑠金":"眾人的言論力量大到能熔化金屬",
+  "好整以暇":"形容雖在繁忙中仍從容不迫",
+  "曲突徙薪":"比喻事先預防，消除危險",
+  "大家風範":"形容有大學問或大氣度的風度",
+  "緣木求魚":"比喻方法不對，達不到目的",
+  "自怨自艾":"自己悔恨，自己改正",
+  "明察秋毫":"形容目光敏銳，觀察入微",
+  "一傅眾咻":"比喻學習受到干擾而無法專心",
+  "邯鄲學步":"比喻模仿別人反而失去自己的本領",
+  "晨昏定省":"早晚向父母請安，表示孝順",
+  "風行草偃":"比喻上行下效，教化普及",
+  "芒刺在背":"形容坐立不安，很不舒服",
+  "斷章取義":"只取片段文字而曲解原意",
+  "望塵莫及":"比喻遠遠落後，追趕不上",
+  "退避三舍":"比喻主動退讓，避免衝突",
+  "錙銖必較":"形容對極少的錢也要計較",
+  "門可羅雀":"形容門庭冷落，訪客稀少",
+  "孜孜不倦":"形容勤奮努力，不知疲倦",
+  "奇貨可居":"比喻利用某種獨特條件謀取利益",
+  "江郎才盡":"比喻文思枯竭，才能衰退",
+  "甚囂塵上":"形容議論紛紛，傳播廣泛",
+  "字字珠璣":"形容文章或言語句句精妙",
+  "披肝瀝膽":"比喻真心相見，毫無保留",
+  "濫竽充數":"比喻沒有真才實學而混充人數",
+  "從善如流":"形容樂於接受好的意見",
+  "趨之若鶩":"比喻很多人爭著去追逐某事物",
+  "毛遂自薦":"比喻自告奮勇，自我推薦",
+  "咎由自取":"自己招來的災禍，怪不了別人",
+  "滄海一粟":"比喻渺小得微不足道",
+  "物換星移":"形容時間流逝，景物變遷",
+  "焚琴煮鶴":"比喻做煞風景的事",
+  "前倨後恭":"先前傲慢後來恭敬，形容態度轉變",
+  "怒髮衝冠":"形容極度憤怒",
+  "功虧一簣":"比喻做事只差最後一步而未能完成",
+  "出類拔萃":"形容才能超出眾人",
+  "半斤八兩":"比喻彼此不相上下",
+  "四面楚歌":"比喻四面受敵，孤立無援",
+  "外強中乾":"比喻外表強大，實際虛弱",
+  "目不識丁":"形容不識字，沒有學問",
+  "百折不撓":"比喻意志堅強，不屈不撓",
+  "每下愈況":"比喻情況越來越壞",
+  "汗牛充棟":"形容書籍極多",
+  "有志竟成":"有志向的人終能成功",
+  "肝膽相照":"比喻彼此真誠相待",
+  "含飴弄孫":"形容老年人享受天倫之樂",
+  "沆瀣一氣":"比喻臭味相投的人勾結在一起",
+  "走馬看花":"比喻粗略地觀察事物",
+  "知己知彼":"了解自己也了解對方",
+  "河東獅吼":"比喻妻子兇悍發威",
+  "門庭若市":"形容來訪的人很多，非常熱鬧",
+  "南轅北轍":"比喻行動和目的完全相反",
+  "洛陽紙貴":"形容著作風行一時",
+  "胸有成竹":"比喻做事之前已有完整的計畫",
+  "兔死狗烹":"比喻事成後就拋棄功臣",
+  "風聲鶴唳":"形容驚慌疑懼的樣子",
+  "乘風破浪":"比喻不畏艱難，勇往直前",
+  "高枕無憂":"比喻無憂無慮，安心自在",
+  "草木皆兵":"形容疑神疑鬼，驚恐萬狀",
+  "鬥志昂揚":"形容鬥爭的意志非常旺盛",
+  "偃旗息鼓":"比喻停止行動或活動",
+  "眾志成城":"比喻大家團結一致，力量強大",
+  "得隴望蜀":"比喻貪得無厭",
+  "魚目混珠":"比喻以假亂真",
+  "望梅止渴":"比喻以空想來自我安慰",
+  "莫逆之交":"形容非常要好的朋友",
+  "雪中送炭":"比喻在困難時給予幫助",
+  "鹿死誰手":"比喻不知誰能最後獲勝",
+  "畫龍點睛":"比喻在關鍵處加上精妙之筆",
+  "開誠布公":"比喻真誠待人，坦白公正",
+  "飲水思源":"比喻不忘本，感念恩德",
+  "愛屋及烏":"比喻愛一個人連帶喜愛相關的人事物",
+  "萬眾一心":"形容大家團結一致",
+  "過河拆橋":"比喻達到目的後就拋棄幫過自己的人",
+  "對牛彈琴":"比喻對不懂道理的人講道理",
+  "旗鼓相當":"比喻雙方實力不相上下",
+  "熟能生巧":"做事熟練了自然就能找到竅門",
+  "罄竹難書":"形容罪狀極多，寫都寫不完",
+  "赴湯蹈火":"比喻不避艱險，奮勇前進",
+  "適得其反":"結果與預期完全相反",
+  "養虎遺患":"比喻縱容壞人，留下後患",
+  "擢髮難數":"形容罪行極多，數都數不清",
+  "頭頭是道":"形容說話做事有條有理",
+  "鍾鼎山林":"比喻富貴或隱逸的生活",
+  "雞犬不寧":"形容騷擾得很厲害",
+  "懸崖勒馬":"比喻在危險邊緣及時醒悟",
+  "騎虎難下":"比喻事情進退兩難",
+  "顧名思義":"看到名稱就聯想到含義",
+  "趕鴨子上架":"比喻強迫人做力所不及的事",
+  "鐵杵磨針":"比喻只要有恆心就能成功",
+  "聞雞起舞":"比喻有志之人及時奮發",
+  "畫蛇添足":"比喻多此一舉，反而壞事",
+  "亡羊補牢":"比喻出了問題後及時補救",
+  "指桑罵槐":"比喻拐彎抹角的罵人",
+  "舐犢情深":"比喻父母疼愛子女的深情",
+  "韜光養晦":"比喻隱藏才華，不外露",
+  "東施效顰":"比喻胡亂模仿，結果適得其反",
+  "剛愎自用":"固執己見，專斷獨行",
+  "韋編三絕":"形容讀書刻苦勤奮",
+  "信誓旦旦":"指誓言說得極為誠懇可信",
+  "中流砥柱":"形容能在艱難中擔當大任的人",
+  "滄海桑田":"比喻世事變化很大",
+  "年高德劭":"形容人年紀大且德行受人尊敬",
+  "管鮑之交":"比喻交情深厚",
+  "相形見絀":"兩相比較，顯出一方的不足",
+  "人謀不臧":"指人的計畫不周全導致失敗",
+  "叱吒風雲":"形容聲勢威力極大",
+  "含英咀華":"形容文章辭藻華美，值得品味",
+  "梨園子弟":"泛指戲劇演員",
+  "嘔心瀝血":"形容用盡心思腦力",
+  "草菅人命":"指為政者漠視人命，任意殘害",
+  "談笑風生":"談話有說有笑，興致高且風趣",
+  "古道熱腸":"形容待人厚道，真摯熱情",
+  "病入膏肓":"比喻事態嚴重到無法挽回",
+  "野人獻曝":"比喻所見淺陋但出於真心的貢獻",
+  "循循善誘":"善於循序漸進的誘導別人",
+  "義憤填膺":"為正義不伸而激起滿腔憤慨",
+  "買櫝還珠":"比喻捨本逐末，取捨失當",
+  "杞人憂天":"比喻無謂的憂慮",
+  "黔驢技窮":"比喻拙劣技能用完，露出無能本質",
+  "瞠目結舌":"形容受窘或驚呆的樣子",
+  "妄自菲薄":"形容過分地小看自己",
+  "鍥而不捨":"比喻做事堅持不懈",
+  "破釜沉舟":"比喻下定決心，不留後路",
+  "一言九鼎":"形容說話具有決定性的作用",
+  "童叟無欺":"比喻買賣誠實有信用",
+  "讓棗推梨":"稱讚兄弟之間友愛",
+  "駑馬十駕":"比喻平庸的人勤奮也能有成就",
+  "臨淵羨魚":"比喻只作空想，難收實效",
+  "譁眾取寵":"用浮誇言行取悅大眾",
+  "削足適履":"比喻勉強求合，不顧實際",
+  "大快朵頤":"指飽食愉快的樣子",
+  "面面相覷":"形容驚懼詫異而不知所措",
+};
+
 // Backward-compatible flat list (all grades combined)
 const ALL_IDIOMS = [...IDIOMS_BY_GRADE["三年級"], ...IDIOMS_BY_GRADE["四年級"], ...IDIOMS_BY_GRADE["五年級"]];
 
@@ -155,7 +358,8 @@ function App() {
   const [colIdx, setColIdx] = useState(0);
   const [combo, setCombo] = useState(0);
   const [diff, setDiff] = useState(2); // 1=簡單 2=普通 3=困難
-  const [grades, setGrades] = useState({"三年級": true, "四年級": true, "五年級": false}); // grade checkboxes
+  const [grades, setGrades] = useState({"三年級": true, "四年級": true, "五年級": false});
+  const [hintOn, setHintOn] = useState(true); // show glowing hint for next char // grade checkboxes
   
   
   const [particles, setParticles] = useState([]);
@@ -171,7 +375,10 @@ function App() {
   const [leaderboard, setLeaderboard] = useState({});
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
-  const [showLB, setShowLB] = useState(false); // show leaderboard modal on menu
+  const [showLB, setShowLB] = useState(false);
+  const [bonusScore, setBonusScore] = useState(0);
+  const [bonusTapped, setBonusTapped] = useState(new Set());
+  const [bonusShow, setBonusShow] = useState(null); // {idiom, desc} currently showing // show leaderboard modal on menu
 
 
   const goHome = useCallback(() => {
@@ -185,6 +392,9 @@ function App() {
     setPlayerName("");
     setNameError("");
     setMyRank(-1);
+    setBonusScore(0);
+    setBonusTapped(new Set());
+    setBonusShow(null);
   }, []);
 
   // 讀取排行榜
@@ -212,7 +422,7 @@ function App() {
       const res = await fetch(GAS_URL, {
         method: "POST",
         headers: { "Content-Type": "text/plain" },
-        body: JSON.stringify({ name: playerName.trim(), score, difficulty: cfg.label, idiomsCount: done.length }),
+        body: JSON.stringify({ name: playerName.trim(), score: score + bonusScore, difficulty: cfg.label, idiomsCount: done.length }),
       });
       const data = await res.json();
       if (data.success) {
@@ -488,6 +698,7 @@ function App() {
     @keyframes headGlow{0%,100%{box-shadow:0 0 12px ${mc}88,0 0 4px ${mc}}50%{box-shadow:0 0 24px ${mc}cc,0 0 8px ${mc},0 0 40px ${mc}44}}
     @keyframes comboScale{0%{transform:scale(1)}50%{transform:scale(1.3)}100%{transform:scale(1)}}
     @keyframes progressFill{from{transform:scale(.5);opacity:0}to{transform:scale(1);opacity:1}}
+    @keyframes slideIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
   `;
 
   // ═══════════ MENU ═══════════
@@ -532,6 +743,19 @@ function App() {
           </div>
 
           <div style={{ display: "flex", flexDirection: "column", gap: 12, alignItems: "center", marginBottom: 28 }}>
+            {/* Hint toggle */}
+            <div style={{ display: "flex", justifyContent: "center", marginBottom: 14 }}>
+              <button onClick={() => setHintOn(v => !v)} style={{
+                padding: "8px 20px", borderRadius: 8,
+                border: hintOn ? "2px solid #ffe14d" : "2px solid #555",
+                background: hintOn ? "rgba(255,225,77,.1)" : "rgba(255,255,255,.03)",
+                color: hintOn ? "#ffe14d" : "#666", fontSize: 13, fontWeight: 700, cursor: "pointer",
+                fontFamily: "'Noto Serif TC',serif",
+              }}>
+                {hintOn ? "💡 提示開：正確字會發光" : "🔒 提示關：只提示第一字（進階）"}
+              </button>
+            </div>
+
             <div style={{ color: "#8888aa", fontSize: 11, marginBottom: 2, letterSpacing: 3, fontFamily: "'Press Start 2P',monospace" }}>SELECT DIFFICULTY</div>
 
             {[1, 2, 3].map(d => {
@@ -612,52 +836,87 @@ function App() {
     );
   }
 
-  // ═══════════ VICTORY / GAME OVER (結果畫面) ═══════════
+  // ═══════════ VICTORY / GAME OVER (結果畫面 + 加分環節) ═══════════
   if (gs === "victory" || gs === "gameover") {
     const cfg = DIFF_CFG[diff];
     const isWin = gs === "victory";
-    const titleStr = myTitle || getTitle(score, diff);
+    const titleStr = myTitle || getTitle(score + bonusScore, diff);
     const lbData = leaderboard[cfg.label] || [];
+    const totalSc = score + bonusScore;
 
-    // Name input + submit form
+    // Victory character evolution
+    const winChars = ["🐍⚔️","🐉🛡️","🐲👑","🏆✨"];
+    const winChar = isWin ? winChars[Math.min(diff, 3)] : "🐍";
+    const winTitles = {
+      1: ["🌱 成語小蛇", "🌿 成語青蛇", "🐍 成語靈蛇", "🐉 成語蛟龍", "👑 成語龍王"],
+      2: ["⚔️ 成語劍蛇", "🛡️ 成語鐵蛇", "🗡️ 成語戰蛇", "🐉 成語神蛇", "🏆 成語霸蛇"],
+      3: ["🔥 烈焰蛇", "💎 鑽石蛇", "⚡ 雷霆蛇", "🌟 星辰蛇", "🌌 宇宙蛇王"],
+    };
+    const getWinTitle = (s, d) => {
+      const list = winTitles[d] || winTitles[2];
+      const thresholds = [0, 150, 350, 600, 1000];
+      let idx = 0;
+      for (let i = 0; i < thresholds.length; i++) { if (s >= thresholds[i]) idx = i; }
+      return list[idx];
+    };
+    const displayTitle = isWin ? getWinTitle(totalSc, diff) : "🐍💧 再接再厲";
+
+    // Bonus round: pool of idioms the player encountered (done + current)
+    const bonusPool = [...new Set([...done, idiom].filter(Boolean))];
+    // Also add some random ones they haven't seen
+    const pool2 = getPool();
+    while (bonusPool.length < 8 && pool2.length > 0) {
+      const r = rp(pool2);
+      if (!bonusPool.includes(r)) bonusPool.push(r);
+    }
+
+    const handleBonusTap = (id) => {
+      if (bonusTapped.has(id)) return;
+      sfxEat(bonusTapped.size);
+      const nt = new Set(bonusTapped);
+      nt.add(id);
+      setBonusTapped(nt);
+      setBonusScore(prev => prev + 100);
+      setBonusShow({ idiom: id, desc: IDIOM_DESC[id] || "查無解釋" });
+      setTimeout(() => setBonusShow(null), 2500);
+    };
+
+    // Name input
     const nameForm = !submitted ? (
-      <div style={{ marginTop: 16, marginBottom: 12 }}>
-        <div style={{ fontFamily: "'Press Start 2P',monospace", fontSize: 8, color: "#888", marginBottom: 8, letterSpacing: 1 }}>輸入名字登錄排行榜</div>
+      <div style={{ marginTop: 12, marginBottom: 8 }}>
+        <div style={{ fontFamily: "'Press Start 2P',monospace", fontSize: 8, color: "#888", marginBottom: 6, letterSpacing: 1 }}>輸入名字登錄排行榜</div>
         <div style={{ display: "flex", gap: 8, justifyContent: "center", alignItems: "center" }}>
           <input value={playerName} onChange={e => { setPlayerName(e.target.value); setNameError(""); }}
-            placeholder="你的名字 (最多10字)"
+            placeholder="你的名字"
             maxLength={10}
-            style={{ width: 180, padding: "10px 14px", borderRadius: 8, border: "2px solid #3a3a5a", background: "#12122a", color: "#fff", fontSize: 16, fontFamily: "'Noto Serif TC',serif", fontWeight: 700, outline: "none", textAlign: "center" }}
+            style={{ width: 160, padding: "8px 12px", borderRadius: 8, border: "2px solid #3a3a5a", background: "#12122a", color: "#fff", fontSize: 16, fontFamily: "'Noto Serif TC',serif", fontWeight: 700, outline: "none", textAlign: "center" }}
             onKeyDown={e => { if (e.key === "Enter") submitScore(); }}
           />
           <button onClick={submitScore} disabled={submitting} style={{
-            padding: "10px 20px", borderRadius: 8, border: "2px solid #ffe14d",
+            padding: "8px 18px", borderRadius: 8, border: "2px solid #ffe14d",
             background: submitting ? "#333" : "linear-gradient(135deg,#ffe14d,#ffa94d)",
             color: "#0a0a1a", fontSize: 14, fontWeight: 900, cursor: submitting ? "wait" : "pointer",
             fontFamily: "'Noto Serif TC',serif",
           }}>{submitting ? "..." : "送出"}</button>
         </div>
-        {nameError && <div style={{ color: "#ff6b6b", fontSize: 13, marginTop: 6 }}>{nameError}</div>}
+        {nameError && <div style={{ color: "#ff6b6b", fontSize: 12, marginTop: 4 }}>{nameError}</div>}
       </div>
     ) : (
-      <div style={{ marginTop: 12, marginBottom: 8 }}>
-        <div style={{ fontSize: 28, marginBottom: 4 }}>{titleStr}</div>
+      <div style={{ marginTop: 8 }}>
         {myRank > 0 && <div style={{ fontFamily: "'Press Start 2P',monospace", fontSize: 10, color: "#ffe14d", marginTop: 4 }}>🏅 排行榜第 {myRank} 名！</div>}
-        {myRank < 0 && GAS_URL !== "https://script.google.com/macros/s/AKfycbx0qUDMIOb6hloa7ZISH-3UaQHvNEljeqRpZcI0mPmBG75nbnOvDnpWjX1byMo8JxvU/exec" && <div style={{ fontSize: 12, color: "#666", marginTop: 4 }}>未進入前10名</div>}
       </div>
     );
 
-    // Leaderboard table
+    // Leaderboard
     const lbTable = lbData.length > 0 ? (
-      <div style={{ marginTop: 12, width: "100%", maxWidth: 400 }}>
-        <div style={{ fontFamily: "'Press Start 2P',monospace", fontSize: 8, color: "#888", letterSpacing: 2, marginBottom: 6 }}>🏆 {cfg.label}模式 TOP 10</div>
-        <div style={{ background: "rgba(255,255,255,.03)", borderRadius: 8, border: "1px solid #2a2a4a", overflow: "hidden" }}>
+      <div style={{ marginTop: 10, width: "100%", maxWidth: 380 }}>
+        <div style={{ fontFamily: "'Press Start 2P',monospace", fontSize: 8, color: "#888", letterSpacing: 2, marginBottom: 4 }}>🏆 {cfg.label} TOP 10</div>
+        <div style={{ background: "rgba(255,255,255,.03)", borderRadius: 6, border: "1px solid #2a2a4a", overflow: "hidden", maxHeight: 120, overflowY: "auto" }}>
           {lbData.map((entry, i) => (
-            <div key={i} style={{ display: "flex", alignItems: "center", padding: "6px 12px", borderBottom: i < lbData.length - 1 ? "1px solid #1a1a3a" : "none", background: entry.name === playerName ? "rgba(255,225,77,.08)" : "transparent" }}>
-              <span style={{ fontFamily: "'Press Start 2P',monospace", fontSize: 10, color: i < 3 ? ["#ffe14d","#c0c0c0","#cd7f32"][i] : "#555", width: 30, textAlign: "center" }}>{["🥇","🥈","🥉"][i] || `${i+1}`}</span>
-              <span style={{ flex: 1, fontSize: 14, fontWeight: 700, color: entry.name === playerName ? "#ffe14d" : "#ccc", marginLeft: 8 }}>{entry.name}</span>
-              <span style={{ fontSize: 11, color: "#888", marginRight: 8 }}>{entry.title}</span>
-              <span style={{ fontFamily: "'Press Start 2P',monospace", fontSize: 10, color: "#ffe14d", width: 50, textAlign: "right" }}>{entry.score}</span>
+            <div key={i} style={{ display: "flex", alignItems: "center", padding: "4px 10px", borderBottom: i < lbData.length - 1 ? "1px solid #1a1a3a" : "none", background: entry.name === playerName ? "rgba(255,225,77,.08)" : "transparent" }}>
+              <span style={{ fontFamily: "'Press Start 2P',monospace", fontSize: 9, color: i < 3 ? ["#ffe14d","#c0c0c0","#cd7f32"][i] : "#444", width: 26, textAlign: "center" }}>{["🥇","🥈","🥉"][i] || `${i+1}`}</span>
+              <span style={{ flex: 1, fontSize: 13, fontWeight: 700, color: entry.name === playerName ? "#ffe14d" : "#bbb", marginLeft: 6 }}>{entry.name}</span>
+              <span style={{ fontFamily: "'Press Start 2P',monospace", fontSize: 9, color: "#ffe14d", width: 45, textAlign: "right" }}>{entry.score}</span>
             </div>
           ))}
         </div>
@@ -665,44 +924,71 @@ function App() {
     ) : null;
 
     return (
-      <div style={{ minHeight: "100vh", background: isWin ? "radial-gradient(ellipse at center,#1a1a00,#0a0a10 60%,#030308)" : "radial-gradient(ellipse at center,#1a0a1e,#0a0510 60%,#050508)", display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "'Noto Serif TC',serif", padding: 20 }}>
+      <div style={{ minHeight: "100vh", background: isWin ? "radial-gradient(ellipse at 50% 30%,#1a1a00,#0a0a10 60%,#030308)" : "radial-gradient(ellipse at 50% 30%,#1a0a1e,#0a0510 60%,#050508)", display: "flex", alignItems: "flex-start", justifyContent: "center", fontFamily: "'Noto Serif TC',serif", padding: "16px 12px", overflowY: "auto" }}>
         <style>{CSS}</style>
-        <div style={{ textAlign: "center", maxWidth: 520, width: "100%" }}>
-          <div style={{ fontSize: 72, marginBottom: 8, animation: "float 2s ease-in-out infinite" }}>{isWin ? "🏆" : "💀"}</div>
-          <div style={{ fontFamily: "'Press Start 2P',monospace", fontSize: 16, color: isWin ? "#ffe14d" : "#ff2d95", letterSpacing: 4, marginBottom: 4, animation: isWin ? "tGlow 2s ease-in-out infinite" : "none" }}>{isWin ? "YOU WIN!" : "GAME OVER"}</div>
-          <div style={{ fontSize: 16, color: cfg.color, marginBottom: 8, fontWeight: 700 }}>{cfg.emoji} {cfg.label}模式</div>
-          <div style={{ fontSize: 56, fontWeight: 900, color: "#ffe14d", margin: "4px 0", textShadow: "0 0 30px #ffe14d66" }}>{score}</div>
-          <div style={{ fontFamily: "'Press Start 2P',monospace", fontSize: 10, color: "#666", letterSpacing: 2, marginBottom: 8 }}>SCORE</div>
-          <div style={{ color: "#8888aa", fontSize: 16, marginBottom: 4 }}>
-            完成 <span style={{ color: isWin ? "#7dff6a" : mc, fontWeight: 900, fontSize: 22 }}>{done.length}</span> / {cfg.target} 個成語
+        <div style={{ textAlign: "center", maxWidth: 480, width: "100%" }}>
+          {/* Character */}
+          <div style={{ fontSize: isWin ? 56 : 48, marginBottom: 4, animation: isWin ? "float 2s ease-in-out infinite" : "none" }}>
+            {isWin ? winChar : "🐍😢"}
+          </div>
+          {/* Title */}
+          <div style={{ fontFamily: "'Press Start 2P',monospace", fontSize: isWin ? 14 : 12, color: isWin ? "#ffe14d" : "#ff6b6b", letterSpacing: 3, marginBottom: 2, animation: isWin ? "tGlow 2s ease-in-out infinite" : "none" }}>
+            {isWin ? "YOU WIN!" : "嗚嗚…下次加油！"}
+          </div>
+          {/* Cool title */}
+          <div style={{ fontSize: 20, fontWeight: 900, color: isWin ? "#fff" : "#aaa", marginBottom: 8, textShadow: isWin ? `0 0 20px ${mc}` : "none" }}>{displayTitle}</div>
+          <div style={{ fontSize: 14, color: cfg.color, marginBottom: 6 }}>{cfg.emoji} {cfg.label}模式</div>
+          {/* Score */}
+          <div style={{ fontSize: 44, fontWeight: 900, color: "#ffe14d", textShadow: "0 0 20px #ffe14d44" }}>{totalSc}</div>
+          <div style={{ fontFamily: "'Press Start 2P',monospace", fontSize: 8, color: "#555", letterSpacing: 2, marginBottom: 6 }}>{bonusScore > 0 ? `遊戲 ${score} + 加分 ${bonusScore}` : "SCORE"}</div>
+          <div style={{ color: "#888", fontSize: 14, marginBottom: 8 }}>
+            完成 <span style={{ color: isWin ? "#7dff6a" : mc, fontWeight: 900, fontSize: 20 }}>{done.length}</span> / {cfg.target} 個成語
           </div>
 
-          {/* 稱號 & 名字輸入 */}
-          {nameForm}
-
-          {/* 完成的成語 */}
-          {done.length > 0 && (
-            <div style={{ display: "flex", flexWrap: "wrap", gap: 6, justifyContent: "center", margin: "8px auto 12px", maxHeight: 80, overflowY: "auto", maxWidth: 440 }}>
-              {done.map((id, i) => (
-                <span key={i} style={{ padding: "3px 10px", borderRadius: 6, background: `${NEON[i % NEON.length]}15`, border: `1px solid ${NEON[i % NEON.length]}44`, color: NEON[i % NEON.length], fontSize: 13, fontWeight: 700 }}>{id}</span>
-              ))}
+          {/* ═══ 加分環節 ═══ */}
+          <div style={{ background: "rgba(255,255,255,.03)", borderRadius: 12, border: "1px solid #2a2a4a", padding: "12px", marginBottom: 10 }}>
+            <div style={{ fontFamily: "'Press Start 2P',monospace", fontSize: 9, color: "#a78bfa", letterSpacing: 2, marginBottom: 3 }}>📚 加分環節</div>
+            <div style={{ fontSize: 11, color: "#666", marginBottom: 8 }}>點擊成語查看解釋，每個 +100 分！</div>
+            <div style={{ display: "flex", flexWrap: "wrap", gap: 6, justifyContent: "center", marginBottom: 6 }}>
+              {bonusPool.map((id, i) => {
+                const tapped = bonusTapped.has(id);
+                return (
+                  <button key={id} onClick={() => handleBonusTap(id)} style={{
+                    padding: "6px 12px", borderRadius: 6, fontSize: 15, fontWeight: 900, cursor: tapped ? "default" : "pointer",
+                    fontFamily: "'Noto Serif TC',serif",
+                    border: tapped ? "2px solid #7dff6a44" : `2px solid ${NEON[i % NEON.length]}44`,
+                    background: tapped ? "rgba(125,255,106,.08)" : `${NEON[i % NEON.length]}12`,
+                    color: tapped ? "#7dff6a88" : NEON[i % NEON.length],
+                    textDecoration: tapped ? "none" : "none",
+                    transition: "all .2s",
+                  }}>{tapped ? "✓ " : ""}{id}</button>
+                );
+              })}
             </div>
-          )}
+            {/* Show description popup */}
+            {bonusShow && (
+              <div style={{ background: "rgba(255,225,77,.08)", border: "1px solid #ffe14d44", borderRadius: 8, padding: "10px 14px", marginTop: 6, animation: "slideIn .3s ease-out" }}>
+                <div style={{ fontSize: 20, fontWeight: 900, color: "#ffe14d", marginBottom: 4 }}>{bonusShow.idiom}</div>
+                <div style={{ fontSize: 14, color: "#ccc", lineHeight: 1.6 }}>{bonusShow.desc}</div>
+                <div style={{ fontFamily: "'Press Start 2P',monospace", fontSize: 8, color: "#7dff6a", marginTop: 4 }}>+100!</div>
+              </div>
+            )}
+          </div>
 
-          {/* 排行榜 */}
+          {nameForm}
           {lbTable}
 
-          {/* 按鈕 */}
-          <div style={{ display: "flex", gap: 14, justifyContent: "center", flexWrap: "wrap", marginTop: 16 }}>
-            <button onClick={() => { setSubmitted(false); setPlayerName(""); setNameError(""); setMyRank(-1); startGame(diff); }} style={{
-              padding: "12px 36px", borderRadius: 12, border: "2px solid #ffe14d",
+          {/* Buttons */}
+          <div style={{ display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap", marginTop: 10, marginBottom: 20 }}>
+            <button onClick={() => { setSubmitted(false); setPlayerName(""); setNameError(""); setMyRank(-1); setBonusScore(0); setBonusTapped(new Set()); setBonusShow(null); startGame(diff); }} style={{
+              padding: "10px 32px", borderRadius: 10, border: "2px solid #ffe14d",
               background: "linear-gradient(135deg,#ffe14d,#ffa94d)", color: "#0a0a1a",
-              fontSize: 18, fontWeight: 900, cursor: "pointer", fontFamily: "'Noto Serif TC',serif",
-              boxShadow: "0 0 30px rgba(255,225,77,.3)", letterSpacing: 2,
+              fontSize: 16, fontWeight: 900, cursor: "pointer", fontFamily: "'Noto Serif TC',serif",
+              boxShadow: "0 0 20px rgba(255,225,77,.3)", letterSpacing: 2,
             }}>{isWin ? "再玩一次" : "RETRY"}</button>
             <button onClick={goHome} style={{
-              padding: "12px 24px", borderRadius: 12, border: "2px solid #555",
-              background: "transparent", color: "#888", fontSize: 16, cursor: "pointer",
+              padding: "10px 20px", borderRadius: 10, border: "2px solid #444",
+              background: "transparent", color: "#888", fontSize: 14, cursor: "pointer",
               fontFamily: "'Noto Serif TC',serif",
             }}>🏠 首頁</button>
           </div>
@@ -720,15 +1006,15 @@ function App() {
           <div key={i} style={{
             width: 56, height: 56, display: "flex", alignItems: "center", justifyContent: "center",
             fontSize: 28, fontWeight: 900, borderRadius: 10, fontFamily: "'Noto Serif TC',serif",
-            border: active ? `2px solid ${mc}` : "2px solid #2a2a4a",
-            background: filled ? mc : active ? "rgba(255,255,255,.05)" : "rgba(255,255,255,.02)",
-            color: filled ? "#0a0a1a" : active ? "#fff" : "#333",
+            border: active && (hintOn || ci === 0) ? `2px solid ${mc}` : "2px solid #2a2a4a",
+            background: filled ? mc : active && (hintOn || ci === 0) ? "rgba(255,255,255,.05)" : "rgba(255,255,255,.02)",
+            color: filled ? "#0a0a1a" : active && (hintOn || ci === 0) ? "#fff" : "#333",
             transition: "all .3s cubic-bezier(.34,1.56,.64,1)",
-            transform: active ? "scale(1.12)" : "scale(1)",
-            boxShadow: filled ? `0 0 24px ${mc}88, inset 0 0 10px rgba(255,255,255,.2)` : active ? `0 0 18px ${mc}44` : "none",
-            animation: filled ? "progressFill .4s ease-out" : active ? "pulse 1.5s ease-in-out infinite" : "none",
+            transform: active && (hintOn || ci === 0) ? "scale(1.12)" : "scale(1)",
+            boxShadow: filled ? `0 0 24px ${mc}88, inset 0 0 10px rgba(255,255,255,.2)` : active && (hintOn || ci === 0) ? `0 0 18px ${mc}44` : "none",
+            animation: filled ? "progressFill .4s ease-out" : active && (hintOn || ci === 0) ? "pulse 1.5s ease-in-out infinite" : "none",
           }}>
-            {filled ? ch : active ? <span style={{ opacity: 0.4, fontSize: 18 }}>?</span> : ""}
+            {filled ? ch : active && (hintOn || ci === 0) ? <span style={{ opacity: 0.4, fontSize: 18 }}>?</span> : ""}
           </div>
         );
       })}
@@ -784,16 +1070,16 @@ function App() {
             animation: `foodSpin ${1.8 + i * 0.15}s ease-in-out infinite`,
           }}>
             {/* Glow ring for correct food */}
-            {f.ok && <div style={{ position: "absolute", inset: -3, borderRadius: 12, border: "2px solid rgba(255,225,77,.2)", animation: "pulse 2s ease-in-out infinite", pointerEvents: "none" }} />}
+            {f.ok && (hintOn || ci === 0) && <div style={{ position: "absolute", inset: -3, borderRadius: 12, border: "2px solid rgba(255,225,77,.2)", animation: "pulse 2s ease-in-out infinite", pointerEvents: "none" }} />}
             <div style={{
               width: C - 3, height: C - 3, borderRadius: 9, display: "flex", alignItems: "center", justifyContent: "center",
               fontSize: 23, fontWeight: 900, fontFamily: "'Noto Serif TC',serif",
-              color: f.ok ? "#ffe14d" : "#555",
-              background: f.ok ? "radial-gradient(circle,rgba(255,225,77,.25) 0%,rgba(255,225,77,.05) 70%,transparent)" : "rgba(255,255,255,.03)",
-              border: f.ok ? "1.5px solid rgba(255,225,77,.5)" : "1px solid rgba(255,255,255,.06)",
-              boxShadow: f.ok ? "0 0 18px rgba(255,225,77,.35), inset 0 0 8px rgba(255,225,77,.1)" : "none",
-              animation: f.ok ? "nPulse 2s ease-in-out infinite" : "none",
-              textShadow: f.ok ? "0 0 8px rgba(255,225,77,.6)" : "none",
+              color: f.ok && (hintOn || ci === 0) ? "#ffe14d" : "#888",
+              background: f.ok && (hintOn || ci === 0) ? "radial-gradient(circle,rgba(255,225,77,.25) 0%,rgba(255,225,77,.05) 70%,transparent)" : "rgba(255,255,255,.05)",
+              border: f.ok && (hintOn || ci === 0) ? "1.5px solid rgba(255,225,77,.5)" : "1px solid rgba(255,255,255,.08)",
+              boxShadow: f.ok && (hintOn || ci === 0) ? "0 0 18px rgba(255,225,77,.35), inset 0 0 8px rgba(255,225,77,.1)" : "none",
+              animation: f.ok && (hintOn || ci === 0) ? "nPulse 2s ease-in-out infinite" : "none",
+              textShadow: f.ok && (hintOn || ci === 0) ? "0 0 8px rgba(255,225,77,.6)" : "none",
             }}>
               {f.char}
             </div>
@@ -906,7 +1192,7 @@ function App() {
   };
 
   return (
-    <div style={{ minHeight: "100vh", background: "radial-gradient(ellipse at 50% 30%,#0f0f28,#080816 60%,#040408)", display: "flex", flexDirection: "column", alignItems: "center", fontFamily: "'Noto Serif TC',serif", padding: "10px 8px", gap: 4 }}>
+    <div style={{ minHeight: "100vh", background: "radial-gradient(ellipse at 50% 30%,#0f0f28,#080816 60%,#040408)", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "flex-start", fontFamily: "'Noto Serif TC',serif", padding: "8px 4px", gap: 2, overflow: "auto" }}>
       <style>{CSS}</style>
 
       {/* HUD */}
@@ -925,6 +1211,11 @@ function App() {
           )}
           <div style={{ padding: "3px 10px", borderRadius: 8, background: "rgba(255,255,255,.04)", border: "1px solid #2a2a4a" }}>
             <span style={{ fontFamily: "'Press Start 2P',monospace", fontSize: 9, color: "#666" }}>{done.length}/{DIFF_CFG[diff].target}</span>
+          </div>
+          {!hintOn && <div style={{ padding: "2px 6px", borderRadius: 4, background: "rgba(255,255,255,.04)", border: "1px solid #2a2a4a" }}>
+            <span style={{ fontFamily: "'Press Start 2P',monospace", fontSize: 7, color: "#555" }}>🔒</span>
+          </div>}
+          <div style={{ display: "none" }}>
           </div>
         </div>
         <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
@@ -949,10 +1240,10 @@ function App() {
 
       {progress}
 
-      <div style={{ fontSize: 15, color: "#556", marginBottom: 4, textAlign: "center" }}>
+      {(hintOn || ci === 0) && <div style={{ fontSize: 15, color: "#556", marginBottom: 4, textAlign: "center" }}>
         <span style={{ fontFamily: "'Press Start 2P',monospace", fontSize: 10, letterSpacing: 1 }}>FIND </span>
         <span style={{ color: mc, fontSize: 24, fontWeight: 900, textShadow: `0 0 10px ${mc}66` }}>{idiom ? idiom[ci] : ""}</span>
-      </div>
+      </div>}
 
       {board}
 
