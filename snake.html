@@ -360,6 +360,8 @@ function App() {
   const [diff, setDiff] = useState(2); // 1=簡單 2=普通 3=困難
   const [grades, setGrades] = useState({"三年級": true, "四年級": true, "五年級": false});
   const [hintOn, setHintOn] = useState(true); // show glowing hint for next char // grade checkboxes
+  const [boostOn, setBoostOn] = useState(false); // long press to boost speed
+  const [boosting, setBoosting] = useState(false); // currently boosting
   
   
   const [particles, setParticles] = useState([]);
@@ -446,6 +448,8 @@ function App() {
   const R = useRef({});
   const loopR = useRef(null);
   const dq = useRef([]);
+  const boostRef = useRef(false);
+  const boostTimerRef = useRef(null);
   const pid = useRef(0);
 
   // Sync all state to ref
@@ -617,18 +621,20 @@ function App() {
   }, [startIdiom]);
 
   // Game loop
+  const actualSpeed = boosting && boostOn ? Math.max(80, Math.floor((R.current.speed || 340) * 0.45)) : (R.current.speed || 340);
   useEffect(() => {
     if (gs === "playing") {
       clearInterval(loopR.current);
-      loopR.current = setInterval(step, R.current.speed || 340);
+      loopR.current = setInterval(step, actualSpeed);
     } else {
       clearInterval(loopR.current);
     }
     return () => clearInterval(loopR.current);
-  }, [gs, speed, step]);
+  }, [gs, speed, step, boosting, boostOn, actualSpeed]);
 
   // Keyboard
   useEffect(() => {
+    const km = { ArrowUp: "UP", ArrowDown: "DOWN", ArrowLeft: "LEFT", ArrowRight: "RIGHT", w: "UP", s: "DOWN", a: "LEFT", d: "RIGHT", W: "UP", S: "DOWN", A: "LEFT", D: "RIGHT" };
     const h = (e) => {
       const $ = R.current;
       if ($.gs === "menu") { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); startGame(R.current.diff || 2); } return; }
@@ -639,17 +645,22 @@ function App() {
         else if ($.gs === "paused") { setGs("playing"); $.gs = "playing"; startBGM(); }
         return;
       }
-      const km = { ArrowUp: "UP", ArrowDown: "DOWN", ArrowLeft: "LEFT", ArrowRight: "RIGHT", w: "UP", s: "DOWN", a: "LEFT", d: "RIGHT", W: "UP", S: "DOWN", A: "LEFT", D: "RIGHT" };
       const nd = km[e.key];
       if (nd && $.gs === "playing") {
         e.preventDefault();
         const last = dq.current.length > 0 ? dq.current[dq.current.length - 1] : $.dir;
         if (OPP[nd] !== last && nd !== last) { dq.current.push(nd); if (dq.current.length > 3) dq.current.shift(); }
+        // Boost on hold
+        if (boostOn && !boostRef.current) { boostRef.current = true; setBoosting(true); }
       }
     };
+    const hu = (e) => {
+      if (km[e.key] && boostRef.current) { boostRef.current = false; setBoosting(false); }
+    };
     window.addEventListener("keydown", h);
-    return () => window.removeEventListener("keydown", h);
-  }, [startGame]);
+    window.addEventListener("keyup", hu);
+    return () => { window.removeEventListener("keydown", h); window.removeEventListener("keyup", hu); };
+  }, [startGame, boostOn]);
 
   // Touch
   const ts = useRef(null);
@@ -671,6 +682,17 @@ function App() {
     if (R.current.gs !== "playing") return;
     const last = dq.current.length > 0 ? dq.current[dq.current.length - 1] : R.current.dir;
     if (OPP[nd] !== last && nd !== last) dq.current.push(nd);
+  };
+  const dBtnDown = (nd) => {
+    dBtn(nd);
+    if (boostOn) {
+      clearTimeout(boostTimerRef.current);
+      boostTimerRef.current = setTimeout(() => { boostRef.current = true; setBoosting(true); }, 200);
+    }
+  };
+  const dBtnUp = () => {
+    clearTimeout(boostTimerRef.current);
+    if (boostRef.current) { boostRef.current = false; setBoosting(false); }
   };
 
   const mc = NEON[colIdx];
@@ -704,7 +726,7 @@ function App() {
   // ═══════════ MENU ═══════════
   if (gs === "menu") {
     return (
-      <div style={{ minHeight: "100vh", background: "linear-gradient(135deg,#050510,#0a0a2e,#150530,#0a0a2e,#050510)", backgroundSize: "400% 400%", animation: "menuBg 12s ease infinite", display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "'Noto Serif TC',serif", padding: 20, position: "relative", overflow: "hidden" }}>
+      <div style={{ minHeight: "100vh", background: "linear-gradient(135deg,#050510,#0a0a2e,#150530,#0a0a2e,#050510)", backgroundSize: "400% 400%", animation: "menuBg 12s ease infinite", display: "flex", alignItems: "flex-start", justifyContent: "center", overflowY: "auto", fontFamily: "'Noto Serif TC',serif", padding: 20, position: "relative", overflow: "hidden" }}>
         <style>{CSS}</style>
         <div style={{ position: "absolute", inset: 0, overflow: "hidden", opacity: 0.03, fontSize: 26, color: "#fff", fontWeight: 900, lineHeight: "40px", wordBreak: "break-all", padding: 20, letterSpacing: 4 }}>
           {ALL_IDIOMS.join("").repeat(2)}
@@ -743,17 +765,30 @@ function App() {
           </div>
 
           <div style={{ display: "flex", flexDirection: "column", gap: 12, alignItems: "center", marginBottom: 28 }}>
-            {/* Hint toggle */}
-            <div style={{ display: "flex", justifyContent: "center", marginBottom: 14 }}>
+            {/* Hint & Boost toggles */}
+            <div style={{ display: "flex", justifyContent: "center", gap: 10, marginBottom: 14, flexWrap: "wrap" }}>
               <button onClick={() => setHintOn(v => !v)} style={{
-                padding: "8px 20px", borderRadius: 8,
+                padding: "8px 16px", borderRadius: 8,
                 border: hintOn ? "2px solid #ffe14d" : "2px solid #555",
                 background: hintOn ? "rgba(255,225,77,.1)" : "rgba(255,255,255,.03)",
-                color: hintOn ? "#ffe14d" : "#666", fontSize: 13, fontWeight: 700, cursor: "pointer",
+                color: hintOn ? "#ffe14d" : "#666", fontSize: 12, fontWeight: 700, cursor: "pointer",
                 fontFamily: "'Noto Serif TC',serif",
               }}>
-                {hintOn ? "💡 提示開：正確字會發光" : "🔒 提示關：只提示第一字（進階）"}
+                {hintOn ? "💡 提示開" : "🔒 提示關"}
               </button>
+              <button onClick={() => setBoostOn(v => !v)} style={{
+                padding: "8px 16px", borderRadius: 8,
+                border: boostOn ? "2px solid #ff2d95" : "2px solid #555",
+                background: boostOn ? "rgba(255,45,149,.1)" : "rgba(255,255,255,.03)",
+                color: boostOn ? "#ff2d95" : "#666", fontSize: 12, fontWeight: 700, cursor: "pointer",
+                fontFamily: "'Noto Serif TC',serif",
+              }}>
+                {boostOn ? "⚡ 加速開" : "⚡ 加速關"}
+              </button>
+            </div>
+            <div style={{ color: "#444", fontSize: 11, marginBottom: 10, lineHeight: 1.8 }}>
+              {!hintOn && "🔒 只提示第一字　"}
+              {boostOn && "⚡ 長按方向鍵加速衝刺"}
             </div>
 
             <div style={{ color: "#8888aa", fontSize: 11, marginBottom: 2, letterSpacing: 3, fontFamily: "'Press Start 2P',monospace" }}>SELECT DIFFICULTY</div>
@@ -924,7 +959,7 @@ function App() {
     ) : null;
 
     return (
-      <div style={{ minHeight: "100vh", background: isWin ? "radial-gradient(ellipse at 50% 30%,#1a1a00,#0a0a10 60%,#030308)" : "radial-gradient(ellipse at 50% 30%,#1a0a1e,#0a0510 60%,#050508)", display: "flex", alignItems: "flex-start", justifyContent: "center", fontFamily: "'Noto Serif TC',serif", padding: "16px 12px", overflowY: "auto" }}>
+      <div style={{ minHeight: "100vh", background: isWin ? "radial-gradient(ellipse at 50% 30%,#1a1a00,#0a0a10 60%,#030308)" : "radial-gradient(ellipse at 50% 30%,#1a0a1e,#0a0510 60%,#050508)", display: "flex", alignItems: "flex-start", justifyContent: "center", fontFamily: "'Noto Serif TC',serif", padding: "12px 8px", overflowY: "auto" }}>
         <style>{CSS}</style>
         <div style={{ textAlign: "center", maxWidth: 480, width: "100%" }}>
           {/* Character */}
@@ -1191,9 +1226,13 @@ function App() {
     WebkitTapHighlightColor: "transparent", touchAction: "manipulation",
   };
 
+  // Calculate scale to fit viewport
+  const gameScale = typeof window !== 'undefined' ? Math.min(1, (window.innerHeight - 20) / 920, (window.innerWidth - 10) / (B + 20)) : 1;
+
   return (
-    <div style={{ minHeight: "100vh", background: "radial-gradient(ellipse at 50% 30%,#0f0f28,#080816 60%,#040408)", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "flex-start", fontFamily: "'Noto Serif TC',serif", padding: "8px 4px", gap: 2, overflow: "auto" }}>
+    <div style={{ minHeight: "100vh", background: "radial-gradient(ellipse at 50% 30%,#0f0f28,#080816 60%,#040408)", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", fontFamily: "'Noto Serif TC',serif", overflow: "hidden" }}>
       <style>{CSS}</style>
+      <div style={{ transform: `scale(${gameScale})`, transformOrigin: "top center", display: "flex", flexDirection: "column", alignItems: "center", padding: "6px 4px", gap: 2 }}>
 
       {/* HUD */}
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", width: B, marginBottom: 4 }}>
@@ -1214,6 +1253,9 @@ function App() {
           </div>
           {!hintOn && <div style={{ padding: "2px 6px", borderRadius: 4, background: "rgba(255,255,255,.04)", border: "1px solid #2a2a4a" }}>
             <span style={{ fontFamily: "'Press Start 2P',monospace", fontSize: 7, color: "#555" }}>🔒</span>
+          </div>}
+          {boosting && boostOn && <div style={{ padding: "2px 8px", borderRadius: 4, background: "rgba(255,45,149,.15)", border: "1px solid rgba(255,45,149,.3)", animation: "pulse .4s infinite" }}>
+            <span style={{ fontFamily: "'Press Start 2P',monospace", fontSize: 8, color: "#ff2d95" }}>⚡</span>
           </div>}
           <div style={{ display: "none" }}>
           </div>
@@ -1249,13 +1291,16 @@ function App() {
 
       {/* D-Pad */}
       <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 4, marginTop: 10 }}>
-        <button onClick={() => dBtn("UP")} onTouchStart={(e) => { e.preventDefault(); dBtn("UP"); }} style={ds}>▲</button>
+        <button onMouseDown={() => dBtnDown("UP")} onMouseUp={dBtnUp} onMouseLeave={dBtnUp} onTouchStart={(e) => { e.preventDefault(); dBtnDown("UP"); }} onTouchEnd={dBtnUp} style={ds}>▲</button>
         <div style={{ display: "flex", gap: 4 }}>
-          <button onClick={() => dBtn("LEFT")} onTouchStart={(e) => { e.preventDefault(); dBtn("LEFT"); }} style={ds}>◀</button>
-          <div style={{ width: 56, height: 56 }} />
-          <button onClick={() => dBtn("RIGHT")} onTouchStart={(e) => { e.preventDefault(); dBtn("RIGHT"); }} style={ds}>▶</button>
+          <button onMouseDown={() => dBtnDown("LEFT")} onMouseUp={dBtnUp} onMouseLeave={dBtnUp} onTouchStart={(e) => { e.preventDefault(); dBtnDown("LEFT"); }} onTouchEnd={dBtnUp} style={ds}>◀</button>
+          <div style={{ width: 56, height: 56, display: "flex", alignItems: "center", justifyContent: "center" }}>
+            {boosting && boostOn && <span style={{ fontSize: 16, animation: "pulse .5s infinite", color: "#ff2d95" }}>⚡</span>}
+          </div>
+          <button onMouseDown={() => dBtnDown("RIGHT")} onMouseUp={dBtnUp} onMouseLeave={dBtnUp} onTouchStart={(e) => { e.preventDefault(); dBtnDown("RIGHT"); }} onTouchEnd={dBtnUp} style={ds}>▶</button>
         </div>
-        <button onClick={() => dBtn("DOWN")} onTouchStart={(e) => { e.preventDefault(); dBtn("DOWN"); }} style={ds}>▼</button>
+        <button onMouseDown={() => dBtnDown("DOWN")} onMouseUp={dBtnUp} onMouseLeave={dBtnUp} onTouchStart={(e) => { e.preventDefault(); dBtnDown("DOWN"); }} onTouchEnd={dBtnUp} style={ds}>▼</button>
+      </div>
       </div>
     </div>
   );
