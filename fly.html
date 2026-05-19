@@ -293,8 +293,8 @@ function buildLevel(idiomQueue,df){
   function randomWeapon(){return allWeapons[Math.floor(Math.random()*allWeapons.length)];}
 
   // ===== 第 1 段：開場（成語 + 戰機） =====
-  waves.push({triggerX:cursor,type:"line",enemy:"fighter",count:5,gap:55,y:120});
-  waves.push({triggerX:cursor+100,type:"line",enemy:"fighter",count:5,gap:55,y:280});
+  waves.push({triggerX:cursor,type:"line",enemy:"fighter",count:8,gap:55,y:120});
+  waves.push({triggerX:cursor+100,type:"line",enemy:"fighter",count:8,gap:55,y:280});
   cursor+=500;
 
   pushCrates(2); cursor+=300;
@@ -304,13 +304,13 @@ function buildLevel(idiomQueue,df){
   waves.push({triggerX:cursor,type:"single",enemy:"turret",x:VW+50,y:80,top:true});
   cursor+=300;
 
-  waves.push({triggerX:cursor,type:"sine",enemy:"fighter",count:7,gap:50,amp:60,freq:0.04});
+  waves.push({triggerX:cursor,type:"sine",enemy:"fighter",count:10,gap:50,amp:60,freq:0.04});
   cursor+=500;
   pushCrates(2); cursor+=250;
 
   // ===== 第 2 段：自爆機潮 =====
-  waves.push({triggerX:cursor,type:"line",enemy:"kamikaze",count:5,gap:65,y:140});
-  waves.push({triggerX:cursor+80,type:"line",enemy:"kamikaze",count:5,gap:65,y:260});
+  waves.push({triggerX:cursor,type:"line",enemy:"kamikaze",count:8,gap:65,y:140});
+  waves.push({triggerX:cursor+80,type:"line",enemy:"kamikaze",count:8,gap:65,y:260});
   cursor+=500;
   waves.push({triggerX:cursor,type:"drop",dropType:"weapon",weapon:randomWeapon(),x:VW+50,y:150}); cursor+=200;
   pushCrates(2); cursor+=300;
@@ -319,7 +319,7 @@ function buildLevel(idiomQueue,df){
   waves.push({triggerX:cursor,type:"single",enemy:"bomber",x:VW+80,y:100});
   waves.push({triggerX:cursor+150,type:"single",enemy:"bomber",x:VW+80,y:220});
   cursor+=400;
-  waves.push({triggerX:cursor,type:"sine",enemy:"fighter",count:8,gap:48,amp:80,freq:0.05});
+  waves.push({triggerX:cursor,type:"sine",enemy:"fighter",count:12,gap:48,amp:80,freq:0.05});
   cursor+=600;
   pushCrates(3); cursor+=300;
   waves.push({triggerX:cursor,type:"drop",dropType:"heal",x:VW+50,y:200}); cursor+=200;
@@ -327,21 +327,21 @@ function buildLevel(idiomQueue,df){
   // ===== 第 4 段：雙砲塔 + 中段 =====
   waves.push({triggerX:cursor,type:"single",enemy:"turret",x:VW+50,y:80,top:true});
   waves.push({triggerX:cursor,type:"single",enemy:"turret",x:VW+50,y:VH-80});
-  waves.push({triggerX:cursor+100,type:"line",enemy:"fighter",count:6,gap:55,y:160});
+  waves.push({triggerX:cursor+100,type:"line",enemy:"fighter",count:9,gap:55,y:160});
   cursor+=500;
   pushCrates(2); cursor+=300;
   waves.push({triggerX:cursor,type:"drop",dropType:"weapon",weapon:randomWeapon(),x:VW+50,y:120}); cursor+=200;
 
   // ===== 第 5 段：包夾 =====
-  waves.push({triggerX:cursor,type:"line",enemy:"fighter",count:6,gap:50,y:80});
-  waves.push({triggerX:cursor+50,type:"line",enemy:"fighter",count:6,gap:50,y:300});
+  waves.push({triggerX:cursor,type:"line",enemy:"fighter",count:9,gap:50,y:80});
+  waves.push({triggerX:cursor+50,type:"line",enemy:"fighter",count:9,gap:50,y:300});
   cursor+=400;
-  waves.push({triggerX:cursor,type:"line",enemy:"kamikaze",count:6,gap:60,y:190});
+  waves.push({triggerX:cursor,type:"line",enemy:"kamikaze",count:9,gap:60,y:190});
   cursor+=500;
   pushCrates(3); cursor+=350;
 
   // ===== 第 6 段：S 形大波次 =====
-  waves.push({triggerX:cursor,type:"sine",enemy:"fighter",count:12,gap:42,amp:110,freq:0.05});
+  waves.push({triggerX:cursor,type:"sine",enemy:"fighter",count:18,gap:42,amp:110,freq:0.05});
   cursor+=550;
   waves.push({triggerX:cursor,type:"drop",dropType:"weapon",weapon:randomWeapon(),x:VW+50,y:150}); cursor+=200;
   pushCrates(2); cursor+=300;
@@ -355,8 +355,8 @@ function buildLevel(idiomQueue,df){
   waves.push({triggerX:cursor,type:"drop",dropType:"heal",x:VW+50,y:200}); cursor+=200;
 
   // ===== 第 8 段：自爆機巨潮 =====
-  waves.push({triggerX:cursor,type:"line",enemy:"kamikaze",count:9,gap:48,y:100});
-  waves.push({triggerX:cursor+50,type:"line",enemy:"kamikaze",count:9,gap:48,y:280});
+  waves.push({triggerX:cursor,type:"line",enemy:"kamikaze",count:14,gap:48,y:100});
+  waves.push({triggerX:cursor+50,type:"line",enemy:"kamikaze",count:14,gap:48,y:280});
   cursor+=600;
   pushCrates(2); cursor+=300;
 
@@ -365,7 +365,7 @@ function buildLevel(idiomQueue,df){
   waves.push({triggerX:cursor+50,type:"single",enemy:"turret",x:VW+50,y:VH-80});
   waves.push({triggerX:cursor+200,type:"single",enemy:"turret",x:VW+50,y:80,top:true});
   waves.push({triggerX:cursor+250,type:"single",enemy:"turret",x:VW+50,y:VH-80});
-  waves.push({triggerX:cursor+150,type:"sine",enemy:"fighter",count:8,gap:48,amp:100,freq:0.05});
+  waves.push({triggerX:cursor+150,type:"sine",enemy:"fighter",count:12,gap:48,amp:100,freq:0.05});
   cursor+=600;
   waves.push({triggerX:cursor,type:"drop",dropType:"weapon",weapon:randomWeapon(),x:VW+50,y:120});
   waves.push({triggerX:cursor+100,type:"drop",dropType:"weapon",weapon:randomWeapon(),x:VW+50,y:240});
@@ -373,9 +373,9 @@ function buildLevel(idiomQueue,df){
   pushCrates(3); cursor+=350;
 
   // ===== 第 10 段：超密集大決戰前 =====
-  waves.push({triggerX:cursor,type:"sine",enemy:"fighter",count:14,gap:40,amp:120,freq:0.04});
+  waves.push({triggerX:cursor,type:"sine",enemy:"fighter",count:21,gap:40,amp:120,freq:0.04});
   cursor+=600;
-  waves.push({triggerX:cursor,type:"line",enemy:"kamikaze",count:8,gap:55,y:200});
+  waves.push({triggerX:cursor,type:"line",enemy:"kamikaze",count:12,gap:55,y:200});
   cursor+=400;
   pushCrates(3); cursor+=350;
   waves.push({triggerX:cursor,type:"drop",dropType:"heal",x:VW+50,y:200});
@@ -393,10 +393,10 @@ function buildLevel(idiomQueue,df){
   // ===== 額外延長波次：給玩家更多機會集滿 20 個成語 =====
   // 因為 BOSS 改為「集滿 20 個成語才出現」，所以這裡放循環的回波
   for(let r=0;r<3;r++){
-    waves.push({triggerX:cursor,type:"sine",enemy:"fighter",count:8+r,gap:50,amp:80+r*10,freq:0.05});
+    waves.push({triggerX:cursor,type:"sine",enemy:"fighter",count:12+r,gap:50,amp:80+r*10,freq:0.05});
     cursor+=500;
     pushCrates(3); cursor+=350;
-    waves.push({triggerX:cursor,type:"line",enemy:"kamikaze",count:6+r,gap:55,y:140+r*40});
+    waves.push({triggerX:cursor,type:"line",enemy:"kamikaze",count:9+r,gap:55,y:140+r*40});
     cursor+=400;
     waves.push({triggerX:cursor,type:"single",enemy:"bomber",x:VW+80,y:100+r*50});
     cursor+=350;
@@ -442,6 +442,7 @@ function Game(){
   const [ui,setUi]=_s(ST.MENU);
   const [score,setScore]=_s(0);
   const [collected,setCollected]=_s([]);
+  // 不再讓玩家選範圍：第 1 關固定三上，之後逐關自動切換到下一個年級
   const [selSets,setSelSets]=_s(["三年級上學期"]);
   const [hi,setHi]=_s(0);
   const [muted,setMuted]=_s(false);
@@ -475,6 +476,37 @@ function Game(){
   }
 
   // 進入下一關
+  // 產生 N 題選擇題：題目=解釋, 選項=4 個成語(含正解)
+  function generateQuestions(idiomPool,n){
+    // 過濾出有解釋的成語
+    const validIdioms=idiomPool.filter(function(i){return IDIOM_MEANINGS[i];});
+    if(validIdioms.length===0)return [];
+    // 隨機抽 n 個當答案
+    const shuffled=validIdioms.slice().sort(function(){return Math.random()-0.5;});
+    const answers=shuffled.slice(0,Math.min(n,validIdioms.length));
+    // 補足：若不到 5 題，從整個 IDIOM_MEANINGS 池補
+    const allIdiomsWithMeaning=Object.keys(IDIOM_MEANINGS);
+    while(answers.length<n){
+      const candidate=allIdiomsWithMeaning[Math.floor(Math.random()*allIdiomsWithMeaning.length)];
+      if(!answers.includes(candidate))answers.push(candidate);
+    }
+    // 每題：取正解 + 3 個干擾項
+    return answers.map(function(correct){
+      const distractors=[];
+      // 從整個成語池隨機抽 3 個（排除正解）
+      const distractorPool=allIdiomsWithMeaning.filter(function(x){return x!==correct;});
+      const dShuffled=distractorPool.sort(function(){return Math.random()-0.5;});
+      for(let i=0;i<3&&i<dShuffled.length;i++)distractors.push(dShuffled[i]);
+      // 將正解與干擾項混合並隨機排列
+      const options=[correct].concat(distractors).sort(function(){return Math.random()-0.5;});
+      return {
+        question:IDIOM_MEANINGS[correct],
+        correct:correct,
+        options:options
+      };
+    });
+  }
+
   function nextStage(g){
     g.stage+=1;
     g.stageStartCount=g.complete.length;
@@ -631,7 +663,7 @@ function Game(){
 
   // KEYBOARD
   _e(function(){
-    function isBombKey(e){return e.key==="b"||e.key==="B"||e.key==="x"||e.key==="X"||e.key==="Shift";}
+    function isBombKey(e){return e.key==="b"||e.key==="B";}
     const d=function(e){
       if(e.repeat)return;
       if(e.key==="ArrowLeft"||e.key==="a"||e.key==="A"){keysRef.current.left=true;e.preventDefault();}
@@ -805,6 +837,7 @@ function Game(){
   }
 
   function fireEnemyBullet(g,en,p){
+    if(en.canShoot===false)return;
     if(en.shootCD>0){en.shootCD--;return;}
     const df=g.df;
     const stageMul=g.stageDifficultyMul||1;
@@ -1018,6 +1051,16 @@ function Game(){
         g.lvl.bossSpawned=true;
         g.bossWarning=180;
         if(s)try{s.bossAlert();}catch(e){}
+        // 清空所有小兵與敵彈
+        for(let i=0;i<g.lvl.enemies.length;i++){
+          const en=g.lvl.enemies[i];
+          if(en.alive&&en.type!=="boss"){
+            spawnExplosion(g,en.x+en.w/2,en.y+en.h/2,25);
+            en.alive=false;
+          }
+        }
+        g.eBullets=[];
+        // 順便把場上的小道具往左推（不留太多干擾），但保留剛生的補給
         setTimeout(function(){
           if(gRef.current===g&&!g.gameOver){
             // BOSS 屬性隨關卡逐關強化
@@ -1029,9 +1072,7 @@ function Game(){
             g.lvl.enemies.push(boss);
             // === 簡單模式：BOSS 出現時，至少生成 2 個道具 ===
             if(g.df.aggro<=0.7){
-              // 補血
               g.lvl.drops.push({type:"heal",x:VW+50,y:100+Math.random()*200,w:24,h:24,collected:false,bob:0});
-              // 隨機武器
               const weapons=["spread","laser","missile","plasma","wave","ice","flame","lightning","shuriken","beam"];
               const w1=weapons[Math.floor(Math.random()*weapons.length)];
               g.lvl.drops.push({type:"weapon",weapon:w1,x:VW+150,y:100+Math.random()*200,w:26,h:26,collected:false,bob:0});
@@ -1120,12 +1161,15 @@ function Game(){
         if(g.bossDeadTimer>=72||p.x>VW+10){
           g.upgradeShown=true;
           // 找出本關完成的成語清單
-          const stageCompletedIdioms=g.complete.slice(g.stageStartCount);
-          // 彈出複習面板
+          const allStageIdioms=g.complete.slice(g.stageStartCount);
+          // === 隨機產生 5 題選擇題 ===
+          const questions=generateQuestions(allStageIdioms,5);
           setReviewPanel({
-            idioms:stageCompletedIdioms,
+            questions:questions,
             stage:g.stage,
-            clicked:[] // 用 array 存已點選的成語
+            currentIdx:0,
+            answers:[],  // 玩家對每題的答案
+            showResult:false
           });
         }
         setScore(g.score);
@@ -1416,9 +1460,9 @@ function Game(){
         }
 
         if(en.type==="fighter"){
-          // 困難時 fighter 移動更快、會主動朝玩家略偏移
           en.x+=en.vx*(0.85+aggro*0.25);
-          if(en.movement==="sine"){
+          // 簡單模式（aggro<=0.7）：強制直線飛行
+          if(en.movement==="sine"&&aggro>0.7){
             en.y=en.baseY+Math.sin(en.frame*en.freq+en.phase)*en.amp;
             // aggro 高時加上對玩家 y 的輕微追蹤
             if(aggro>1){
@@ -1658,15 +1702,39 @@ function Game(){
   function spawnWave(g,w){
     const df=g.df;
     const s=mutedRef.current?null:sfxRef.current;
+
+    // === 敵人波次前自動補一個道具 ===
+    function spawnPreWaveDrop(){
+      // 70% 補血 / 30% 武器（簡單模式偏補血、困難偏武器）
+      const r=Math.random();
+      const healChance=df.aggro<=0.7?0.7:df.aggro<=1?0.5:0.35;
+      if(r<healChance){
+        g.lvl.drops.push({type:"heal",x:VW+30,y:100+Math.random()*200,w:24,h:24,collected:false,bob:0});
+      }else{
+        const weapons=["spread","laser","missile","plasma","wave","ice","flame","lightning","shuriken","beam"];
+        const wp=weapons[Math.floor(Math.random()*weapons.length)];
+        g.lvl.drops.push({type:"weapon",weapon:wp,x:VW+30,y:100+Math.random()*200,w:26,h:26,collected:false,bob:0});
+      }
+    }
+
     if(w.type==="line"){
-      for(let i=0;i<w.count;i++){
+      spawnPreWaveDrop();
+      // 依難度增加敵人數量：簡單 +2, 普通 +3, 困難 +4
+      const extra=df.aggro<=0.7?2:df.aggro<=1?3:4;
+      const total=w.count+extra;
+      for(let i=0;i<total;i++){
         g.lvl.enemies.push(makeEnemy(w.enemy,VW+i*w.gap,w.y,df,{movement:"straight"}));
       }
     }else if(w.type==="sine"){
-      for(let i=0;i<w.count;i++){
+      spawnPreWaveDrop();
+      const extra=df.aggro<=0.7?2:df.aggro<=1?3:4;
+      const total=w.count+extra;
+      for(let i=0;i<total;i++){
         g.lvl.enemies.push(makeEnemy(w.enemy,VW+i*w.gap,VH/2,df,{movement:"sine",baseY:VH/2,amp:w.amp,freq:w.freq,phase:i*0.5}));
       }
     }else if(w.type==="single"){
+      // single 不一定每次都補（避免太多）
+      if(Math.random()<0.4)spawnPreWaveDrop();
       const opts={};
       if(w.top)opts.top=true;
       g.lvl.enemies.push(makeEnemy(w.enemy,w.x,w.y,df,opts));
@@ -1709,26 +1777,34 @@ function Game(){
 
   function makeEnemy(type,x,y,df,opts){
     opts=opts||{};
+    // 依難度決定此敵人是否會射擊：簡單 25%, 普通 50%, 困難 100%
+    let shootChance;
+    if(df.aggro<=0.7)shootChance=0.25;
+    else if(df.aggro<=1.0)shootChance=0.5;
+    else shootChance=1.0;
+    const canShoot=Math.random()<shootChance;
+    // 砲塔總是會射擊（不然就無意義）
+    const willShoot=type==="turret"?true:canShoot;
     if(type==="fighter"){
       return {type:"fighter",x:x,y:y,w:36,h:26,vx:-2,vy:0,
         hp:Math.ceil(2*df.enemyHp),maxHp:Math.ceil(2*df.enemyHp),
-        alive:true,shootCD:60+Math.floor(Math.random()*40),frame:0,
+        alive:true,shootCD:60+Math.floor(Math.random()*40),frame:0,canShoot:willShoot,
         movement:opts.movement||"straight",baseY:opts.baseY||y,amp:opts.amp||0,freq:opts.freq||0,phase:opts.phase||0};
     }
     if(type==="kamikaze"){
       return {type:"kamikaze",x:x,y:y,w:30,h:22,vx:-3,vy:0,
         hp:Math.ceil(1*df.enemyHp),maxHp:Math.ceil(1*df.enemyHp),
-        alive:true,shootCD:99999,frame:0};
+        alive:true,shootCD:99999,frame:0,canShoot:false};
     }
     if(type==="bomber"){
       return {type:"bomber",x:x,y:y,w:60,h:42,vx:-1.5,vy:0,
         hp:Math.ceil(8*df.enemyHp),maxHp:Math.ceil(8*df.enemyHp),
-        alive:true,shootCD:90,frame:0};
+        alive:true,shootCD:90,frame:0,canShoot:willShoot};
     }
     if(type==="turret"){
       return {type:"turret",x:x,y:y,w:36,h:28,vx:0,vy:0,
         hp:Math.ceil(5*df.enemyHp),maxHp:Math.ceil(5*df.enemyHp),
-        alive:true,shootCD:120,frame:0,top:opts.top||false};
+        alive:true,shootCD:120,frame:0,top:opts.top||false,canShoot:true};
     }
     return null;
   }
@@ -3595,7 +3671,7 @@ function Game(){
       ctx.fillText("🛩️ 方向鍵 移動 · 自動射擊",VW/2,VH/2-10);
       ctx.fillStyle="#fff";
       ctx.font="13px 'Noto Sans TC',sans-serif";
-      ctx.fillText("💣 B / X / Shift 釋放必殺技",VW/2,VH/2+12);
+      ctx.fillText("💣 B 釋放必殺技",VW/2,VH/2+12);
       ctx.globalAlpha=1;
     }
   }
@@ -3632,13 +3708,12 @@ function Game(){
         h("h1",{style:{color:"#00FFFF",fontSize:30,margin:"0 0 4px",fontFamily:"'Orbitron','Noto Serif TC',serif",fontWeight:900,textShadow:"0 0 20px #00FFFF,3px 3px 0 #0a3a5e",letterSpacing:2}},"成語戰機"),
         h("p",{style:{color:"rgba(255,255,255,0.7)",fontSize:13,margin:"0 0 18px"}},"駕駛戰機 · 殲滅敵艦 · 收集成語"),
 
-        h("div",{style:{marginBottom:14,textAlign:"left"}},
-          h("p",{style:{color:"rgba(255,255,255,0.75)",fontSize:12,marginBottom:6,fontWeight:600}},"選擇成語範圍："),
-          Object.keys(ALL_SETS).map(function(name){
-            const sel=selSets.indexOf(name)>=0;
-            return h("button",{key:name,onClick:function(){toggle(name);},style:Object.assign({},btnS,{display:"block",width:"100%",padding:"8px 12px",marginBottom:4,borderRadius:8,background:sel?"linear-gradient(135deg,#00FFFF,#0080ff)":"rgba(255,255,255,0.1)",color:sel?"#0a1a3e":"rgba(255,255,255,0.7)",fontWeight:sel?700:400,fontSize:13,textAlign:"left"})},
-              (sel?"✓ ":"○ ")+name,h("span",{style:{float:"right",fontSize:11,opacity:0.7}},ALL_SETS[name].length+" 個"));
-          })
+        // 課程進度提示（自動依年級順序）
+        h("div",{style:{marginBottom:14,padding:"10px 14px",background:"linear-gradient(135deg,rgba(0,255,255,0.1),rgba(0,128,255,0.1))",border:"1px solid rgba(0,255,255,0.3)",borderRadius:10,textAlign:"left"}},
+          h("p",{style:{color:"#00FFFF",fontSize:12,margin:"0 0 6px",fontWeight:700,letterSpacing:1}},"📚 課程順序"),
+          h("p",{style:{color:"rgba(255,255,255,0.75)",fontSize:11,margin:0,lineHeight:1.6}},
+            "第 1 關：三年級上學期（20 個）→ 第 2 關：三年級下學期（20 個）→ 第 3 關：四年級上學期（30 個）→ 第 4 關：四年級下學期（30 個）"
+          )
         ),
 
         h("div",{style:{marginBottom:14,textAlign:"left"}},
@@ -3693,7 +3768,7 @@ function Game(){
 
         h("div",{style:{marginTop:14,background:"rgba(255,255,255,0.06)",borderRadius:10,padding:"10px 12px",textAlign:"left"}},
           h("p",{style:{color:"rgba(255,255,255,0.65)",fontSize:11,margin:"0 0 4px",fontWeight:700}},"操作"),
-          h("div",{style:{color:"rgba(255,255,255,0.55)",fontSize:10,lineHeight:1.7},dangerouslySetInnerHTML:{__html:"⌨️ <b>方向鍵</b> 或 <b>WASD</b> 四方向飛行<br>🔫 <b>自動射擊</b>，無需按鍵<br>💣 <b>B / X / Shift</b> 釋放必殺技（清屏 + 大傷害）<br>🤖 <b>V</b> 僚機出擊（第 3 關後啟用，5 秒自主攻擊）<br>⏸ <b>ESC</b> 暫停<br><br>💡 擊破木箱掉落成語金幣 ✨<br>💡 集滿四字成語 +1000 分並回血<br>⚡ 能量條：每完成 10 個成語 → 自動 +1 必殺！<br>🎯 每關集滿 <b>20 個成語 → BOSS 出現！</b><br>🏆 過 1 關後解鎖新題庫；過 2 關後得 2 隻僚機協戰"}})
+          h("div",{style:{color:"rgba(255,255,255,0.55)",fontSize:10,lineHeight:1.7},dangerouslySetInnerHTML:{__html:"⌨️ <b>方向鍵</b> 或 <b>WASD</b> 四方向飛行<br>🔫 <b>自動射擊</b>，無需按鍵<br>💣 <b>B</b> 釋放必殺技（清屏 + 大傷害）<br>🤖 <b>V</b> 僚機出擊（第 3 關後啟用，5 秒自主攻擊）<br>⏸ <b>ESC</b> 暫停<br><br>💡 擊破木箱掉落成語金幣 ✨<br>💡 集滿四字成語 +1000 分並回血<br>⚡ 能量條：每完成 10 個成語 → 自動 +1 必殺！<br>🎯 每關集滿 <b>20 個成語 → BOSS 出現！</b><br>🏆 過 1 關後解鎖新題庫；過 2 關後得 2 隻僚機協戰"}})
         ),
 
         hi>0?h("div",{style:{marginTop:10,color:"#FFD700",fontSize:13,fontWeight:600}},"🏆 最高分："+hi):null
@@ -3850,82 +3925,175 @@ function Game(){
       )
     ),
 
-    // 複習面板（BOSS 死後出現，要點過所有成語才有升級）
-    reviewPanel?h("div",{style:{position:"fixed",inset:0,background:"radial-gradient(circle at center,rgba(30,15,70,0.95),rgba(0,0,0,0.97))",display:"flex",alignItems:"center",justifyContent:"center",zIndex:200,padding:20,overflowY:"auto"}},
-      h("div",{style:{maxWidth:760,width:"100%",textAlign:"center"}},
-        h("div",{style:{fontSize:48,marginBottom:4}},"📖"),
-        h("h2",{style:{color:"#FFD700",fontSize:28,margin:"0 0 4px",fontFamily:"'Orbitron','Noto Serif TC',serif",fontWeight:900,textShadow:"0 0 20px rgba(255,215,0,0.6)",letterSpacing:2}},"第 "+reviewPanel.stage+" 關 · 成語複習"),
-        h("p",{style:{color:"#4ECDC4",fontSize:13,margin:"0 0 16px"}},
-          "點選每個成語看看意思（"+reviewPanel.clicked.length+" / "+reviewPanel.idioms.length+"）"
-        ),
-        // 成語卡片網格
-        h("div",{style:{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(150px,1fr))",gap:10,marginBottom:18}},
-          reviewPanel.idioms.map(function(idiom,i){
-            const isClicked=reviewPanel.clicked.includes(idiom);
-            const meaning=IDIOM_MEANINGS[idiom]||"成語意思待補充";
-            return h("div",{
-              key:i,
-              onClick:function(){
-                if(isClicked)return;
-                setReviewPanel(function(prev){
-                  if(!prev)return prev;
-                  return Object.assign({},prev,{clicked:prev.clicked.concat([idiom])});
-                });
-              },
-              style:{
-                padding:"10px 8px",
-                background:isClicked?"linear-gradient(135deg,rgba(255,215,0,0.25),rgba(255,140,0,0.15))":"rgba(50,30,90,0.6)",
-                border:isClicked?"2px solid #FFD700":"2px solid rgba(78,205,196,0.4)",
-                borderRadius:10,
-                cursor:isClicked?"default":"pointer",
-                transition:"all 0.25s",
-                textAlign:"center",
-                minHeight:isClicked?70:50
-              },
-              onMouseEnter:function(e){if(!isClicked){e.currentTarget.style.background="rgba(78,205,196,0.2)";e.currentTarget.style.borderColor="#4ECDC4";}},
-              onMouseLeave:function(e){if(!isClicked){e.currentTarget.style.background="rgba(50,30,90,0.6)";e.currentTarget.style.borderColor="rgba(78,205,196,0.4)";}}
-            },
-              h("div",{style:{color:isClicked?"#FFD700":"#fff",fontSize:18,fontWeight:800,fontFamily:"'Noto Serif TC',serif",marginBottom:isClicked?4:0,letterSpacing:1}},idiom),
-              isClicked?h("div",{style:{color:"rgba(255,255,255,0.85)",fontSize:11,lineHeight:1.4,marginTop:3}},meaning):h("div",{style:{color:"rgba(255,255,255,0.4)",fontSize:10,marginTop:2}},"👆 點看意思")
-            );
-          })
-        ),
-        // 進入下一關（全部點完才可按）
-        (function(){
-          const allClicked=reviewPanel.clicked.length>=reviewPanel.idioms.length;
-          return h("button",{
-            disabled:!allClicked,
-            onClick:function(){
-              const g=gRef.current;
-              if(!g||!allClicked)return;
-              setReviewPanel(null);
-              // 隨機抽 3 個升級
-              const pool=UPGRADES.slice();
-              const choices=[];
-              for(let k=0;k<3&&pool.length>0;k++){
-                const idx=Math.floor(Math.random()*pool.length);
-                choices.push(pool.splice(idx,1)[0]);
-              }
-              setUpgradePanel({choices:choices,stage:g.stage});
-            },
-            style:{
-              padding:"14px 36px",
-              background:allClicked?"linear-gradient(135deg,#FFD700,#FF9933)":"rgba(100,100,100,0.4)",
-              color:allClicked?"#1a1a2e":"rgba(255,255,255,0.4)",
-              border:allClicked?"3px solid #FFD700":"3px solid rgba(255,255,255,0.15)",
-              borderRadius:30,
-              fontSize:16,
-              fontWeight:900,
-              fontFamily:"'Noto Sans TC',sans-serif",
-              cursor:allClicked?"pointer":"not-allowed",
-              boxShadow:allClicked?"0 6px 20px rgba(255,215,0,0.5)":"none",
-              letterSpacing:2,
-              transition:"all 0.2s"
-            }
-          },allClicked?"⚡ 繼續 — 機體升級":"請先複習所有成語（"+reviewPanel.clicked.length+"/"+reviewPanel.idioms.length+"）");
-        })()
-      )
-    ):null,
+    // 複習面板（BOSS 死後出現，5 題選擇題）
+    reviewPanel?(function(){
+      const qs=reviewPanel.questions;
+      const idx=reviewPanel.currentIdx;
+      const isLastQ=idx>=qs.length;
+      // 統計分數
+      let correctCount=0;
+      reviewPanel.answers.forEach(function(a,i){if(a===qs[i].correct)correctCount++;});
+
+      if(isLastQ){
+        // === 結算頁 ===
+        const passed=correctCount>=4;
+        const needMore=qs.length-correctCount; // 需追加多少題（補到至少 4 對）
+        // 計算還差幾題對 = 4-correctCount
+        const lacking=Math.max(0,4-correctCount);
+        return h("div",{style:{position:"fixed",inset:0,background:"radial-gradient(circle at center,rgba(30,15,70,0.97),rgba(0,0,0,0.98))",display:"flex",alignItems:"center",justifyContent:"center",zIndex:200,padding:20}},
+          h("div",{style:{maxWidth:600,width:"100%",maxHeight:"92vh",display:"flex",flexDirection:"column",textAlign:"center"}},
+            h("div",{style:{flexShrink:0}},
+              h("div",{style:{fontSize:64,marginBottom:6}},correctCount===qs.length?"🏆":passed?"🎉":"📚"),
+              h("h2",{style:{color:passed?"#FFD700":"#FF9933",fontSize:28,margin:"0 0 8px",fontWeight:900,letterSpacing:2,textShadow:"0 0 20px "+(passed?"rgba(255,215,0,0.6)":"rgba(255,153,51,0.5)")}},passed?"通過測驗！":"還差一點點..."),
+              h("p",{style:{color:"#4ECDC4",fontSize:22,fontWeight:800,margin:"0 0 6px"}},correctCount+" / "+qs.length+" 答對"),
+              h("p",{style:{color:"rgba(255,255,255,0.5)",fontSize:11,margin:"0 0 12px"}},"（須答對 4 題以上才能通關）"),
+              h("p",{style:{color:passed?"#FFD700":"#FF9933",fontSize:13,marginBottom:14}},
+                correctCount===qs.length?"全部答對！太厲害了！":
+                passed?"很棒，再接再厲！":
+                "再回顧一下答錯的成語，繼續挑戰新題目！"
+              )
+            ),
+            // 題目回顧（可捲動）
+            h("div",{style:{flex:"1 1 auto",overflowY:"auto",minHeight:0,marginBottom:14,textAlign:"left"}},
+              qs.map(function(q,i){
+                const userAns=reviewPanel.answers[i];
+                const isCorrect=userAns===q.correct;
+                return h("div",{key:i,style:{padding:"10px 12px",background:isCorrect?"rgba(78,205,196,0.15)":"rgba(255,80,80,0.15)",border:"2px solid "+(isCorrect?"rgba(78,205,196,0.5)":"rgba(255,80,80,0.5)"),borderRadius:10,marginBottom:8}},
+                  h("div",{style:{display:"flex",alignItems:"center",gap:8,marginBottom:4}},
+                    h("span",{style:{fontSize:18}},isCorrect?"✅":"❌"),
+                    h("span",{style:{color:"#fff",fontSize:13}},"第 "+(i+1)+" 題："),
+                    h("span",{style:{color:"#FFD700",fontSize:16,fontWeight:800,fontFamily:"'Noto Serif TC',serif"}},q.correct)
+                  ),
+                  h("div",{style:{color:"rgba(255,255,255,0.85)",fontSize:12,lineHeight:1.5,paddingLeft:28}},q.question),
+                  !isCorrect&&userAns?h("div",{style:{color:"#FF8888",fontSize:11,paddingLeft:28,marginTop:3}},"你的答案：" + userAns):null
+                );
+              })
+            ),
+            h("div",{style:{flexShrink:0}},
+              passed?
+                // === 通過：升級按鈕 ===
+                h("button",{
+                  onClick:function(){
+                    const g=gRef.current;
+                    if(!g)return;
+                    setReviewPanel(null);
+                    const pool=UPGRADES.slice();
+                    const choices=[];
+                    for(let k=0;k<3&&pool.length>0;k++){
+                      const idx=Math.floor(Math.random()*pool.length);
+                      choices.push(pool.splice(idx,1)[0]);
+                    }
+                    setUpgradePanel({choices:choices,stage:reviewPanel.stage});
+                  },
+                  style:{
+                    padding:"12px 32px",
+                    background:"linear-gradient(135deg,#FFD700,#FF9933)",
+                    color:"#1a1a2e",border:"3px solid #FFD700",borderRadius:30,
+                    fontSize:16,fontWeight:900,fontFamily:"'Noto Sans TC',sans-serif",
+                    cursor:"pointer",boxShadow:"0 6px 20px rgba(255,215,0,0.5)",letterSpacing:2
+                  }
+                },"⚡ 繼續 — 機體升級")
+              :
+                // === 未通過：追加題目 ===
+                h("div",{},
+                  h("p",{style:{color:"#FF9933",fontSize:13,marginBottom:10,fontWeight:700}},
+                    "還要再答對 "+lacking+" 題，請挑戰新題目！"
+                  ),
+                  h("button",{
+                    onClick:function(){
+                      const g=gRef.current;
+                      if(!g)return;
+                      // 用本關成語池產生「追加」題目（避開已出過的）
+                      const allStageIdioms=g.complete.slice(g.stageStartCount);
+                      const askedSet=new Set(qs.map(function(q){return q.correct;}));
+                      const remainPool=allStageIdioms.filter(function(x){return !askedSet.has(x);});
+                      // 不夠就從全部成語池補
+                      const allIdioms=Object.keys(IDIOM_MEANINGS).filter(function(x){return !askedSet.has(x);});
+                      const fallbackPool=remainPool.length>=lacking?remainPool:remainPool.concat(allIdioms);
+                      // 抽 lacking 題（至少 lacking 題，但給 3 題讓玩家有緩衝）
+                      const need=Math.max(lacking,3);
+                      const newQuestions=generateQuestions(fallbackPool,need);
+                      // 接到原 questions 後面，從新題開始答
+                      const merged=qs.concat(newQuestions);
+                      setReviewPanel({
+                        questions:merged,
+                        stage:reviewPanel.stage,
+                        currentIdx:qs.length, // 從新題開始
+                        answers:reviewPanel.answers.slice(), // 保留舊答題結果
+                        showResult:false
+                      });
+                    },
+                    style:{
+                      padding:"12px 28px",
+                      background:"linear-gradient(135deg,#FF9933,#FF6633)",
+                      color:"#fff",border:"3px solid #FFD700",borderRadius:30,
+                      fontSize:15,fontWeight:900,fontFamily:"'Noto Sans TC',sans-serif",
+                      cursor:"pointer",boxShadow:"0 6px 20px rgba(255,153,51,0.5)",letterSpacing:2
+                    }
+                  },"📝 再戰 — 補答 "+Math.max(lacking,3)+" 題")
+                )
+            )
+          )
+        );
+      }
+
+      // === 答題頁 ===
+      const curQ=qs[idx];
+      return h("div",{style:{position:"fixed",inset:0,background:"radial-gradient(circle at center,rgba(30,15,70,0.97),rgba(0,0,0,0.98))",display:"flex",alignItems:"center",justifyContent:"center",zIndex:200,padding:20}},
+        h("div",{style:{maxWidth:660,width:"100%",textAlign:"center"}},
+          h("div",{style:{fontSize:42,marginBottom:6}},"📖"),
+          h("h2",{style:{color:"#FFD700",fontSize:22,margin:"0 0 4px",fontWeight:900,letterSpacing:2,textShadow:"0 0 20px rgba(255,215,0,0.6)"}},"第 "+reviewPanel.stage+" 關 · 成語測驗"),
+          // 進度
+          h("div",{style:{display:"flex",justifyContent:"center",gap:6,marginBottom:18}},
+            qs.map(function(_,i){
+              const ans=reviewPanel.answers[i];
+              let col="rgba(255,255,255,0.2)";
+              if(ans)col=ans===qs[i].correct?"#5cdb95":"#FF6B6B";
+              else if(i===idx)col="#FFD700";
+              return h("div",{key:i,style:{width:18,height:6,borderRadius:3,background:col,transition:"all 0.3s"}});
+            })
+          ),
+          // 題目
+          h("div",{style:{background:"linear-gradient(135deg,rgba(50,30,90,0.7),rgba(30,15,70,0.7))",border:"2px solid rgba(255,215,0,0.4)",borderRadius:14,padding:"20px 24px",marginBottom:18}},
+            h("p",{style:{color:"#4ECDC4",fontSize:13,marginBottom:8,letterSpacing:2}},"第 "+(idx+1)+" 題 / 共 "+qs.length+" 題"),
+            h("p",{style:{color:"rgba(255,255,255,0.65)",fontSize:13,marginBottom:6}},"請問下列哪個成語的意思是："),
+            h("p",{style:{color:"#fff",fontSize:18,fontWeight:700,lineHeight:1.5,margin:0}},curQ.question)
+          ),
+          // 4 個選項
+          h("div",{style:{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}},
+            curQ.options.map(function(opt,oi){
+              return h("button",{
+                key:oi,
+                onClick:function(){
+                  setReviewPanel(function(prev){
+                    if(!prev)return prev;
+                    const newAns=prev.answers.slice();
+                    newAns[prev.currentIdx]=opt;
+                    return Object.assign({},prev,{answers:newAns,currentIdx:prev.currentIdx+1});
+                  });
+                },
+                style:{
+                  padding:"18px 16px",
+                  background:"linear-gradient(135deg,rgba(0,80,160,0.5),rgba(0,40,100,0.7))",
+                  color:"#fff",
+                  border:"3px solid #4ECDC4",
+                  borderRadius:14,
+                  cursor:"pointer",
+                  fontSize:22,
+                  fontWeight:800,
+                  fontFamily:"'Noto Serif TC',serif",
+                  letterSpacing:3,
+                  transition:"all 0.2s",
+                  boxShadow:"0 4px 14px rgba(0,200,255,0.2)"
+                },
+                onMouseEnter:function(e){e.currentTarget.style.transform="translateY(-3px) scale(1.03)";e.currentTarget.style.borderColor="#FFD700";e.currentTarget.style.boxShadow="0 8px 22px rgba(255,215,0,0.4)";},
+                onMouseLeave:function(e){e.currentTarget.style.transform="";e.currentTarget.style.borderColor="#4ECDC4";e.currentTarget.style.boxShadow="0 4px 14px rgba(0,200,255,0.2)";}
+              },opt);
+            })
+          )
+        )
+      );
+    })():null,
 
     // 升級面板浮層（過關後出現）
     upgradePanel?h("div",{style:{position:"fixed",inset:0,background:"radial-gradient(circle at center,rgba(20,10,60,0.92),rgba(0,0,0,0.95))",display:"flex",alignItems:"center",justifyContent:"center",zIndex:200,padding:20}},
