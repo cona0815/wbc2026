@@ -96,6 +96,114 @@ const IDIOMS_4_UP=["迎刃而解","二八年華","道貌岸然","匹夫之勇","
 const IDIOMS_4_DOWN=["曲突徙薪","大家風範","緣木求魚","自怨自艾","明察秋毫","一傅眾咻","邯鄲學步","晨昏定省","風行草偃","芒刺在背","斷章取義","望塵莫及","退避三舍","錙銖必較","門可羅雀","孜孜不倦","奇貨可居","江郎才盡","甚囂塵上","字字珠璣","披肝瀝膽","濫竽充數","從善如流","趨之若鶩","毛遂自薦","咎由自取","滄海一粟","物換星移","焚琴煮鶴","前倨後恭"];
 const ALL_SETS={"三年級上學期":IDIOMS_3_UP,"三年級下學期":IDIOMS_3_DOWN,"四年級上學期":IDIOMS_4_UP,"四年級下學期":IDIOMS_4_DOWN};
 
+// 成語解釋表
+const IDIOM_MEANINGS={
+  // 三上
+  "口若懸河":"形容說話流利，滔滔不絕。",
+  "一暴十寒":"做事缺乏恆心，一天努力十天偷懶。",
+  "守株待兔":"妄想不勞而獲，比喻拘泥不知變通。",
+  "投桃報李":"比喻彼此贈答，禮尚往來。",
+  "行雲流水":"形容文章或書法自然流暢，毫無拘束。",
+  "滴水穿石":"持之以恆，再難的事也能成功。",
+  "寸草春暉":"子女難以報答父母養育之恩。",
+  "一字千金":"形容文辭精妙，價值極高。",
+  "臨渴掘井":"事到臨頭才想辦法，已經來不及了。",
+  "按部就班":"依照次序、規矩做事。",
+  "一鼓作氣":"趁著最初的氣勢一口氣完成。",
+  "牛角掛書":"形容讀書勤奮、把握時間。",
+  "發憤忘食":"努力到忘記吃飯，比喻非常勤奮。",
+  "名落孫山":"考試或選拔沒有錄取。",
+  "春風化雨":"形容師長的教誨溫和而能感化人。",
+  "千鈞一髮":"形容情況極為危急。",
+  "維妙維肖":"模仿或描繪得非常逼真。",
+  "見賢思齊":"看到優秀的人就想向他學習看齊。",
+  "杯弓蛇影":"疑神疑鬼，自相驚擾。",
+  "進退維谷":"前進後退都困難，比喻處境艱難。",
+  // 三下
+  "防微杜漸":"在事情剛萌芽時就加以制止。",
+  "班門弄斧":"在行家面前賣弄本事，不自量力。",
+  "耳濡目染":"耳朵常聽眼睛常看，自然受到影響。",
+  "車水馬龍":"形容交通繁忙、熱鬧非凡。",
+  "同舟共濟":"齊心協力共度難關。",
+  "宜室宜家":"形容家庭和樂美滿。",
+  "沉魚落雁":"形容女子容貌非常美麗。",
+  "生意盎然":"形容充滿生機與活力。",
+  "金蘭之交":"形容朋友間情誼深厚。",
+  "一片冰心":"形容心地純潔正直。",
+  "不世之材":"罕見傑出的人才。",
+  "伯仲之間":"形容兩者實力相當，難分高下。",
+  "披星戴月":"早出晚歸,辛勤工作。",
+  "指鹿為馬":"故意顛倒是非、混淆黑白。",
+  "美輪美奐":"形容建築華麗壯觀。",
+  "甘之如飴":"心甘情願地承受辛苦。",
+  "洞燭先機":"事先看出事情的徵兆。",
+  "孤掌難鳴":"一個人力量單薄，難以成事。",
+  "鬼斧神工":"形容技藝精巧到了神奇的境界。",
+  "笑容可掬":"形容滿臉笑容、表情親切。",
+  // 四上
+  "迎刃而解":"主要問題解決後，其他問題就跟著容易了。",
+  "二八年華":"形容十六歲少女的青春年華。",
+  "道貌岸然":"表面正經，實際卻不然。",
+  "匹夫之勇":"沒有智謀只憑血氣的勇氣。",
+  "燃眉之急":"像火燒到眉毛一樣緊急。",
+  "捕風捉影":"用沒有根據的傳言當證據。",
+  "吳下阿蒙":"形容學識淺薄、沒有長進的人。",
+  "口碑載道":"形容廣受好評、人人讚揚。",
+  "臥薪嘗膽":"刻苦自勵以求復仇雪恥。",
+  "千里鵝毛":"禮物雖小，情意卻很深厚。",
+  "張冠李戴":"把姓張的帽子戴到姓李的頭上，比喻弄錯對象。",
+  "如雷貫耳":"形容名聲很大，眾所皆知。",
+  "唾手可得":"形容很容易就能得到。",
+  "暮鼓晨鐘":"比喻能使人警醒的言語。",
+  "拋磚引玉":"用粗淺的見解引出更高明的意見。",
+  "鳳毛麟角":"形容珍貴而稀少的人或事物。",
+  "疊床架屋":"重複多餘，沒有必要。",
+  "模稜兩可":"態度不明確、含糊不清。",
+  "三人成虎":"傳言多了，假的也會被當成真的。",
+  "慎終追遠":"謹慎處理喪事，追念遠代祖先。",
+  "戰戰兢兢":"非常小心謹慎、害怕的樣子。",
+  "並駕齊驅":"齊頭並進，不分高下。",
+  "刮目相看":"用新的眼光看待。",
+  "無遠弗屆":"沒有遠到達不到的地方。",
+  "破鏡重圓":"夫妻分散後又重新團圓。",
+  "撥雲見日":"撥開雲霧見到太陽，比喻重見光明。",
+  "既往不咎":"過去的錯誤不再追究。",
+  "夜不閉戶":"夜裡不用關門，形容社會治安良好。",
+  "眾口鑠金":"眾人的議論能熔化金屬，比喻輿論力量強大。",
+  "好整以暇":"在繁忙中仍能保持從容鎮定。",
+  // 四下
+  "曲突徙薪":"事先採取措施防止災禍。",
+  "大家風範":"舉止優雅大方，有大將之風。",
+  "緣木求魚":"方法錯誤，無法達到目的。",
+  "自怨自艾":"悔恨自己的過錯。",
+  "明察秋毫":"觀察非常細微敏銳。",
+  "一傅眾咻":"學習環境干擾多，難以學好。",
+  "邯鄲學步":"模仿別人不成，反而失去自己的特色。",
+  "晨昏定省":"形容子女早晚問候父母，盡孝道。",
+  "風行草偃":"上位者的言行能影響下位者。",
+  "芒刺在背":"形容心中不安、坐立難安。",
+  "斷章取義":"只取片段，不顧整體原意。",
+  "望塵莫及":"遠遠追不上，形容差距大。",
+  "退避三舍":"主動退讓、避免衝突。",
+  "錙銖必較":"形容十分小氣計較。",
+  "門可羅雀":"門前冷清、訪客稀少。",
+  "孜孜不倦":"勤奮努力、不知疲倦。",
+  "奇貨可居":"罕見的東西可以居為己有等待高價。",
+  "江郎才盡":"才華用盡，無法再有新作品。",
+  "甚囂塵上":"某種言論到處流傳、議論紛紛。",
+  "字字珠璣":"形容文章字字精彩,如珍珠美玉。",
+  "披肝瀝膽":"形容極為真誠、毫無保留。",
+  "濫竽充數":"沒有真本事卻冒充內行。",
+  "從善如流":"接受好的意見就像流水一樣自然。",
+  "趨之若鶩":"像鴨子般爭先恐後地追逐。",
+  "毛遂自薦":"自己推薦自己擔任某項工作。",
+  "咎由自取":"災禍是自己惹來的。",
+  "滄海一粟":"形容微不足道、極為渺小。",
+  "物換星移":"形容時間流逝、世事變遷。",
+  "焚琴煮鶴":"破壞美好的事物。",
+  "前倨後恭":"先傲慢後恭敬,態度前後不一。"
+};
+
 // ===== CONSTANTS =====
 const VW=640,VH=400;
 const SCROLL_SPEED=1.6;  // 自動捲軸速度（戰機 shoot'em up 風格）
@@ -123,6 +231,19 @@ const WEAPONS={
   shuriken: {name:"迴旋鏢",icon:"🌀",color:"#5cdb95",cooldown:24},
   beam:     {name:"光束砲",icon:"☀️",color:"#FFFFFF",cooldown:0} // 持續光束
 };
+
+// 升級項目池（每過一關隨機抽 3 個讓玩家選 1 個）
+const UPGRADES=[
+  {id:"hp_up",     icon:"❤️",name:"裝甲強化",desc:"最大生命 +2，並補滿"},
+  {id:"speed_up", icon:"💨",name:"推進器升級",desc:"飛行速度 +20%"},
+  {id:"fire_up",  icon:"🔥",name:"射速調校",desc:"所有武器射速 +20%"},
+  {id:"bomb_up",  icon:"💣",name:"必殺強化",desc:"必殺技數量上限 +1 並補一顆"},
+  {id:"shield",   icon:"🛡️",name:"能量護盾",desc:"受傷後無敵時間 +50%"},
+  {id:"dmg_up",   icon:"⚔️",name:"火力強化",desc:"所有武器傷害 +30%"},
+  {id:"magnet",   icon:"🧲",name:"磁吸範圍",desc:"字幣與道具吸取範圍翻倍"},
+  {id:"heal_full",icon:"🩹",name:"全面修復",desc:"立即補滿生命與必殺"},
+  {id:"twin",     icon:"✨",name:"雙重射擊",desc:"主砲再多發射一發在側邊"}
+];
 
 // 三台戰機：都用普通主砲，差異化在 HP/速度/射速/特殊能力
 const SHIPS={
@@ -331,9 +452,89 @@ function Game(){
   const [hpLeft,setHpLeft]=_s(5);
   const [curWeapon,setCurWeapon]=_s("normal");
   const [bombCount,setBombCount]=_s(3);
+  const [stage,setStage]=_s(1);
+  const [upgradePanel,setUpgradePanel]=_s(null);
+  const [reviewPanel,setReviewPanel]=_s(null); // {idioms:[...], stage, clicked:Set}
   const pausedRef=React.useRef(false);
-  _e(function(){pausedRef.current=paused;},[paused]);
+  _e(function(){pausedRef.current=paused||!!upgradePanel||!!reviewPanel;},[paused,upgradePanel,reviewPanel]);
   _e(function(){mutedRef.current=muted;},[muted]);
+
+  // 套用升級
+  function applyUpgrade(g,upg){
+    const p=g.p;
+    if(upg.id==="hp_up"){p.maxHp+=2;p.hp=p.maxHp;setHpLeft(p.hp);}
+    else if(upg.id==="speed_up"){p.speedMul=(p.speedMul||1)*1.2;}
+    else if(upg.id==="fire_up"){p.cdMul=(p.cdMul||1)*0.83;}
+    else if(upg.id==="bomb_up"){p.maxBombs+=1;p.bombs=Math.min(p.maxBombs,p.bombs+1);setBombCount(p.bombs);}
+    else if(upg.id==="shield"){p.invinceMul=(p.invinceMul||1)*1.5;}
+    else if(upg.id==="dmg_up"){p.dmgMul=(p.dmgMul||1)*1.3;}
+    else if(upg.id==="magnet"){p.magnetMul=(p.magnetMul||1)*2;}
+    else if(upg.id==="heal_full"){p.hp=p.maxHp;p.bombs=p.maxBombs;setHpLeft(p.hp);setBombCount(p.bombs);}
+    else if(upg.id==="twin"){p.twinShot=true;}
+    p.upgrades.push(upg.id);
+  }
+
+  // 進入下一關
+  function nextStage(g){
+    g.stage+=1;
+    g.stageStartCount=g.complete.length;
+    g.lvl.bossSpawned=false;
+    g.lvl.bossDefeated=false;
+    g.upgradeShown=false;
+    g.bossDeadTimer=0;
+    g.bossActive=false;
+    g.bossWarning=0;
+    // 把玩家拉回畫面內
+    g.p.x=80;
+    g.p.y=VH/2-16;
+    g.p.invince=Math.max(g.p.invince,90);
+    // 把 wave 重新解鎖（重置 triggered + 推進 cursor）
+    for(let i=0;i<g.lvl.waves.length;i++)g.lvl.waves[i].triggered=false;
+    g.worldX=0;
+    g.lvl.extraSpawnTimer=0;
+    // 清除舊敵人與字幣
+    g.lvl.enemies=[];
+    g.eBullets=[];
+    g.lvl.drops=[];
+
+    // === 切換新的成語題庫，避免重複 ===
+    const allSets=Object.keys(ALL_SETS);
+    const currentSets=g.selSets||[allSets[0]];
+    // 找下一組「沒選過、且還沒被用過」的學期作為新題庫
+    const usedSets=new Set(g.usedSets||currentSets);
+    let nextSet=null;
+    for(const setName of allSets){
+      if(!usedSets.has(setName)){nextSet=setName;break;}
+    }
+    if(nextSet){
+      usedSets.add(nextSet);
+      g.usedSets=Array.from(usedSets);
+      // 把新題庫的成語加入池
+      const newPool=shuffle(ALL_SETS[nextSet].slice());
+      g.lvl.idiomPool=g.lvl.idiomPool.concat(newPool);
+      g.lvl.idiomCursor=0; // 重新從頭抽
+      spawnText(g,VW/2,80,"📚 新題庫：" + nextSet, "#FFD700");
+    }
+
+    // === 第 2 關起：難度提升 ===
+    // 難度倍率：第 1 關 1×、第 2 關 1.5×、第 3 關 2×、第 4+ 關 2.5× ...
+    const stageMul=1+(g.stage-1)*0.5;
+    g.stageDifficultyMul=stageMul;
+
+    // === 第 2 關起：召喚僚機 ===
+    if(g.stage>=2&&(!g.wingmen||g.wingmen.length===0)){
+      g.wingmen=[
+        {x:g.p.x,y:g.p.y-48,w:24,h:18,offX:0,offY:-48,shootCD:30,missileCD:180,frame:0,bob:0},
+        {x:g.p.x,y:g.p.y+48,w:24,h:18,offX:0,offY:48,shootCD:30,missileCD:180,frame:Math.PI,bob:Math.PI}
+      ];
+    }
+    // === 第 3 關起：啟用追蹤飛彈 + 出擊鈕 ===
+    if(g.stage>=3){
+      g.wingmenCanLaunch=true;
+      g.wingmenMissile=true;
+    }
+    setStage(g.stage);
+  }
 
   function spawnText(g,x,y,text,color){g.texts.push({x:x,y:y,text:text,color:color||"#FFD700",life:50,vy:-1.5});}
   function spawnBurst(g,x,y,count,colors,spread){
@@ -353,7 +554,8 @@ function Game(){
     const queue=shuffle(pool);
     const lvl=buildLevel(queue,df);
     const finalHp=Math.max(1,df.hp+sh.hpBonus);
-    const finalBombs=Math.max(0,df.bombs+sh.bombBonus);
+    const finalMaxBombs=Math.max(1,df.bombs+sh.bombBonus);
+    const startBombs=1; // 一開始固定有 1 顆必殺
     gRef.current={
       lvl:lvl,
       ship:sh,
@@ -361,7 +563,7 @@ function Game(){
         x:80,y:VH/2-16,w:38,h:28,
         vx:0,vy:0,
         hp:finalHp,maxHp:finalHp,
-        bombs:finalBombs,maxBombs:finalBombs,
+        bombs:startBombs,maxBombs:finalMaxBombs,
         invince:0,
         weapon:"normal",weaponAmmo:0,
         startWeapon:"normal",
@@ -370,7 +572,16 @@ function Game(){
         combo:0,comboTimer:0,
         bossKills:0,
         speedMul:sh.speedMul,
-        cdMul:sh.cdMul
+        cdMul:sh.cdMul,
+        // 升級加成
+        dmgMul:1,
+        magnetMul:1,
+        invinceMul:1,
+        twinShot:false,
+        upgrades:[],
+        // 能量條（每集 10 個成語充滿一格 = 1 顆必殺）
+        energy:0,        // 0 ~ 10
+        energyMax:10
       },
       bullets:[],
       eBullets:[],
@@ -391,11 +602,24 @@ function Game(){
       won:false,
       bossWarning:0,
       bossActive:false,
-      df:df
+      df:df,
+      stage:1,
+      stageStartCount:0,
+      stageDifficultyMul:1,
+      // 記住玩家選的成語題庫與已使用過的學期
+      selSets:selSets.slice(),
+      usedSets:selSets.slice(),
+      // 僚機系統（第 2 關起出現）
+      wingmen:[],
+      wingmenCanLaunch:false,
+      wingmenMissile:false,
+      wingmenLaunched:0  // 出擊倒數計時（>0 期間僚機獨立攻擊）
     };
     setHpLeft(finalHp);
-    setBombCount(finalBombs);
+    setBombCount(startBombs);
     setCurWeapon("normal");
+    setStage(1);
+    setUpgradePanel(null);
   },[selSets,diff,ship]);
 
   const start=_c(async function(){
@@ -417,6 +641,11 @@ function Game(){
       if(isBombKey(e)){
         if(!keysRef.current.bomb)keysRef.current.bombPressed=true;
         keysRef.current.bomb=true;
+        e.preventDefault();
+      }
+      // V 鍵 = 僚機出擊
+      if(e.key==="v"||e.key==="V"){
+        keysRef.current.launchPressed=true;
         e.preventDefault();
       }
       if(e.key==="Escape"){setPaused(function(prev){return !prev;});}
@@ -450,88 +679,97 @@ function Game(){
 
     if(p.weapon==="normal"){
       // 弱主砲：單發小子彈
-      g.bullets.push({x:cx,y:cy-2,w:10,h:4,vx:9,vy:0,life:70,dmg:1,color:"#FFD700",type:"normal",hit:new Set()});
+      const dmg=Math.ceil(1*(p.dmgMul||1));
+      g.bullets.push({x:cx,y:cy-2,w:10,h:4,vx:9,vy:0,life:70,dmg:dmg,color:"#FFD700",type:"normal",hit:new Set()});
+      // 雙重射擊：再加一發在側邊
+      if(p.twinShot){
+        g.bullets.push({x:cx,y:cy-9,w:10,h:4,vx:9,vy:-0.4,life:70,dmg:dmg,color:"#FFD700",type:"normal",hit:new Set()});
+        g.bullets.push({x:cx,y:cy+5,w:10,h:4,vx:9,vy:0.4,life:70,dmg:dmg,color:"#FFD700",type:"normal",hit:new Set()});
+      }
     }
     else if(p.weapon==="spread"){
       // 五連散彈
+      const dmg=Math.ceil(2*(p.dmgMul||1));
       for(let i=-2;i<=2;i++){
         const ang=i*0.12;
-        g.bullets.push({x:cx,y:cy-3,w:10,h:5,vx:Math.cos(ang)*10,vy:Math.sin(ang)*10,life:60,dmg:2,color:"#FF9933",type:"spread",hit:new Set()});
+        g.bullets.push({x:cx,y:cy-3,w:10,h:5,vx:Math.cos(ang)*10,vy:Math.sin(ang)*10,life:60,dmg:dmg,color:"#FF9933",type:"spread",hit:new Set()});
       }
     }
     else if(p.weapon==="laser"){
       // 穿透雷射
-      g.bullets.push({x:cx,y:cy-4,w:24,h:8,vx:16,vy:0,life:50,dmg:3,color:"#00FFFF",type:"laser",piercing:true,hit:new Set()});
+      const dmg=Math.ceil(3*(p.dmgMul||1));
+      g.bullets.push({x:cx,y:cy-4,w:24,h:8,vx:16,vy:0,life:50,dmg:dmg,color:"#00FFFF",type:"laser",piercing:true,hit:new Set()});
     }
     else if(p.weapon==="missile"){
       // 雙發追蹤導彈
+      const dmg=Math.ceil(8*(p.dmgMul||1));
       for(let i=-1;i<=1;i+=2){
         g.bullets.push({
-          x:cx,y:cy-4+i*8,w:18,h:8,vx:8,vy:i*1.5,life:120,dmg:8,
+          x:cx,y:cy-4+i*8,w:18,h:8,vx:8,vy:i*1.5,life:120,dmg:dmg,
           color:"#FF4500",type:"missile",explode:true,hit:new Set(),
           target:null,trail:[]
         });
       }
     }
     else if(p.weapon==="plasma"){
-      // 慢速大電漿球，穿透
+      const dmg=Math.ceil(4*(p.dmgMul||1));
       g.bullets.push({
-        x:cx,y:cy-10,w:22,h:22,vx:7,vy:0,life:80,dmg:4,
+        x:cx,y:cy-10,w:22,h:22,vx:7,vy:0,life:80,dmg:dmg,
         color:"#B05CFF",type:"plasma",piercing:true,hit:new Set(),
         spinPhase:0
       });
     }
     else if(p.weapon==="wave"){
-      // 雙波動：上下交錯正弦移動
+      const dmg=Math.ceil(2*(p.dmgMul||1));
       for(let i=-1;i<=1;i+=2){
         g.bullets.push({
-          x:cx,y:cy-3,w:14,h:8,vx:9,vy:0,life:80,dmg:2,
+          x:cx,y:cy-3,w:14,h:8,vx:9,vy:0,life:80,dmg:dmg,
           color:"#00FFAA",type:"wave",piercing:false,hit:new Set(),
           basePhase:i*0,phaseDir:i,initY:cy-3,amp:35,freq:0.18,age:0
         });
       }
     }
     else if(p.weapon==="ice"){
-      // 冰晶：擊中後凍結敵人短暫時間
+      const dmg=Math.ceil(2*(p.dmgMul||1));
       g.bullets.push({
-        x:cx,y:cy-5,w:14,h:10,vx:9,vy:0,life:80,dmg:2,
+        x:cx,y:cy-5,w:14,h:10,vx:9,vy:0,life:80,dmg:dmg,
         color:"#88E5FF",type:"ice",hit:new Set(),
         spinPhase:0
       });
     }
     else if(p.weapon==="flame"){
-      // 火焰噴射：超高射速、近距離、短射程，傷害低但連續
+      const dmg=Math.ceil(1*(p.dmgMul||1));
       for(let i=0;i<2;i++){
         const ang=(Math.random()-0.5)*0.3;
         g.bullets.push({
           x:cx,y:cy-3+(Math.random()-0.5)*8,w:14,h:10,
           vx:Math.cos(ang)*8,vy:Math.sin(ang)*8,
-          life:18+Math.random()*8,dmg:1,
+          life:18+Math.random()*8,dmg:dmg,
           color:"#FF6600",type:"flame",hit:new Set(),
           age:0,maxLife:24
         });
       }
     }
     else if(p.weapon==="lightning"){
-      // 閃電鏈：擊中敵人後跳到附近敵人（最多 3 次）
+      const dmg=Math.ceil(3*(p.dmgMul||1));
       g.bullets.push({
-        x:cx,y:cy-4,w:18,h:8,vx:14,vy:0,life:70,dmg:3,
+        x:cx,y:cy-4,w:18,h:8,vx:14,vy:0,life:70,dmg:dmg,
         color:"#FFFF00",type:"lightning",hit:new Set(),
         chainsLeft:3,segments:[]
       });
     }
     else if(p.weapon==="shuriken"){
-      // 迴旋鏢：先往前，然後迴轉飛回
+      const dmg=Math.ceil(3*(p.dmgMul||1));
       g.bullets.push({
-        x:cx,y:cy-10,w:22,h:22,vx:11,vy:0,life:130,dmg:3,
+        x:cx,y:cy-10,w:22,h:22,vx:11,vy:0,life:130,dmg:dmg,
         color:"#5cdb95",type:"shuriken",piercing:true,hit:new Set(),
         spinPhase:0,age:0,initVx:11
       });
     }
     else if(p.weapon==="beam"){
-      // 持續光束砲：每幀都射出一段，無冷卻
+      const dmg=Math.ceil(2*(p.dmgMul||1));
       g.bullets.push({
-        x:cx,y:cy-3,w:VW,h:6,vx:0,vy:0,life:3,dmg:2,
+        x:cx,y:cy-3,w:VW,h:6,vx:0,vy:0,life:3,dmg:dmg,
         color:"#FFFFFF",type:"beam",piercing:true,hit:new Set(),
         ownerY:cy
       });
@@ -548,18 +786,36 @@ function Game(){
     }
   }
 
+  function fireWingmanBullet(g,wm){
+    const cx=wm.x+wm.w,cy=wm.y+wm.h/2;
+    g.bullets.push({x:cx,y:cy-2,w:10,h:4,vx:10,vy:0,life:70,dmg:1,color:"#00FFFF",type:"normal",hit:new Set()});
+    const s=mutedRef.current?null:sfxRef.current;
+    if(s)try{s.shoot();}catch(e){}
+  }
+
+  function fireWingmanMissile(g,wm){
+    const cx=wm.x+wm.w,cy=wm.y+wm.h/2;
+    g.bullets.push({
+      x:cx,y:cy-4,w:16,h:8,vx:6,vy:0,life:140,dmg:5,
+      color:"#FF6600",type:"missile",explode:true,hit:new Set(),
+      target:null,trail:[]
+    });
+    const s=mutedRef.current?null:sfxRef.current;
+    if(s)try{s.missile();}catch(e){}
+  }
+
   function fireEnemyBullet(g,en,p){
     if(en.shootCD>0){en.shootCD--;return;}
     const df=g.df;
+    const stageMul=g.stageDifficultyMul||1;
     const baseCD={fighter:90,bomber:50,turret:100,boss:30,kamikaze:99999}[en.type]||100;
-    // aggro 越高，射擊冷卻越短
-    en.shootCD=Math.max(8,Math.floor(baseCD*(1.5-df.aggro*0.5)));
+    // aggro 與關卡難度共同影響射速
+    en.shootCD=Math.max(8,Math.floor(baseCD*(1.5-df.aggro*0.5)/stageMul));
     const cx=en.x+en.w/2,cy=en.y+en.h/2;
     const dx=p.x+p.w/2-cx,dy=p.y+p.h/2-cy;
     const d=Math.sqrt(dx*dx+dy*dy)||1;
     const baseSpd=en.type==="boss"?4:3;
-    // aggro 越高，子彈越快
-    const spd=baseSpd*(0.7+df.aggro*0.4);
+    const spd=baseSpd*(0.7+df.aggro*0.4)*Math.min(stageMul,1.5);
     const s=mutedRef.current?null:sfxRef.current;
 
     if(en.type==="boss"){
@@ -619,15 +875,20 @@ function Game(){
       // 一定機率掉成語金幣或補給
       if(en.idiom){
         const chars=en.idiom.split("");
+        const spacing=26;
+        const cx=en.x+en.w/2;
+        const cy=en.y+en.h/2;
         for(let i=0;i<4;i++){
-          const ang=(i-1.5)*0.4-Math.PI/2;
+          const targetX=cx+(i-1.5)*spacing-10;
+          const targetY=cy-10;
           g.lvl.drops.push({
             type:"coin",idiom:en.idiom,char:chars[i],idx:i,
-            x:en.x+en.w/2-10,y:en.y+en.h/2-10,
+            x:cx-10,y:cy-10,
             w:20,h:20,
-            vx:Math.cos(ang)*2+(Math.random()-0.5),
-            vy:Math.sin(ang)*1.2-Math.random()*0.5,
-            life:800,bob:Math.random()*Math.PI*2,
+            vx:(targetX-(cx-10))*0.15+(Math.random()-0.5)*0.3,
+            vy:-1.2-Math.random()*0.5,
+            targetX:targetX,targetY:targetY,
+            life:1000,bob:Math.random()*Math.PI*2,
             floating:true,baseY:0
           });
         }
@@ -645,18 +906,28 @@ function Game(){
       spawnExplosion(g,cr.x+cr.w/2,cr.y+cr.h/2,30);
       if(cr.idiom){
         const chars=cr.idiom.split("");
-        // 散出字幣呈圓周飛濺，然後飄浮在空中（無重力）
+        // 4 個字幣橫向一列排開（保持成語順序）
+        // 字間距 28px（字 22px + 留白 6px，視覺清楚不重疊）
+        const spacing=28;
+        const totalW=spacing*3; // 4 個字共 3 段間距
+        let cx=cr.x+cr.w/2;
+        const cy=cr.y+cr.h/2;
+        // 邊界保護：確保整串字都能在畫面內
+        const halfW=totalW/2+15;
+        if(cx-halfW<10)cx=halfW+10;
+        if(cx+halfW>VW-10)cx=VW-10-halfW;
         for(let i=0;i<4;i++){
-          const ang=(i-1.5)*0.4-Math.PI/2; // 朝上散開
+          const targetX=cx+(i-1.5)*spacing-11;
+          const targetY=cy-11;
           g.lvl.drops.push({
             type:"coin",idiom:cr.idiom,char:chars[i],idx:i,
-            x:cr.x+cr.w/2-10,y:cr.y+cr.h/2-10,
+            x:cr.x+cr.w/2-11,y:cr.y+cr.h/2-11, // 從箱子原始中心冒出
             w:22,h:22,
-            vx:Math.cos(ang)*2.5+(Math.random()-0.5),
-            vy:Math.sin(ang)*1.5-Math.random()*0.5,
-            life:900,bob:Math.random()*Math.PI*2,
-            floating:true,
-            baseY:0  // 之後設定
+            vx:(Math.random()-0.5)*0.5,
+            vy:-1.5-Math.random()*0.3,
+            targetX:targetX,targetY:targetY,
+            life:1200,bob:Math.random()*Math.PI*2,
+            floating:true,baseY:0
           });
         }
         spawnText(g,cr.x+cr.w/2,cr.y-10,cr.idiom,"#FFD700");
@@ -669,7 +940,7 @@ function Game(){
     if(p.invince>0)return;
     p.hp--;
     setHpLeft(p.hp);
-    p.invince=150; // 2.5 秒無敵
+    p.invince=Math.round(150*(p.invinceMul||1));
     g.shakeTimer=15;
     g.flashTimer=10;
     const s=mutedRef.current?null:sfxRef.current;
@@ -741,15 +1012,31 @@ function Game(){
       // 捲軸推進（Boss 出現後停止）
       if(!g.bossActive)g.worldX+=SCROLL_SPEED;
 
-      // === BOSS 觸發條件：集滿 20 個成語 ===
-      if(!g.lvl.bossSpawned&&g.complete.length>=20){
+      // === BOSS 觸發條件：本關集滿 20 個成語 ===
+      const stageCollected=g.complete.length-g.stageStartCount;
+      if(!g.lvl.bossSpawned&&stageCollected>=20){
         g.lvl.bossSpawned=true;
         g.bossWarning=180;
         if(s)try{s.bossAlert();}catch(e){}
-        // 1.5 秒警告後生成 BOSS
         setTimeout(function(){
           if(gRef.current===g&&!g.gameOver){
-            g.lvl.enemies.push(makeBoss(VW+100,60,g.df));
+            // BOSS 屬性隨關卡逐關強化
+            const stageMul=1+(g.stage-1)*0.4;
+            const boss=makeBoss(VW+100,60,g.df,g.stage);
+            boss.hp=Math.ceil(boss.hp*stageMul);
+            boss.maxHp=boss.hp;
+            boss.stage=g.stage;
+            g.lvl.enemies.push(boss);
+            // === 簡單模式：BOSS 出現時，至少生成 2 個道具 ===
+            if(g.df.aggro<=0.7){
+              // 補血
+              g.lvl.drops.push({type:"heal",x:VW+50,y:100+Math.random()*200,w:24,h:24,collected:false,bob:0});
+              // 隨機武器
+              const weapons=["spread","laser","missile","plasma","wave","ice","flame","lightning","shuriken","beam"];
+              const w1=weapons[Math.floor(Math.random()*weapons.length)];
+              g.lvl.drops.push({type:"weapon",weapon:w1,x:VW+150,y:100+Math.random()*200,w:26,h:26,collected:false,bob:0});
+              spawnText(g,VW/2,VH/2-40,"💝 簡單模式補給投放！","#5cdb95");
+            }
           }
         },2200);
       }
@@ -757,28 +1044,32 @@ function Game(){
       // === 動態補波次：若所有 wave 都觸發、但 BOSS 還沒到，持續生木箱與小敵人 ===
       if(!g.lvl.bossSpawned){
         g.lvl.extraSpawnTimer=(g.lvl.extraSpawnTimer||0)+1;
-        // 每 90 幀檢查：若沒有 wave 即將觸發，補一個 crate 或敵人
         if(g.lvl.extraSpawnTimer>=90){
-          // 看是否所有 wave 都已觸發
           let hasPending=false;
           for(let i=0;i<g.lvl.waves.length;i++){
             if(!g.lvl.waves[i].triggered){hasPending=true;break;}
           }
           if(!hasPending){
             g.lvl.extraSpawnTimer=0;
+            // 場上有未擊破的木箱時，只補木箱，不補敵人
+            const stillCrate=g.lvl.crates.some(function(c){return c.alive;});
+            if(stillCrate){
+              // 已有木箱：不補東西，等玩家先處理
+            }
+            // 簡單模式（aggro<=0.7）：場上已有敵人時不補新敵人
+            else if(g.df.aggro<=0.7&&g.lvl.enemies.some(function(e){return e.alive&&e.type!=="boss";})){
+              // 等場上敵人清完
+            }
             // 70% 機率產木箱，30% 機率產小敵編隊
-            if(Math.random()<0.7){
+            else if(Math.random()<0.7){
               spawnWave(g,{type:"crate",x:VW+80,y:50+Math.random()*270});
             }else{
               const r=Math.random();
               if(r<0.4){
-                // 戰機編隊
                 for(let k=0;k<5;k++)g.lvl.enemies.push(makeEnemy("fighter",VW+k*55,80+Math.random()*240,g.df,{movement:"sine",baseY:80+Math.random()*240,amp:50+Math.random()*60,freq:0.04+Math.random()*0.02,phase:k*0.5}));
               }else if(r<0.7){
-                // 自爆機線
                 for(let k=0;k<4;k++)g.lvl.enemies.push(makeEnemy("kamikaze",VW+k*65,100+Math.random()*180,g.df,{}));
               }else{
-                // 砲塔或轟炸機
                 if(Math.random()<0.5)g.lvl.enemies.push(makeEnemy("turret",VW+50,Math.random()<0.5?80:VH-80,g.df,{top:Math.random()<0.5}));
                 else g.lvl.enemies.push(makeEnemy("bomber",VW+80,100+Math.random()*120,g.df,{}));
               }
@@ -787,24 +1078,60 @@ function Game(){
         }
       }
 
+      // 場上有未擊破的木箱時，暫停觸發敵人（讓玩家專心學成語）
+      const hasCrate=g.lvl.crates.some(function(c){return c.alive;});
+      // 簡單模式（aggro<=0.7）：限制場上敵人類型只能有 1 種
+      const isEasy=g.df.aggro<=0.7;
+      let existingTypes=null;
+      if(isEasy){
+        existingTypes=new Set();
+        for(let i=0;i<g.lvl.enemies.length;i++){
+          const e=g.lvl.enemies[i];
+          if(e.alive&&e.type!=="boss")existingTypes.add(e.type);
+        }
+      }
+
       // 觸發敵人波次
       for(let i=0;i<g.lvl.waves.length;i++){
         const w=g.lvl.waves[i];
         if(w.triggered)continue;
         if(g.worldX>=w.triggerX){
+          // 木箱在場時，只觸發木箱/補給/BOSS 警告，跳過敵人波
+          const isEnemyWave=w.type==="line"||w.type==="sine"||w.type==="single";
+          if(hasCrate&&isEnemyWave)continue;
+          // 簡單模式：場上已有一種以上敵人時，跳過會引入新類型的波
+          if(isEasy&&isEnemyWave&&existingTypes.size>=1){
+            // 看看這波會帶入的敵人類型
+            const newType=w.enemy;
+            if(newType&&!existingTypes.has(newType))continue;
+          }
           w.triggered=true;
           spawnWave(g,w);
+          // 觸發後立刻把這波敵人類型加入 set
+          if(isEasy&&w.enemy)existingTypes.add(w.enemy);
         }
       }
 
-      // 結束條件
-      if(g.lvl.bossDefeated&&!g.won){
-        // 撤離動畫：戰機向右飛出畫面
-        if(p.x<VW+50){
-          p.x+=3;
-        }else{
-          g.won=true;
+      // 結束條件：BOSS 死亡後播 1.5 秒撤離動畫，再展示複習面板
+      if(g.lvl.bossDefeated&&!g.upgradeShown){
+        g.bossDeadTimer=(g.bossDeadTimer||0)+1;
+        p.vx=4;p.vy*=0.9;
+        p.x+=p.vx;p.y+=p.vy;
+        if(g.bossDeadTimer>=72||p.x>VW+10){
+          g.upgradeShown=true;
+          // 找出本關完成的成語清單
+          const stageCompletedIdioms=g.complete.slice(g.stageStartCount);
+          // 彈出複習面板
+          setReviewPanel({
+            idioms:stageCompletedIdioms,
+            stage:g.stage,
+            clicked:[] // 用 array 存已點選的成語
+          });
         }
+        setScore(g.score);
+        drawAll(ctx,g);
+        animRef.current=requestAnimationFrame(loop);
+        return;
       }
 
       // 玩家輸入
@@ -825,6 +1152,90 @@ function Game(){
 
       // 持續射擊（自動連發）
       fireBullet(g,p);
+
+      // === 僚機系統 ===
+      if(g.wingmen&&g.wingmen.length>0){
+        // 出擊鈕
+        if(keysRef.current.launchPressed){
+          keysRef.current.launchPressed=false;
+          if(g.wingmenCanLaunch&&g.wingmenLaunched<=0){
+            g.wingmenLaunched=300; // 5 秒 = 300 幀
+            spawnText(g,p.x,p.y-40,"🤖 僚機出擊！","#00FFFF");
+            for(let wm=0;wm<g.wingmen.length;wm++){
+              g.wingmen[wm].launchTarget=null;
+              g.wingmen[wm].launchX=p.x+200+wm*50;
+              g.wingmen[wm].launchY=80+wm*180;
+            }
+          }
+        }
+        if(g.wingmenLaunched>0)g.wingmenLaunched--;
+        for(let wi=0;wi<g.wingmen.length;wi++){
+          const wm=g.wingmen[wi];
+          wm.frame++;
+          if(g.wingmenLaunched>0){
+            // === 出擊模式：自主前進攻擊 ===
+            // 找最近的敵人
+            let nearest=null,nd=99999;
+            for(let j=0;j<g.lvl.enemies.length;j++){
+              const en=g.lvl.enemies[j];
+              if(!en.alive)continue;
+              const dx=en.x-wm.x,dy=en.y-wm.y;
+              const dd=Math.sqrt(dx*dx+dy*dy);
+              if(dd<nd){nd=dd;nearest=en;}
+            }
+            if(nearest){
+              const dx=nearest.x-wm.x,dy=nearest.y-wm.y;
+              const dd=Math.sqrt(dx*dx+dy*dy)||1;
+              wm.x+=dx/dd*4;
+              wm.y+=dy/dd*4;
+            }else{
+              // 沒敵人就往右飛
+              wm.x+=3;
+            }
+            // 邊界
+            if(wm.x>VW-30)wm.x=VW-30;
+            if(wm.y<35)wm.y=35;
+            if(wm.y>VH-30)wm.y=VH-30;
+            // 出擊期間射速加倍
+            if(wm.shootCD>0)wm.shootCD--;
+            else{
+              wm.shootCD=20;
+              fireWingmanBullet(g,wm);
+            }
+            // 飛彈也加快
+            if(g.wingmenMissile){
+              if(wm.missileCD>0)wm.missileCD--;
+              else{
+                wm.missileCD=90;
+                fireWingmanMissile(g,wm);
+              }
+            }
+          }else{
+            // === 平常跟隨模式 ===
+            const targetX=p.x+wm.offX;
+            const targetY=p.y+wm.offY;
+            wm.bob+=0.05;
+            const tx=targetX+Math.sin(wm.bob)*3;
+            const ty=targetY+Math.cos(wm.bob)*2;
+            wm.x+=(tx-wm.x)*0.15;
+            wm.y+=(ty-wm.y)*0.15;
+            // 每 1 秒（60 幀）發射子彈
+            if(wm.shootCD>0)wm.shootCD--;
+            else{
+              wm.shootCD=60;
+              fireWingmanBullet(g,wm);
+            }
+            // 第 3 關起：每 3 秒發射追蹤飛彈
+            if(g.wingmenMissile){
+              if(wm.missileCD>0)wm.missileCD--;
+              else{
+                wm.missileCD=180;
+                fireWingmanMissile(g,wm);
+              }
+            }
+          }
+        }
+      }
 
       // 玩家子彈
       for(let i=g.bullets.length-1;i>=0;i--){
@@ -967,6 +1378,22 @@ function Game(){
         const b=g.eBullets[i];
         b.x+=b.vx;b.y+=b.vy;b.life--;
         if(b.life<=0||b.x<-50||b.x>VW+50||b.y<-50||b.y>VH+50){g.eBullets.splice(i,1);continue;}
+        // 僚機擋彈（不扣血，子彈消失）
+        if(g.wingmen&&g.wingmen.length>0){
+          let blocked=false;
+          for(let wi=0;wi<g.wingmen.length;wi++){
+            const wm=g.wingmen[wi];
+            if(rectIntersect(b,wm)){
+              // 僚機閃光（擋彈視覺）
+              wm.hitFlash=8;
+              spawnBurst(g,b.x+b.w/2,b.y+b.h/2,4,["#00FFFF","#fff"],3);
+              g.eBullets.splice(i,1);
+              blocked=true;
+              break;
+            }
+          }
+          if(blocked)continue;
+        }
         if(p.invince<=0&&rectIntersect(b,p)){hurtPlayer(g);g.eBullets.splice(i,1);}
       }
 
@@ -1073,16 +1500,28 @@ function Game(){
         if(d.collected){g.lvl.drops.splice(i,1);continue;}
 
         if(d.floating){
-          // 飄浮型字幣：完全無重力。先散開減速，然後設定 baseY 在空中飄浮
-          d.x+=d.vx;
-          d.y+=d.vy;
-          d.vx*=0.93;
-          d.vy*=0.93;
-          // 速度幾乎停下後，鎖定 baseY 並開始空中飄浮 + 跟著捲軸左移
-          if(!d.locked&&Math.abs(d.vx)<0.6&&Math.abs(d.vy)<0.6){
-            d.locked=true;
-            d.baseY=d.y;
-            d.bobAmp=4+Math.random()*4;
+          // 飄浮型字幣：朝預定的 targetX/Y 緩動定位，到位後鎖定在原處飄浮
+          if(!d.locked){
+            // 先用初始速度散開一小段
+            d.x+=d.vx;
+            d.y+=d.vy;
+            d.vx*=0.92;
+            d.vy*=0.92;
+            // 接近目標位置時，緩動鎖定
+            if(d.targetX!==undefined){
+              const dx=d.targetX-d.x,dy=d.targetY-d.y;
+              const dd=Math.sqrt(dx*dx+dy*dy);
+              if(dd<2.5){
+                d.x=d.targetX;d.y=d.targetY;
+                d.locked=true;
+                d.baseY=d.y;
+                d.bobAmp=3+Math.random()*2;
+              }else{
+                // 朝目標緩動
+                d.x+=dx*0.18;
+                d.y+=dy*0.18;
+              }
+            }
           }
           if(d.locked){
             // 跟著世界捲軸往左飄
@@ -1090,11 +1529,11 @@ function Game(){
             d.bob=(d.bob||0)+0.06;
             d.y=d.baseY+Math.sin(d.bob)*d.bobAmp;
           }
-          // 邊界保護：不讓字幣飛出畫面上下
-          if(d.y<40){d.y=40;d.vy=Math.abs(d.vy)*0.5;}
-          if(d.y>VH-50){d.y=VH-50;d.vy=-Math.abs(d.vy)*0.5;}
+          // 邊界保護
+          if(d.y<40){d.y=40;}
+          if(d.y>VH-50){d.y=VH-50;}
         }else if(d.vy!==undefined){
-          // 舊行為（不應該再被觸發，但保留兼容）
+          // 舊行為（兼容）
           d.vy+=0.15;
           if(d.vy>5)d.vy=5;
           d.x+=d.vx;d.y+=d.vy;
@@ -1107,7 +1546,8 @@ function Game(){
         if(d.life!==undefined){d.life--;if(d.life<=0){g.lvl.drops.splice(i,1);continue;}}
         if(d.x<-60){g.lvl.drops.splice(i,1);continue;}
         // 磁吸：玩家靠近時拉過去
-        if(dist(p,d)<80){
+        const magnetRange=80*(p.magnetMul||1);
+        if(dist(p,d)<magnetRange){
           const dx=p.x+p.w/2-(d.x+d.w/2),dy=p.y+p.h/2-(d.y+d.h/2);
           const dd=Math.sqrt(dx*dx+dy*dy)||1;
           d.x+=dx/dd*3.5;d.y+=dy/dd*3.5;
@@ -1147,6 +1587,17 @@ function Game(){
               spawnBurst(g,p.x+p.w/2,p.y,20,["#FFD700","#FF6B6B","#4ECDC4","#E056A0","#fff"],8);
               spawnText(g,p.x,p.y-30,"✨ "+d.idiom+" +1000","#FFD700");
               if(p.hp<p.maxHp){p.hp++;setHpLeft(p.hp);spawnText(g,p.x+30,p.y-15,"+❤️","#FF6B6B");}
+              // === 累積能量 ===
+              p.energy++;
+              if(p.energy>=p.energyMax){
+                p.energy=0;
+                if(p.bombs<p.maxBombs)p.bombs++;
+                else g.score+=500; // 已滿則加分
+                setBombCount(p.bombs);
+                spawnText(g,p.x,p.y-50,"⚡ 必殺 +1！","#FFD700");
+                spawnBurst(g,p.x+p.w/2,p.y+p.h/2,25,["#FFD700","#fff","#FFAA00"],10);
+                if(s)try{s.powerUp();}catch(e){}
+              }
             }
             spawnBurst(g,d.x+d.w/2,d.y+d.h/2,5,["#FFD700","#fff7cc"],3);
           }
@@ -1281,10 +1732,13 @@ function Game(){
     }
     return null;
   }
-  function makeBoss(x,y,df){
+  function makeBoss(x,y,df,stage){
+    // 不同關卡的 BOSS 主題：1=皇冠戰艦, 2=機械蛛, 3=火焰之心, 4+=循環
+    const theme=((stage||1)-1)%3;
     return {type:"boss",x:x,y:y,w:120,h:140,vx:0,vy:0,
       hp:df.bossHp,maxHp:df.bossHp,
-      alive:true,shootCD:60,frame:0,bossPhase:0,active:false};
+      alive:true,shootCD:60,frame:0,bossPhase:0,active:false,
+      theme:theme,stage:stage||1};
   }
 
   // ===== DRAW =====
@@ -1399,6 +1853,13 @@ function Game(){
     // Player
     drawPlayer(ctx,g.p,g.frame);
 
+    // 繪製僚機
+    if(g.wingmen&&g.wingmen.length>0){
+      for(let wi=0;wi<g.wingmen.length;wi++){
+        drawWingman(ctx,g.wingmen[wi],g.frame,g.wingmenLaunched>0);
+      }
+    }
+
     // 粒子
     for(let i=0;i<g.particles.length;i++){
       const p2=g.particles[i];
@@ -1443,6 +1904,98 @@ function Game(){
     // HUD
     drawHUD(ctx,g);
 
+    ctx.restore();
+  }
+
+  function drawWingman(ctx,wm,frame,launched){
+    const px=wm.x,py=wm.y;
+    if(wm.hitFlash>0)wm.hitFlash--;
+    ctx.save();
+    // 擋彈閃光（白色光環）
+    if(wm.hitFlash>0){
+      ctx.strokeStyle="rgba(255,255,255,"+(wm.hitFlash/8)+")";
+      ctx.lineWidth=3;
+      ctx.shadowColor="#fff";ctx.shadowBlur=12;
+      ctx.beginPath();
+      ctx.ellipse(px+wm.w/2,py+wm.h/2,wm.w/2+6,wm.h/2+6,0,0,Math.PI*2);
+      ctx.stroke();
+      ctx.shadowBlur=0;
+    }
+    // 出擊時發紅光、平常發青光
+    const glow=launched?"#FF4500":"#00FFFF";
+    ctx.shadowColor=glow;ctx.shadowBlur=launched?12:6;
+
+    // 機翼
+    ctx.fillStyle=launched?"#8b3a3a":"#2a4a5e";
+    ctx.beginPath();
+    ctx.moveTo(px+5,py);
+    ctx.lineTo(px+wm.w-3,py+2);
+    ctx.lineTo(px+wm.w-5,py+6);
+    ctx.lineTo(px+5,py+6);
+    ctx.fill();
+    ctx.beginPath();
+    ctx.moveTo(px+5,py+wm.h);
+    ctx.lineTo(px+wm.w-3,py+wm.h-2);
+    ctx.lineTo(px+wm.w-5,py+wm.h-6);
+    ctx.lineTo(px+5,py+wm.h-6);
+    ctx.fill();
+
+    // 機身（小型菱形）
+    const bg=ctx.createLinearGradient(px,py,px+wm.w,py);
+    if(launched){
+      bg.addColorStop(0,"#aa3030");
+      bg.addColorStop(0.5,"#FF4500");
+      bg.addColorStop(1,"#aa3030");
+    }else{
+      bg.addColorStop(0,"#2a4a5e");
+      bg.addColorStop(0.5,"#5cabe0");
+      bg.addColorStop(1,"#2a4a5e");
+    }
+    ctx.fillStyle=bg;
+    ctx.beginPath();
+    ctx.moveTo(px+2,py+wm.h/2);
+    ctx.lineTo(px+wm.w*0.4,py+3);
+    ctx.lineTo(px+wm.w,py+wm.h/2-1);
+    ctx.lineTo(px+wm.w,py+wm.h/2+1);
+    ctx.lineTo(px+wm.w*0.4,py+wm.h-3);
+    ctx.fill();
+    ctx.shadowBlur=0;
+
+    // 機頭尖
+    ctx.fillStyle="#FFD700";
+    ctx.beginPath();
+    ctx.moveTo(px+wm.w-2,py+wm.h/2-2);
+    ctx.lineTo(px+wm.w+5,py+wm.h/2);
+    ctx.lineTo(px+wm.w-2,py+wm.h/2+2);
+    ctx.fill();
+
+    // 駕駛艙小窗
+    ctx.fillStyle=launched?"#FFFF00":"#00FFFF";
+    ctx.beginPath();
+    ctx.ellipse(px+wm.w*0.55,py+wm.h/2,3.5,2,0,0,Math.PI*2);
+    ctx.fill();
+
+    // 噴射尾流
+    const thrust=Math.sin(frame*0.4)*0.5+1;
+    const tg=ctx.createLinearGradient(px-8,0,px,0);
+    tg.addColorStop(0,launched?"rgba(255,80,0,0)":"rgba(0,200,255,0)");
+    tg.addColorStop(1,launched?"rgba(255,255,200,0.8)":"rgba(255,255,255,0.7)");
+    ctx.fillStyle=tg;
+    ctx.beginPath();
+    ctx.moveTo(px-6*thrust,py+wm.h*0.4);
+    ctx.lineTo(px+2,py+wm.h*0.4);
+    ctx.lineTo(px+2,py+wm.h*0.6);
+    ctx.lineTo(px-6*thrust,py+wm.h*0.6);
+    ctx.fill();
+
+    // 出擊狀態 - 外圍紅色光環
+    if(launched){
+      ctx.strokeStyle="rgba(255,100,0,"+(0.4+Math.sin(frame*0.3)*0.3)+")";
+      ctx.lineWidth=2;
+      ctx.beginPath();
+      ctx.ellipse(px+wm.w/2,py+wm.h/2,wm.w/2+5,wm.h/2+5,0,0,Math.PI*2);
+      ctx.stroke();
+    }
     ctx.restore();
   }
 
@@ -1731,16 +2284,99 @@ function Game(){
       enemyHPBar(ctx,en);
     }else if(en.type==="boss"){
       if(!en.active&&en.x>VW-en.w-30+5){
-        // 進場時半透明
         ctx.globalAlpha=0.5;
       }
+      const theme=en.theme||0;
+      if(theme===1){drawBossSpider(ctx,en,frame);ctx.globalAlpha=1;return;}
+      if(theme===2){drawBossFlame(ctx,en,frame);ctx.globalAlpha=1;return;}
+      // theme 0：原本的皇冠戰艦
       const bob=Math.sin(frame*0.05)*3;
-      // 巨型空中戰艦
-      // 主體
-      ctx.fillStyle="#333";
+      const cx=ex+en.w/2,cy=ey+en.h/2+bob;
+      const stage=en.stage||1;
+      const phase=Math.floor(en.frame/180)%3;
+
+      // ===== 1. 外圍光環（旋轉能量場）=====
+      ctx.save();
+      ctx.translate(cx,cy);
+      const haloRot=frame*0.015;
+      for(let r=0;r<3;r++){
+        ctx.rotate(haloRot+(r%2===0?0:Math.PI/4));
+        ctx.strokeStyle="rgba(255,0,150,"+(0.15+Math.sin(frame*0.08+r)*0.1)+")";
+        ctx.lineWidth=2;
+        ctx.beginPath();
+        ctx.arc(0,0,en.w*0.7+r*8,0,Math.PI*2);
+        ctx.stroke();
+      }
+      // 光環符文（八角）
+      ctx.strokeStyle="rgba(255,215,0,"+(0.3+Math.sin(frame*0.1)*0.2)+")";
+      ctx.lineWidth=1.5;
+      for(let i=0;i<8;i++){
+        const ang=i*Math.PI/4+frame*0.01;
+        const rOut=en.w*0.85;
+        ctx.beginPath();
+        ctx.moveTo(Math.cos(ang)*rOut,Math.sin(ang)*rOut);
+        ctx.lineTo(Math.cos(ang)*(rOut-12),Math.sin(ang)*(rOut-12));
+        ctx.stroke();
+      }
+      ctx.restore();
+
+      // ===== 2. 能量觸手（從反應爐延伸出）=====
+      for(let t=0;t<4;t++){
+        const tAng=t*Math.PI/2+frame*0.02;
+        const tLen=20+Math.sin(frame*0.1+t)*15;
+        ctx.strokeStyle="rgba(0,255,255,"+(0.4+Math.sin(frame*0.15+t)*0.3)+")";
+        ctx.lineWidth=3;
+        ctx.shadowColor="#00FFFF";ctx.shadowBlur=8;
+        ctx.beginPath();
+        ctx.moveTo(cx,cy);
+        ctx.lineTo(cx+Math.cos(tAng)*tLen,cy+Math.sin(tAng)*tLen);
+        ctx.stroke();
+        ctx.shadowBlur=0;
+      }
+
+      // ===== 3. 機翼裝飾（發光金邊）=====
+      // 下機翼
+      const wingG=ctx.createLinearGradient(ex,ey+en.h-15,ex+en.w,ey+en.h);
+      wingG.addColorStop(0,"#3a1a4a");
+      wingG.addColorStop(0.5,"#7a3a8a");
+      wingG.addColorStop(1,"#3a1a4a");
+      ctx.fillStyle=wingG;
+      ctx.beginPath();
+      ctx.moveTo(ex+15,ey+en.h-10+bob);
+      ctx.lineTo(ex+en.w-15,ey+en.h-10+bob);
+      ctx.lineTo(ex+en.w-5,ey+en.h+10+bob);
+      ctx.lineTo(ex+5,ey+en.h+10+bob);
+      ctx.closePath();
+      ctx.fill();
+      ctx.strokeStyle="#FFD700";ctx.lineWidth=2;
+      ctx.shadowColor="#FFD700";ctx.shadowBlur=8;
+      ctx.stroke();
+      ctx.shadowBlur=0;
+      // 上機翼
+      ctx.fillStyle=wingG;
+      ctx.beginPath();
+      ctx.moveTo(ex+15,ey+10+bob);
+      ctx.lineTo(ex+en.w-15,ey+10+bob);
+      ctx.lineTo(ex+en.w-5,ey-10+bob);
+      ctx.lineTo(ex+5,ey-10+bob);
+      ctx.closePath();
+      ctx.fill();
+      ctx.strokeStyle="#FFD700";ctx.lineWidth=2;
+      ctx.shadowColor="#FFD700";ctx.shadowBlur=8;
+      ctx.stroke();
+      ctx.shadowBlur=0;
+
+      // ===== 4. 主體（紫黑金屬戰艦）=====
+      const bodyG=ctx.createLinearGradient(ex,ey,ex,ey+en.h);
+      bodyG.addColorStop(0,"#1a0a2e");
+      bodyG.addColorStop(0.3,"#4a2a5e");
+      bodyG.addColorStop(0.5,"#6a3a7e");
+      bodyG.addColorStop(0.7,"#4a2a5e");
+      bodyG.addColorStop(1,"#1a0a2e");
+      ctx.fillStyle=bodyG;
       ctx.fillRect(ex,ey+20+bob,en.w,en.h-40);
-      // 上下護甲
-      ctx.fillStyle="#555";
+      // 上下護甲斜面
+      ctx.fillStyle="#3a1a4e";
       ctx.beginPath();
       ctx.moveTo(ex,ey+20+bob);
       ctx.lineTo(ex+en.w-8,ey+bob);
@@ -1753,46 +2389,728 @@ function Game(){
       ctx.lineTo(ex+en.w,ey+en.h-15+bob);
       ctx.lineTo(ex,ey+en.h-20+bob);
       ctx.fill();
-      // 機翼
-      ctx.fillStyle="#444";
-      ctx.fillRect(ex+30,ey+bob,en.w-60,8);
-      ctx.fillRect(ex+30,ey+en.h-8+bob,en.w-60,8);
-      // 中央反應爐
-      const cor=Math.sin(frame*0.1)*0.3+0.7;
-      ctx.shadowColor="#00FFFF";ctx.shadowBlur=15;
-      ctx.fillStyle="rgba(0,255,255,"+cor+")";
+      // 金邊線
+      ctx.strokeStyle="#FFD700";ctx.lineWidth=1.5;
+      ctx.shadowColor="#FFD700";ctx.shadowBlur=4;
+      ctx.strokeRect(ex+0.5,ey+20+bob,en.w-1,en.h-40);
+      ctx.shadowBlur=0;
+      // 護甲鉚釘
+      ctx.fillStyle="#FFD700";
+      for(let r=0;r<5;r++){
+        ctx.fillRect(ex+10+r*22,ey+25+bob,3,3);
+        ctx.fillRect(ex+10+r*22,ey+en.h-28+bob,3,3);
+      }
+      // 紋飾條紋
+      ctx.fillStyle="rgba(255,215,0,0.3)";
+      ctx.fillRect(ex+5,ey+30+bob,en.w-10,2);
+      ctx.fillRect(ex+5,ey+en.h-32+bob,en.w-10,2);
+
+      // ===== 5. 王冠（boss 標誌）=====
+      ctx.fillStyle="#FFD700";
       ctx.beginPath();
-      ctx.arc(ex+en.w*0.5,ey+en.h/2+bob,18,0,Math.PI*2);
+      ctx.moveTo(ex+en.w*0.3,ey-8+bob);
+      ctx.lineTo(ex+en.w*0.35,ey-18+bob);
+      ctx.lineTo(ex+en.w*0.42,ey-12+bob);
+      ctx.lineTo(ex+en.w*0.5,ey-22+bob);
+      ctx.lineTo(ex+en.w*0.58,ey-12+bob);
+      ctx.lineTo(ex+en.w*0.65,ey-18+bob);
+      ctx.lineTo(ex+en.w*0.7,ey-8+bob);
+      ctx.lineTo(ex+en.w*0.7,ey-3+bob);
+      ctx.lineTo(ex+en.w*0.3,ey-3+bob);
+      ctx.closePath();
       ctx.fill();
+      ctx.strokeStyle="#FFAA00";ctx.lineWidth=1.5;
+      ctx.stroke();
+      // 王冠寶石
+      ctx.fillStyle="#FF0066";
+      ctx.shadowColor="#FF0066";ctx.shadowBlur=6;
+      ctx.beginPath();ctx.arc(ex+en.w*0.5,ey-18+bob,2.5,0,Math.PI*2);ctx.fill();
+      ctx.fillStyle="#00FFFF";
+      ctx.shadowColor="#00FFFF";
+      ctx.beginPath();ctx.arc(ex+en.w*0.35,ey-13+bob,1.8,0,Math.PI*2);ctx.fill();
+      ctx.beginPath();ctx.arc(ex+en.w*0.65,ey-13+bob,1.8,0,Math.PI*2);ctx.fill();
+      ctx.shadowBlur=0;
+
+      // ===== 6. 中央反應爐（多層強化版）=====
+      const cor=Math.sin(frame*0.1)*0.3+0.7;
+      // 外層光暈
+      const coreG=ctx.createRadialGradient(cx,cy,4,cx,cy,32);
+      coreG.addColorStop(0,"rgba(255,255,255,"+cor+")");
+      coreG.addColorStop(0.3,"rgba(0,255,255,"+(cor*0.8)+")");
+      coreG.addColorStop(0.7,"rgba(0,180,255,"+(cor*0.4)+")");
+      coreG.addColorStop(1,"rgba(0,100,200,0)");
+      ctx.fillStyle=coreG;
+      ctx.beginPath();ctx.arc(cx,cy,32,0,Math.PI*2);ctx.fill();
+      // 旋轉的六角能量環
+      ctx.save();
+      ctx.translate(cx,cy);
+      ctx.rotate(frame*0.05);
+      ctx.strokeStyle="#00FFFF";ctx.lineWidth=2;
+      ctx.shadowColor="#00FFFF";ctx.shadowBlur=10;
+      ctx.beginPath();
+      for(let i=0;i<6;i++){
+        const a=i*Math.PI/3;
+        const x=Math.cos(a)*18,y=Math.sin(a)*18;
+        if(i===0)ctx.moveTo(x,y);else ctx.lineTo(x,y);
+      }
+      ctx.closePath();
+      ctx.stroke();
+      ctx.restore();
+      // 內核
+      ctx.fillStyle="#fff";
+      ctx.shadowColor="#00FFFF";ctx.shadowBlur=12;
+      ctx.beginPath();ctx.arc(cx,cy,7,0,Math.PI*2);ctx.fill();
+      ctx.shadowBlur=0;
+
+      // ===== 7. 雙肩重型砲管 =====
+      ctx.fillStyle="#1a1a2e";
+      ctx.fillRect(ex-16,ey+30+bob,20,12);
+      ctx.fillRect(ex-16,ey+en.h-42+bob,20,12);
+      ctx.fillStyle="#4a4a6e";
+      ctx.fillRect(ex-14,ey+32+bob,16,8);
+      ctx.fillRect(ex-14,ey+en.h-40+bob,16,8);
+      // 砲口能量
+      const muzzle=Math.sin(frame*0.2)*0.3+0.7;
+      ctx.fillStyle="rgba(255,0,150,"+muzzle+")";
+      ctx.shadowColor="#FF0099";ctx.shadowBlur=8;
+      ctx.beginPath();ctx.arc(ex-16,ey+36+bob,3,0,Math.PI*2);ctx.fill();
+      ctx.beginPath();ctx.arc(ex-16,ey+en.h-36+bob,3,0,Math.PI*2);ctx.fill();
+      ctx.shadowBlur=0;
+      // 金邊
+      ctx.strokeStyle="#FFD700";ctx.lineWidth=1;
+      ctx.strokeRect(ex-16,ey+30+bob,20,12);
+      ctx.strokeRect(ex-16,ey+en.h-42+bob,20,12);
+
+      // ===== 8. 機頭眼睛（雙紅光）=====
+      const eb=Math.sin(frame*0.15)*0.3+0.7;
+      ctx.shadowColor="#FF0000";ctx.shadowBlur=18;
+      const eyeG=ctx.createRadialGradient(ex-4,ey+en.h*0.35+bob,1,ex-4,ey+en.h*0.35+bob,8);
+      eyeG.addColorStop(0,"#fff");
+      eyeG.addColorStop(0.3,"#FF6666");
+      eyeG.addColorStop(1,"rgba(255,0,0,"+eb+")");
+      ctx.fillStyle=eyeG;
+      ctx.beginPath();ctx.arc(ex-4,ey+en.h*0.35+bob,7,0,Math.PI*2);ctx.fill();
+      const eyeG2=ctx.createRadialGradient(ex-4,ey+en.h*0.65+bob,1,ex-4,ey+en.h*0.65+bob,8);
+      eyeG2.addColorStop(0,"#fff");
+      eyeG2.addColorStop(0.3,"#FF6666");
+      eyeG2.addColorStop(1,"rgba(255,0,0,"+eb+")");
+      ctx.fillStyle=eyeG2;
+      ctx.beginPath();ctx.arc(ex-4,ey+en.h*0.65+bob,7,0,Math.PI*2);ctx.fill();
+      ctx.shadowBlur=0;
+
+      // ===== 9. 「敵」字標誌（金底紅字、發光）=====
+      ctx.save();
+      ctx.shadowColor="#FFD700";ctx.shadowBlur=10;
+      // 金色徽章背景
+      ctx.fillStyle="#FFD700";
+      ctx.beginPath();
+      ctx.arc(ex+en.w*0.75,ey+en.h/2+bob,15,0,Math.PI*2);
+      ctx.fill();
+      ctx.fillStyle="#c0392b";
+      ctx.beginPath();
+      ctx.arc(ex+en.w*0.75,ey+en.h/2+bob,12,0,Math.PI*2);
+      ctx.fill();
+      ctx.shadowBlur=0;
+      ctx.fillStyle="#FFD700";
+      ctx.font="bold 22px 'Noto Serif TC',serif";
+      ctx.textAlign="center";ctx.textBaseline="middle";
+      ctx.fillText("敵",ex+en.w*0.75,ey+en.h/2+bob+1);
+      ctx.restore();
+
+      // ===== 10. 引擎噴射（背面）=====
+      const thrustLen=20+Math.sin(frame*0.3)*5;
+      const thrustG=ctx.createLinearGradient(ex+en.w,0,ex+en.w+thrustLen,0);
+      thrustG.addColorStop(0,"rgba(0,255,255,0.9)");
+      thrustG.addColorStop(0.5,"rgba(255,100,255,0.5)");
+      thrustG.addColorStop(1,"rgba(255,100,255,0)");
+      ctx.fillStyle=thrustG;
+      ctx.beginPath();
+      ctx.moveTo(ex+en.w,ey+30+bob);
+      ctx.lineTo(ex+en.w+thrustLen,ey+40+bob);
+      ctx.lineTo(ex+en.w+thrustLen,ey+50+bob);
+      ctx.lineTo(ex+en.w,ey+45+bob);
+      ctx.fill();
+      ctx.beginPath();
+      ctx.moveTo(ex+en.w,ey+en.h-50+bob);
+      ctx.lineTo(ex+en.w+thrustLen,ey+en.h-40+bob);
+      ctx.lineTo(ex+en.w+thrustLen,ey+en.h-30+bob);
+      ctx.lineTo(ex+en.w,ey+en.h-45+bob);
+      ctx.fill();
+
+      // ===== 11. 階段顯示（圍繞 BOSS 的光環粒子）=====
+      for(let p=0;p<6;p++){
+        const pa=frame*0.04+p*Math.PI/3;
+        const pr=en.w*0.6+Math.sin(frame*0.08+p)*8;
+        const px2=cx+Math.cos(pa)*pr;
+        const py2=cy+Math.sin(pa)*pr*0.7;
+        ctx.fillStyle="rgba(255,215,0,"+(0.4+Math.sin(frame*0.1+p)*0.3)+")";
+        ctx.shadowColor="#FFD700";ctx.shadowBlur=6;
+        ctx.beginPath();ctx.arc(px2,py2,3,0,Math.PI*2);ctx.fill();
+        ctx.shadowBlur=0;
+      }
+
+      // 攻擊階段視覺提示（中央反應爐顏色變化）
+      if(phase===2){
+        // 蓄力時內核變紅
+        ctx.fillStyle="rgba(255,0,100,"+(0.3+Math.sin(frame*0.3)*0.3)+")";
+        ctx.beginPath();ctx.arc(cx,cy,10,0,Math.PI*2);ctx.fill();
+      }
+
+      ctx.globalAlpha=1;
+    }
+  }
+
+  // ===== BOSS 主題 2：機械蜘蛛 =====
+  function drawBossSpider(ctx,en,frame){
+    const ex=en.x,ey=en.y;
+    const bob=Math.sin(frame*0.06)*4;
+    const cx=ex+en.w/2,cy=ey+en.h/2+bob;
+    // 8 隻機械腳
+    for(let i=0;i<8;i++){
+      const ang=(i/8)*Math.PI*2+frame*0.01;
+      const len=45+Math.sin(frame*0.1+i)*8;
+      const legX=cx+Math.cos(ang)*len;
+      const legY=cy+Math.sin(ang)*len*0.7;
+      const midX=cx+Math.cos(ang)*len*0.5;
+      const midY=cy+Math.sin(ang)*len*0.5*0.7-10;
+      ctx.strokeStyle="#2a1a1a";ctx.lineWidth=5;
+      ctx.beginPath();
+      ctx.moveTo(cx,cy);
+      ctx.lineTo(midX,midY);
+      ctx.lineTo(legX,legY);
+      ctx.stroke();
+      ctx.strokeStyle="#8a6a3a";ctx.lineWidth=2;
+      ctx.beginPath();
+      ctx.moveTo(cx,cy);
+      ctx.lineTo(midX,midY);
+      ctx.lineTo(legX,legY);
+      ctx.stroke();
+      // 腳尖
+      ctx.fillStyle="#FF0000";
+      ctx.shadowColor="#FF0000";ctx.shadowBlur=4;
+      ctx.beginPath();ctx.arc(legX,legY,3,0,Math.PI*2);ctx.fill();
+      ctx.shadowBlur=0;
+    }
+    // 圓形身體
+    const bodyG=ctx.createRadialGradient(cx-10,cy-10,5,cx,cy,40);
+    bodyG.addColorStop(0,"#9a5a2a");
+    bodyG.addColorStop(0.5,"#6a3a1a");
+    bodyG.addColorStop(1,"#2a1a0a");
+    ctx.fillStyle=bodyG;
+    ctx.beginPath();ctx.arc(cx,cy,40,0,Math.PI*2);ctx.fill();
+    // 金屬條紋
+    ctx.strokeStyle="#FFD700";ctx.lineWidth=2;
+    ctx.beginPath();ctx.arc(cx,cy,38,0,Math.PI*2);ctx.stroke();
+    ctx.beginPath();ctx.arc(cx,cy,28,0,Math.PI*2);ctx.stroke();
+    // 八隻紅眼（圓形排列）
+    for(let i=0;i<8;i++){
+      const a=(i/8)*Math.PI*2;
+      const ex2=cx+Math.cos(a)*18;
+      const ey2=cy+Math.sin(a)*18;
+      const blink=Math.sin(frame*0.15+i*0.5)*0.3+0.7;
+      ctx.shadowColor="#FF0000";ctx.shadowBlur=10;
+      ctx.fillStyle="rgba(255,0,0,"+blink+")";
+      ctx.beginPath();ctx.arc(ex2,ey2,4,0,Math.PI*2);ctx.fill();
       ctx.shadowBlur=0;
       ctx.fillStyle="#fff";
-      ctx.beginPath();
-      ctx.arc(ex+en.w*0.5,ey+en.h/2+bob,6,0,Math.PI*2);
-      ctx.fill();
-      // 兩側砲管
-      ctx.fillStyle="#222";
-      ctx.fillRect(ex-12,ey+30+bob,16,10);
-      ctx.fillRect(ex-12,ey+en.h-40+bob,16,10);
-      ctx.fillStyle="#444";
-      ctx.fillRect(ex-10,ey+32+bob,8,6);
-      ctx.fillRect(ex-10,ey+en.h-38+bob,8,6);
-      // 機頭眼睛（紅光）
-      const eb=Math.sin(frame*0.15)*0.3+0.7;
-      ctx.shadowColor="#FF0000";ctx.shadowBlur=12;
-      ctx.fillStyle="rgba(255,0,0,"+eb+")";
-      ctx.beginPath();
-      ctx.arc(ex-2,ey+en.h*0.35+bob,5,0,Math.PI*2);
-      ctx.fill();
-      ctx.beginPath();
-      ctx.arc(ex-2,ey+en.h*0.65+bob,5,0,Math.PI*2);
-      ctx.fill();
+      ctx.beginPath();ctx.arc(ex2,ey2,1.5,0,Math.PI*2);ctx.fill();
+    }
+    // 中央獠牙（朝左/玩家）
+    ctx.fillStyle="#fff";
+    ctx.beginPath();
+    ctx.moveTo(cx-30,cy-8);ctx.lineTo(cx-45,cy);ctx.lineTo(cx-30,cy+8);ctx.fill();
+    ctx.beginPath();
+    ctx.moveTo(cx-25,cy-12);ctx.lineTo(cx-40,cy-5);ctx.lineTo(cx-25,cy+2);ctx.fill();
+    ctx.beginPath();
+    ctx.moveTo(cx-25,cy+12);ctx.lineTo(cx-40,cy+5);ctx.lineTo(cx-25,cy-2);ctx.fill();
+    // 中央核心
+    const cor=Math.sin(frame*0.12)*0.3+0.7;
+    ctx.shadowColor="#FF00FF";ctx.shadowBlur=14;
+    ctx.fillStyle="rgba(255,0,255,"+cor+")";
+    ctx.beginPath();ctx.arc(cx,cy,10,0,Math.PI*2);ctx.fill();
+    ctx.shadowBlur=0;
+    ctx.fillStyle="#fff";
+    ctx.beginPath();ctx.arc(cx,cy,4,0,Math.PI*2);ctx.fill();
+    // 「敵」標誌
+    ctx.fillStyle="#FFD700";
+    ctx.font="bold 14px 'Noto Serif TC',serif";
+    ctx.textAlign="center";ctx.textBaseline="middle";
+    ctx.fillText("第二關 BOSS",cx,cy-32);
+    // 圍繞粒子
+    for(let i=0;i<6;i++){
+      const pa=frame*0.04+i*Math.PI/3;
+      const pr=55+Math.sin(frame*0.08+i)*8;
+      const px2=cx+Math.cos(pa)*pr;
+      const py2=cy+Math.sin(pa)*pr*0.8;
+      ctx.fillStyle="rgba(255,0,150,"+(0.5+Math.sin(frame*0.1+i)*0.3)+")";
+      ctx.shadowColor="#FF0099";ctx.shadowBlur=6;
+      ctx.beginPath();ctx.arc(px2,py2,3,0,Math.PI*2);ctx.fill();
       ctx.shadowBlur=0;
-      // 標誌
+    }
+  }
+
+  // ===== BOSS 主題 3：火焰之心 / 龍王 =====
+  function drawBossFlame(ctx,en,frame){
+    const ex=en.x,ey=en.y;
+    const bob=Math.sin(frame*0.07)*5;
+    const cx=ex+en.w/2,cy=ey+en.h/2+bob;
+    // 外層火焰光暈
+    for(let r=3;r>=0;r--){
+      const haloR=80-r*15+Math.sin(frame*0.1+r)*5;
+      const g=ctx.createRadialGradient(cx,cy,haloR*0.4,cx,cy,haloR);
+      g.addColorStop(0,"rgba(255,200,0,0)");
+      g.addColorStop(0.5,"rgba(255,100,0,"+(0.2+r*0.05)+")");
+      g.addColorStop(1,"rgba(180,0,0,0)");
+      ctx.fillStyle=g;
+      ctx.beginPath();ctx.arc(cx,cy,haloR,0,Math.PI*2);ctx.fill();
+    }
+    // 旋轉火焰光環
+    ctx.save();
+    ctx.translate(cx,cy);
+    ctx.rotate(frame*0.02);
+    for(let i=0;i<8;i++){
+      ctx.rotate(Math.PI/4);
+      const flameLen=22+Math.sin(frame*0.15+i)*8;
+      ctx.fillStyle="rgba(255,"+(80+i*15)+",0,0.7)";
+      ctx.shadowColor="#FF6600";ctx.shadowBlur=8;
+      ctx.beginPath();
+      ctx.moveTo(0,-44);
+      ctx.lineTo(-8,-44-flameLen);
+      ctx.lineTo(0,-44-flameLen*1.3);
+      ctx.lineTo(8,-44-flameLen);
+      ctx.closePath();
+      ctx.fill();
+    }
+    ctx.shadowBlur=0;
+    ctx.restore();
+    // 龍頭主體（菱形）
+    const bodyG=ctx.createRadialGradient(cx-15,cy-15,5,cx,cy,45);
+    bodyG.addColorStop(0,"#FFFFFF");
+    bodyG.addColorStop(0.2,"#FFD700");
+    bodyG.addColorStop(0.5,"#FF4500");
+    bodyG.addColorStop(0.9,"#8B0000");
+    bodyG.addColorStop(1,"#2a0000");
+    ctx.fillStyle=bodyG;
+    ctx.beginPath();
+    ctx.moveTo(cx,cy-45);
+    ctx.lineTo(cx+45,cy);
+    ctx.lineTo(cx,cy+45);
+    ctx.lineTo(cx-45,cy);
+    ctx.closePath();
+    ctx.fill();
+    // 龍角（左右兩支朝外的金角）
+    ctx.fillStyle="#FFD700";
+    ctx.shadowColor="#FFD700";ctx.shadowBlur=8;
+    ctx.beginPath();
+    ctx.moveTo(cx-30,cy-20);ctx.lineTo(cx-50,cy-40);ctx.lineTo(cx-32,cy-12);ctx.fill();
+    ctx.beginPath();
+    ctx.moveTo(cx+30,cy-20);ctx.lineTo(cx+50,cy-40);ctx.lineTo(cx+32,cy-12);ctx.fill();
+    ctx.beginPath();
+    ctx.moveTo(cx-30,cy+20);ctx.lineTo(cx-50,cy+40);ctx.lineTo(cx-32,cy+12);ctx.fill();
+    ctx.beginPath();
+    ctx.moveTo(cx+30,cy+20);ctx.lineTo(cx+50,cy+40);ctx.lineTo(cx+32,cy+12);ctx.fill();
+    ctx.shadowBlur=0;
+    // 龍眼（雙眼朝左發藍光）
+    const eb=Math.sin(frame*0.15)*0.3+0.7;
+    ctx.shadowColor="#00FFFF";ctx.shadowBlur=14;
+    ctx.fillStyle="rgba(0,255,255,"+eb+")";
+    ctx.beginPath();ctx.arc(cx-10,cy-8,6,0,Math.PI*2);ctx.fill();
+    ctx.beginPath();ctx.arc(cx-10,cy+8,6,0,Math.PI*2);ctx.fill();
+    ctx.shadowBlur=0;
+    ctx.fillStyle="#000";
+    ctx.beginPath();ctx.arc(cx-12,cy-8,2,0,Math.PI*2);ctx.fill();
+    ctx.beginPath();ctx.arc(cx-12,cy+8,2,0,Math.PI*2);ctx.fill();
+    // 龍嘴（朝左尖端，吐火）
+    ctx.fillStyle="#000";
+    ctx.beginPath();
+    ctx.moveTo(cx-35,cy-3);ctx.lineTo(cx-48,cy);ctx.lineTo(cx-35,cy+3);ctx.fill();
+    // 嘴中吐出的火
+    const flameOut=8+Math.sin(frame*0.3)*4;
+    ctx.shadowColor="#FF6600";ctx.shadowBlur=12;
+    ctx.fillStyle="rgba(255,200,0,0.9)";
+    ctx.beginPath();
+    ctx.moveTo(cx-48,cy);
+    ctx.lineTo(cx-48-flameOut,cy-4);
+    ctx.lineTo(cx-48-flameOut*1.5,cy);
+    ctx.lineTo(cx-48-flameOut,cy+4);
+    ctx.fill();
+    ctx.shadowBlur=0;
+    // 中央發光核心
+    ctx.shadowColor="#FFFF00";ctx.shadowBlur=14;
+    ctx.fillStyle="rgba(255,255,200,"+(0.7+Math.sin(frame*0.1)*0.2)+")";
+    ctx.beginPath();ctx.arc(cx+10,cy,8,0,Math.PI*2);ctx.fill();
+    ctx.shadowBlur=0;
+    // 「敵」紋
+    ctx.fillStyle="#000";
+    ctx.font="bold 14px 'Noto Serif TC',serif";
+    ctx.textAlign="center";ctx.textBaseline="middle";
+    ctx.fillText("龍",cx+18,cy);
+    // 周圍火星
+    for(let i=0;i<10;i++){
+      const a=frame*0.05+i*Math.PI/5;
+      const r=60+Math.sin(frame*0.13+i)*15;
+      const px2=cx+Math.cos(a)*r;
+      const py2=cy+Math.sin(a)*r;
+      ctx.fillStyle="rgba(255,"+(150+Math.floor(Math.random()*100))+",0,"+(0.6+Math.sin(frame*0.1+i)*0.3)+")";
+      ctx.shadowColor="#FF6600";ctx.shadowBlur=6;
+      ctx.beginPath();ctx.arc(px2,py2,2.5,0,Math.PI*2);ctx.fill();
+      ctx.shadowBlur=0;
+    }
+  }
+
+  // ===== 第 2 關 BOSS：機械八腳蜘蛛 =====
+  function drawBossSpider(ctx,en,frame){
+    const ex=en.x,ey=en.y;
+    const bob=Math.sin(frame*0.06)*4;
+    const cx=ex+en.w/2,cy=ey+en.h/2+bob;
+    const hpRatio=en.hp/en.maxHp;
+    const enraged=hpRatio<0.4;
+
+    // 外圍紅色能量場（怒氣時）
+    if(enraged){
+      ctx.save();
+      ctx.translate(cx,cy);
+      ctx.rotate(frame*0.02);
+      ctx.strokeStyle="rgba(255,0,80,"+(0.3+Math.sin(frame*0.2)*0.2)+")";
+      ctx.lineWidth=2;
+      for(let r=0;r<3;r++){
+        ctx.beginPath();
+        ctx.arc(0,0,en.w*0.6+r*8,0,Math.PI*2);
+        ctx.stroke();
+      }
+      ctx.restore();
+    }
+
+    // ===== 八隻機械腳（圍繞身體）=====
+    for(let leg=0;leg<8;leg++){
+      const a=leg*Math.PI/4+frame*0.003;
+      const len=42;
+      // 腿關節
+      const j1x=cx+Math.cos(a)*22,j1y=cy+Math.sin(a)*22;
+      const swayPhase=frame*0.1+leg*0.7;
+      const sway=Math.sin(swayPhase)*8;
+      const j2x=j1x+Math.cos(a)*len+Math.cos(a+Math.PI/2)*sway;
+      const j2y=j1y+Math.sin(a)*len+Math.sin(a+Math.PI/2)*sway;
+      const tipX=j2x+Math.cos(a)*15;
+      const tipY=j2y+Math.sin(a)*15;
+      // 腿段
+      ctx.strokeStyle="#2a1a3a";
+      ctx.lineWidth=8;
+      ctx.lineCap="round";
+      ctx.beginPath();
+      ctx.moveTo(j1x,j1y);
+      ctx.lineTo(j2x,j2y);
+      ctx.stroke();
+      ctx.strokeStyle="#1a0a2a";
+      ctx.lineWidth=4;
+      ctx.beginPath();
+      ctx.moveTo(j2x,j2y);
+      ctx.lineTo(tipX,tipY);
+      ctx.stroke();
+      // 關節金邊
       ctx.fillStyle="#FFD700";
-      ctx.font="bold 18px 'Noto Serif TC',serif";
-      ctx.textAlign="center";ctx.textBaseline="middle";
-      ctx.fillText("敵",ex+en.w*0.7,ey+en.h/2+bob);
-      ctx.globalAlpha=1;
+      ctx.beginPath();ctx.arc(j1x,j1y,4,0,Math.PI*2);ctx.fill();
+      ctx.beginPath();ctx.arc(j2x,j2y,3,0,Math.PI*2);ctx.fill();
+      // 尖刺末端
+      ctx.fillStyle="#c0392b";
+      ctx.beginPath();
+      ctx.moveTo(tipX-Math.cos(a)*3,tipY-Math.sin(a)*3);
+      ctx.lineTo(tipX+Math.cos(a)*6,tipY+Math.sin(a)*6);
+      ctx.lineTo(tipX-Math.cos(a+Math.PI/2)*3,tipY-Math.sin(a+Math.PI/2)*3);
+      ctx.fill();
+    }
+    ctx.lineCap="butt";
+
+    // ===== 主體球形 =====
+    // 外殼
+    const bodyR=44;
+    const bodyG=ctx.createRadialGradient(cx-10,cy-10,5,cx,cy,bodyR);
+    bodyG.addColorStop(0,"#6a4a8a");
+    bodyG.addColorStop(0.4,"#3a1a4a");
+    bodyG.addColorStop(1,"#1a0a2a");
+    ctx.fillStyle=bodyG;
+    ctx.beginPath();ctx.arc(cx,cy,bodyR,0,Math.PI*2);ctx.fill();
+    // 金邊
+    ctx.strokeStyle="#FFD700";ctx.lineWidth=2;
+    ctx.shadowColor="#FFD700";ctx.shadowBlur=5;
+    ctx.beginPath();ctx.arc(cx,cy,bodyR,0,Math.PI*2);ctx.stroke();
+    ctx.shadowBlur=0;
+
+    // 環狀紋飾
+    ctx.strokeStyle="rgba(255,215,0,0.3)";ctx.lineWidth=1;
+    for(let r=0;r<3;r++){
+      ctx.beginPath();ctx.arc(cx,cy,bodyR-10-r*8,0,Math.PI*2);ctx.stroke();
+    }
+    // 鉚釘
+    ctx.fillStyle="#FFD700";
+    for(let i=0;i<6;i++){
+      const a=i*Math.PI/3+frame*0.005;
+      ctx.beginPath();ctx.arc(cx+Math.cos(a)*(bodyR-5),cy+Math.sin(a)*(bodyR-5),2,0,Math.PI*2);ctx.fill();
+    }
+
+    // ===== 多眼系統（8 隻紅眼）=====
+    const eyeBlink=Math.sin(frame*0.15)*0.3+0.7;
+    ctx.shadowColor="#FF0000";ctx.shadowBlur=10;
+    for(let i=0;i<8;i++){
+      const a=i*Math.PI/4-Math.PI/2;
+      const eyeR=4+(i%2)*1;
+      const ex2=cx+Math.cos(a)*(bodyR-12);
+      const ey2=cy+Math.sin(a)*(bodyR-12);
+      const eyeG=ctx.createRadialGradient(ex2,ey2,1,ex2,ey2,eyeR);
+      eyeG.addColorStop(0,"#fff");
+      eyeG.addColorStop(0.4,"#FF6666");
+      eyeG.addColorStop(1,enraged?"rgba(255,0,0,"+eyeBlink+")":"rgba(180,0,0,"+(eyeBlink*0.8)+")");
+      ctx.fillStyle=eyeG;
+      ctx.beginPath();ctx.arc(ex2,ey2,eyeR,0,Math.PI*2);ctx.fill();
+    }
+    ctx.shadowBlur=0;
+
+    // ===== 中央核心（紫色能量）=====
+    const corePulse=Math.sin(frame*0.1)*0.3+0.7;
+    const coreG=ctx.createRadialGradient(cx,cy,3,cx,cy,20);
+    coreG.addColorStop(0,"#fff");
+    coreG.addColorStop(0.3,"rgba(255,100,255,"+corePulse+")");
+    coreG.addColorStop(0.7,"rgba(150,50,200,"+(corePulse*0.6)+")");
+    coreG.addColorStop(1,"rgba(80,0,120,0)");
+    ctx.fillStyle=coreG;
+    ctx.beginPath();ctx.arc(cx,cy,20,0,Math.PI*2);ctx.fill();
+    // 旋轉的能量符文（六角）
+    ctx.save();
+    ctx.translate(cx,cy);
+    ctx.rotate(-frame*0.04);
+    ctx.strokeStyle="rgba(255,100,255,"+corePulse+")";
+    ctx.lineWidth=2;
+    ctx.shadowColor="#FF66FF";ctx.shadowBlur=8;
+    ctx.beginPath();
+    for(let i=0;i<6;i++){
+      const a=i*Math.PI/3;
+      const x=Math.cos(a)*12,y=Math.sin(a)*12;
+      if(i===0)ctx.moveTo(x,y);else ctx.lineTo(x,y);
+    }
+    ctx.closePath();
+    ctx.stroke();
+    ctx.restore();
+    ctx.shadowBlur=0;
+
+    // 王冠（蜘蛛王標誌）
+    ctx.fillStyle="#FFD700";
+    ctx.beginPath();
+    ctx.moveTo(cx-20,cy-bodyR+3);
+    ctx.lineTo(cx-15,cy-bodyR-10);
+    ctx.lineTo(cx-7,cy-bodyR-2);
+    ctx.lineTo(cx,cy-bodyR-15);
+    ctx.lineTo(cx+7,cy-bodyR-2);
+    ctx.lineTo(cx+15,cy-bodyR-10);
+    ctx.lineTo(cx+20,cy-bodyR+3);
+    ctx.closePath();
+    ctx.fill();
+    ctx.strokeStyle="#996600";ctx.lineWidth=1;
+    ctx.stroke();
+    // 王冠寶石
+    ctx.fillStyle="#FF0099";
+    ctx.shadowColor="#FF0099";ctx.shadowBlur=8;
+    ctx.beginPath();ctx.arc(cx,cy-bodyR-9,3,0,Math.PI*2);ctx.fill();
+    ctx.shadowBlur=0;
+
+    // 「蛛」標誌
+    ctx.save();
+    ctx.shadowColor="#FFD700";ctx.shadowBlur=8;
+    ctx.fillStyle="rgba(0,0,0,0.4)";
+    ctx.beginPath();ctx.arc(cx,cy,12,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle="#FFD700";
+    ctx.font="bold 16px 'Noto Serif TC',serif";
+    ctx.textAlign="center";ctx.textBaseline="middle";
+    ctx.fillText("蛛",cx,cy+1);
+    ctx.restore();
+  }
+
+  // ===== 第 3 關 BOSS：火焰之心 =====
+  function drawBossFlame(ctx,en,frame){
+    const ex=en.x,ey=en.y;
+    const bob=Math.sin(frame*0.07)*4;
+    const cx=ex+en.w/2,cy=ey+en.h/2+bob;
+    const hpRatio=en.hp/en.maxHp;
+    const enraged=hpRatio<0.4;
+    const intensity=enraged?1.5:1;
+
+    // ===== 1. 外圍火焰光環（多層）=====
+    for(let r=0;r<5;r++){
+      const flameR=en.w*0.55+r*10+Math.sin(frame*0.1+r*0.5)*6;
+      const alpha=(0.25-r*0.04)*intensity;
+      ctx.save();
+      ctx.shadowColor="#FF4400";ctx.shadowBlur=15;
+      const fg=ctx.createRadialGradient(cx,cy,flameR*0.6,cx,cy,flameR);
+      fg.addColorStop(0,"rgba(255,200,0,0)");
+      fg.addColorStop(0.7,"rgba(255,100,0,"+alpha+")");
+      fg.addColorStop(1,"rgba(200,0,0,0)");
+      ctx.fillStyle=fg;
+      ctx.beginPath();ctx.arc(cx,cy,flameR,0,Math.PI*2);ctx.fill();
+      ctx.restore();
+    }
+
+    // ===== 2. 火焰觸手（8 條向外噴）=====
+    for(let t=0;t<8;t++){
+      const a=t*Math.PI/4+frame*0.01;
+      const len=35+Math.sin(frame*0.15+t)*12;
+      const tx=cx+Math.cos(a)*len;
+      const ty=cy+Math.sin(a)*len;
+      // 火舌
+      const g=ctx.createLinearGradient(cx,cy,tx,ty);
+      g.addColorStop(0,"rgba(255,255,100,0.9)");
+      g.addColorStop(0.5,"rgba(255,80,0,0.7)");
+      g.addColorStop(1,"rgba(180,0,0,0)");
+      ctx.strokeStyle=g;
+      ctx.lineWidth=6+Math.sin(frame*0.2+t)*2;
+      ctx.lineCap="round";
+      ctx.beginPath();
+      ctx.moveTo(cx,cy);
+      // 曲線
+      const mx=cx+Math.cos(a)*(len*0.5)+Math.cos(a+Math.PI/2)*Math.sin(frame*0.2+t)*8;
+      const my=cy+Math.sin(a)*(len*0.5)+Math.sin(a+Math.PI/2)*Math.sin(frame*0.2+t)*8;
+      ctx.quadraticCurveTo(mx,my,tx,ty);
+      ctx.stroke();
+    }
+    ctx.lineCap="butt";
+
+    // ===== 3. 主體（紅黑岩漿球體）=====
+    const bodyR=42;
+    // 火紋外殼
+    const bodyG=ctx.createRadialGradient(cx-8,cy-8,5,cx,cy,bodyR);
+    bodyG.addColorStop(0,"#FF6600");
+    bodyG.addColorStop(0.3,"#c0392b");
+    bodyG.addColorStop(0.7,"#5a0a0a");
+    bodyG.addColorStop(1,"#1a0000");
+    ctx.fillStyle=bodyG;
+    ctx.beginPath();ctx.arc(cx,cy,bodyR,0,Math.PI*2);ctx.fill();
+    // 岩漿裂紋
+    ctx.strokeStyle="rgba(255,160,0,"+(0.5+Math.sin(frame*0.1)*0.3)+")";
+    ctx.lineWidth=2;
+    ctx.shadowColor="#FF6600";ctx.shadowBlur=8;
+    for(let i=0;i<5;i++){
+      const a=i*Math.PI*2/5+frame*0.003;
+      ctx.beginPath();
+      ctx.moveTo(cx+Math.cos(a)*5,cy+Math.sin(a)*5);
+      const ang2=a+0.3;
+      ctx.lineTo(cx+Math.cos(ang2)*(bodyR-8),cy+Math.sin(ang2)*(bodyR-8));
+      const ang3=a+0.5;
+      ctx.lineTo(cx+Math.cos(ang3)*(bodyR-15),cy+Math.sin(ang3)*(bodyR-15));
+      ctx.stroke();
+    }
+    ctx.shadowBlur=0;
+    // 金邊
+    ctx.strokeStyle="#FFD700";ctx.lineWidth=2;
+    ctx.shadowColor="#FFD700";ctx.shadowBlur=6;
+    ctx.beginPath();ctx.arc(cx,cy,bodyR,0,Math.PI*2);ctx.stroke();
+    ctx.shadowBlur=0;
+
+    // ===== 4. 中央火焰核心（眼睛狀）=====
+    ctx.save();
+    ctx.translate(cx,cy);
+    ctx.rotate(Math.sin(frame*0.05)*0.2);
+    // 外眼框
+    ctx.fillStyle="#2a0000";
+    ctx.beginPath();
+    ctx.ellipse(0,0,28,18,0,0,Math.PI*2);
+    ctx.fill();
+    ctx.strokeStyle="#FFD700";ctx.lineWidth=2;
+    ctx.stroke();
+    // 火焰瞳孔
+    const eyeG=ctx.createRadialGradient(0,0,2,0,0,18);
+    eyeG.addColorStop(0,"#fff");
+    eyeG.addColorStop(0.2,"#FFFF00");
+    eyeG.addColorStop(0.5,"#FF6600");
+    eyeG.addColorStop(1,"rgba(180,0,0,0)");
+    ctx.fillStyle=eyeG;
+    ctx.beginPath();
+    ctx.ellipse(0,0,24,15,0,0,Math.PI*2);
+    ctx.fill();
+    // 瞳仁（垂直細縫，惡魔感）
+    ctx.fillStyle="#1a0000";
+    ctx.beginPath();
+    ctx.ellipse(0,0,3,12,0,0,Math.PI*2);
+    ctx.fill();
+    // 高光
+    ctx.fillStyle="rgba(255,255,255,0.6)";
+    ctx.beginPath();ctx.ellipse(-5,-4,2,3,0,0,Math.PI*2);ctx.fill();
+    ctx.restore();
+
+    // ===== 5. 上下噴火口（噴射火焰）=====
+    for(let s=0;s<2;s++){
+      const fy=cy+(s===0?-bodyR-5:bodyR+5);
+      const dir=s===0?-1:1;
+      // 火焰柱
+      const flameLen=15+Math.sin(frame*0.3+s)*6;
+      const fg=ctx.createLinearGradient(cx,fy,cx,fy+dir*flameLen);
+      fg.addColorStop(0,"rgba(255,255,100,0.9)");
+      fg.addColorStop(0.5,"rgba(255,80,0,0.7)");
+      fg.addColorStop(1,"rgba(180,0,0,0)");
+      ctx.fillStyle=fg;
+      ctx.beginPath();
+      ctx.moveTo(cx-8,fy);
+      ctx.quadraticCurveTo(cx,fy+dir*flameLen*1.3,cx+8,fy);
+      ctx.fill();
+    }
+
+    // ===== 6. 兩側機砲（黑色岩石材質）=====
+    for(let s=0;s<2;s++){
+      const sx=cx+(s===0?-bodyR-5:bodyR+5);
+      const ang=s===0?Math.PI:0;
+      ctx.save();
+      ctx.translate(sx,cy);
+      ctx.rotate(ang);
+      // 砲管
+      ctx.fillStyle="#1a0a0a";
+      ctx.fillRect(0,-6,18,12);
+      ctx.strokeStyle="#FFD700";ctx.lineWidth=1.5;
+      ctx.strokeRect(0,-6,18,12);
+      // 砲口火焰
+      const mz=Math.sin(frame*0.2+s)*0.3+0.7;
+      ctx.fillStyle="rgba(255,100,0,"+mz+")";
+      ctx.shadowColor="#FF6600";ctx.shadowBlur=8;
+      ctx.beginPath();ctx.arc(20,0,3,0,Math.PI*2);ctx.fill();
+      ctx.restore();
+      ctx.shadowBlur=0;
+    }
+
+    // ===== 7. 王冠（火焰王標誌）=====
+    ctx.fillStyle="#FFD700";
+    ctx.beginPath();
+    ctx.moveTo(cx-22,cy-bodyR+3);
+    ctx.lineTo(cx-16,cy-bodyR-12);
+    ctx.lineTo(cx-8,cy-bodyR-3);
+    ctx.lineTo(cx,cy-bodyR-18);
+    ctx.lineTo(cx+8,cy-bodyR-3);
+    ctx.lineTo(cx+16,cy-bodyR-12);
+    ctx.lineTo(cx+22,cy-bodyR+3);
+    ctx.closePath();
+    ctx.fill();
+    ctx.strokeStyle="#996600";ctx.lineWidth=1.5;
+    ctx.stroke();
+    // 寶石
+    ctx.fillStyle="#FF0000";
+    ctx.shadowColor="#FF0000";ctx.shadowBlur=10;
+    ctx.beginPath();ctx.arc(cx,cy-bodyR-11,3.5,0,Math.PI*2);ctx.fill();
+    ctx.shadowBlur=0;
+
+    // ===== 8.「魔」字標誌 =====
+    ctx.save();
+    ctx.shadowColor="#FFD700";ctx.shadowBlur=10;
+    ctx.fillStyle="#FFD700";
+    ctx.font="bold 14px 'Noto Serif TC',serif";
+    ctx.textAlign="center";ctx.textBaseline="middle";
+    ctx.fillText("魔",cx,cy+bodyR+10);
+    ctx.restore();
+
+    // 火焰粒子向上飄
+    if(frame%4===0){
+      ctx.fillStyle="rgba(255,150,0,0.7)";
+      for(let p=0;p<3;p++){
+        const px=cx+(Math.random()-0.5)*60;
+        const py=cy+bodyR+5;
+        ctx.beginPath();
+        ctx.arc(px,py+Math.sin(frame*0.1+p)*5,1+Math.random()*2,0,Math.PI*2);
+        ctx.fill();
+      }
     }
   }
 
@@ -2078,24 +3396,27 @@ function Game(){
     ctx.textAlign="left";ctx.textBaseline="middle";
     ctx.fillText("分數 "+g.score,12,16);
 
-    // 成語進度（X / 20）
-    const idiomCount=g.complete.length;
+    // 本關進度（X / 20）+ 關卡數
+    const stageCount=g.complete.length-(g.stageStartCount||0);
     const target=20;
-    const reached=idiomCount>=target;
+    const reached=stageCount>=target;
+    ctx.fillStyle="#FF69B4";
+    ctx.font="bold 13px 'Noto Sans TC',sans-serif";
+    ctx.fillText("第 "+g.stage+" 關",110,16);
     ctx.fillStyle=reached?"#FFD700":"#4ECDC4";
-    ctx.fillText("📖 "+idiomCount+" / "+target,120,16);
+    ctx.font="bold 14px 'Noto Sans TC',sans-serif";
+    ctx.fillText("📖 "+stageCount+" / "+target,170,16);
     // 進度條
-    const barX=210,barY=10,barW=80,barH=10;
+    const barX=255,barY=10,barW=60,barH=10;
     ctx.fillStyle="rgba(0,0,0,0.5)";
     ctx.fillRect(barX,barY,barW,barH);
-    const pct=Math.min(idiomCount/target,1);
+    const pct=Math.min(stageCount/target,1);
     const barGrad=ctx.createLinearGradient(barX,barY,barX+barW,barY);
     barGrad.addColorStop(0,"#4ECDC4");
     barGrad.addColorStop(1,reached?"#FFD700":"#5cdb95");
     ctx.fillStyle=barGrad;
     ctx.fillRect(barX,barY,barW*pct,barH);
     if(reached){
-      // 閃爍邊框 = BOSS 召喚信號
       ctx.strokeStyle="#FFD700";
       ctx.lineWidth=2;
       ctx.globalAlpha=0.5+Math.sin(g.frame*0.3)*0.5;
@@ -2106,7 +3427,7 @@ function Game(){
     // HP
     ctx.font="14px sans-serif";
     for(let i=0;i<g.p.maxHp;i++){
-      ctx.fillText(i<g.p.hp?"❤️":"🖤",300+i*20,16);
+      ctx.fillText(i<g.p.hp?"❤️":"🖤",325+i*18,16);
     }
 
     // 武器
@@ -2116,12 +3437,98 @@ function Game(){
     ctx.textAlign="right";
     let wText=w.icon+" "+w.name;
     if(g.p.weapon!=="normal")wText+=" ×"+g.p.weaponAmmo;
-    ctx.fillText(wText,VW-100,16);
-
-    // 炸彈
-    ctx.fillStyle="#FFD700";
-    ctx.fillText("💣 "+g.p.bombs,VW-12,16);
+    ctx.fillText(wText,VW-12,16);
     ctx.textAlign="left";
+
+    // === 能量條 + 炸彈計數（左下角）===
+    const eBarX=12,eBarY=VH-58,eBarW=200,eBarH=14;
+    const energy=g.p.energy||0;
+    const energyMax=g.p.energyMax||10;
+    const ready=energy>=energyMax;
+
+    // 炸彈圖示（在能量條正上方）— 顯示為一排炸彈
+    const bombY=eBarY-38;
+    const bombSize=22;
+    const bombSpacing=26;
+    for(let i=0;i<g.p.maxBombs;i++){
+      const bx=eBarX+i*bombSpacing+bombSize/2;
+      const by=bombY+bombSize/2;
+      const hasBomb=i<g.p.bombs;
+      ctx.save();
+      if(hasBomb){
+        // 有炸彈：金色發光球體
+        ctx.shadowColor="#FFD700";ctx.shadowBlur=8;
+        const bg=ctx.createRadialGradient(bx-3,by-3,2,bx,by,bombSize/2);
+        bg.addColorStop(0,"#fff");
+        bg.addColorStop(0.3,"#FFE066");
+        bg.addColorStop(0.7,"#FFAA00");
+        bg.addColorStop(1,"#996600");
+        ctx.fillStyle=bg;
+        ctx.beginPath();ctx.arc(bx,by,bombSize/2,0,Math.PI*2);ctx.fill();
+        ctx.shadowBlur=0;
+        // 引信
+        ctx.strokeStyle="#5a3a1a";ctx.lineWidth=2;
+        ctx.beginPath();
+        ctx.moveTo(bx-2,by-bombSize/2);
+        ctx.quadraticCurveTo(bx+4,by-bombSize/2-5,bx+5,by-bombSize/2-3);
+        ctx.stroke();
+        // 引信火花
+        const sparkle=Math.sin(g.frame*0.4+i)*0.5+0.5;
+        ctx.fillStyle="rgba(255,200,0,"+sparkle+")";
+        ctx.shadowColor="#FF8800";ctx.shadowBlur=6;
+        ctx.beginPath();ctx.arc(bx+5,by-bombSize/2-3,2,0,Math.PI*2);ctx.fill();
+        ctx.shadowBlur=0;
+        // 高光
+        ctx.fillStyle="rgba(255,255,255,0.6)";
+        ctx.beginPath();ctx.ellipse(bx-4,by-4,3,2,-0.5,0,Math.PI*2);ctx.fill();
+      }else{
+        // 沒炸彈：暗灰空殼
+        ctx.fillStyle="rgba(255,255,255,0.08)";
+        ctx.beginPath();ctx.arc(bx,by,bombSize/2,0,Math.PI*2);ctx.fill();
+        ctx.strokeStyle="rgba(255,255,255,0.2)";ctx.lineWidth=1;
+        ctx.stroke();
+      }
+      ctx.restore();
+    }
+    // 炸彈標籤
+    ctx.fillStyle="#FFD700";
+    ctx.font="bold 11px 'Noto Sans TC',sans-serif";
+    ctx.textAlign="left";ctx.textBaseline="middle";
+    ctx.fillText("💣 必殺 "+g.p.bombs+"/"+g.p.maxBombs,eBarX+g.p.maxBombs*bombSpacing+8,bombY+bombSize/2);
+
+    // 能量條背景
+    ctx.fillStyle="rgba(0,0,0,0.6)";
+    ctx.fillRect(eBarX,eBarY,eBarW,eBarH);
+    // 內容（10 格）
+    const cellW=(eBarW-4)/energyMax;
+    for(let k=0;k<energyMax;k++){
+      const cx=eBarX+2+k*cellW;
+      if(k<energy){
+        // 已充能：金色漸層
+        const cg=ctx.createLinearGradient(cx,eBarY,cx,eBarY+eBarH);
+        cg.addColorStop(0,"#FFD700");
+        cg.addColorStop(1,"#FF9933");
+        ctx.fillStyle=cg;
+        ctx.fillRect(cx,eBarY+2,cellW-1,eBarH-4);
+        ctx.fillStyle="rgba(255,255,255,"+(0.4+Math.sin(g.frame*0.1+k)*0.3)+")";
+        ctx.fillRect(cx,eBarY+2,cellW-1,2);
+      }else{
+        ctx.fillStyle="rgba(255,255,255,0.08)";
+        ctx.fillRect(cx,eBarY+2,cellW-1,eBarH-4);
+      }
+    }
+    // 滿格時整條閃爍邊框
+    if(ready){
+      ctx.strokeStyle="#FFD700";ctx.lineWidth=2;
+      ctx.globalAlpha=0.5+Math.sin(g.frame*0.3)*0.5;
+      ctx.strokeRect(eBarX-1,eBarY-1,eBarW+2,eBarH+2);
+      ctx.globalAlpha=1;
+    }
+    // 能量條標籤
+    ctx.fillStyle=ready?"#FFD700":"#aaa";
+    ctx.font="bold 11px 'Noto Sans TC',sans-serif";
+    ctx.textBaseline="middle";
+    ctx.fillText("⚡ 能量 "+energy+"/"+energyMax,eBarX+4,eBarY-9);
 
     // 連擊
     if(g.p.combo>1){
@@ -2129,6 +3536,21 @@ function Game(){
       ctx.font="bold 13px 'Noto Sans TC',sans-serif";
       ctx.textAlign="right";
       ctx.fillText("🔥 "+g.p.combo+" 連擊",VW-12,46);
+      ctx.textAlign="left";
+    }
+
+    // 僚機出擊狀態（第 3 關起）
+    if(g.wingmenCanLaunch){
+      ctx.textAlign="right";
+      if(g.wingmenLaunched>0){
+        ctx.fillStyle="#FF4500";
+        ctx.font="bold 13px 'Noto Sans TC',sans-serif";
+        ctx.fillText("🤖 出擊中 "+Math.ceil(g.wingmenLaunched/60)+"s",VW-12,68);
+      }else{
+        ctx.fillStyle="#00FFFF";
+        ctx.font="bold 12px 'Noto Sans TC',sans-serif";
+        ctx.fillText("[V] 僚機出擊 5 秒",VW-12,68);
+      }
       ctx.textAlign="left";
     }
 
@@ -2271,7 +3693,7 @@ function Game(){
 
         h("div",{style:{marginTop:14,background:"rgba(255,255,255,0.06)",borderRadius:10,padding:"10px 12px",textAlign:"left"}},
           h("p",{style:{color:"rgba(255,255,255,0.65)",fontSize:11,margin:"0 0 4px",fontWeight:700}},"操作"),
-          h("div",{style:{color:"rgba(255,255,255,0.55)",fontSize:10,lineHeight:1.7},dangerouslySetInnerHTML:{__html:"⌨️ <b>方向鍵</b> 或 <b>WASD</b> 四方向飛行<br>🔫 <b>自動射擊</b>，無需按鍵<br>💣 <b>B / X / Shift</b> 釋放必殺技（清屏 + 大傷害）<br>⏸ <b>ESC</b> 暫停<br>📱 觸控：左下虛擬搖桿移動 / 右下 💣 必殺<br><br>💡 擊破木箱掉落成語金幣 ✨<br>💡 集滿四字成語 +1000 分並回血<br>💡 撿 10 種隨機武器升級（散彈/雷射/導彈/電漿/波動/冰凍/火焰/閃電/迴旋鏢/光束）<br>🎯 <b>集滿 20 個成語 → BOSS 出現！</b>"}})
+          h("div",{style:{color:"rgba(255,255,255,0.55)",fontSize:10,lineHeight:1.7},dangerouslySetInnerHTML:{__html:"⌨️ <b>方向鍵</b> 或 <b>WASD</b> 四方向飛行<br>🔫 <b>自動射擊</b>，無需按鍵<br>💣 <b>B / X / Shift</b> 釋放必殺技（清屏 + 大傷害）<br>🤖 <b>V</b> 僚機出擊（第 3 關後啟用，5 秒自主攻擊）<br>⏸ <b>ESC</b> 暫停<br><br>💡 擊破木箱掉落成語金幣 ✨<br>💡 集滿四字成語 +1000 分並回血<br>⚡ 能量條：每完成 10 個成語 → 自動 +1 必殺！<br>🎯 每關集滿 <b>20 個成語 → BOSS 出現！</b><br>🏆 過 1 關後解鎖新題庫；過 2 關後得 2 隻僚機協戰"}})
         ),
 
         hi>0?h("div",{style:{marginTop:10,color:"#FFD700",fontSize:13,fontWeight:600}},"🏆 最高分："+hi):null
@@ -2407,8 +3829,17 @@ function Game(){
           onPointerCancel:function(){press("down",false);}
         },"▼")
       ),
-      // 右：必殺鈕
-      h("div",{style:{flexDirection:"column",alignItems:"flex-end"}},
+      // 右：必殺鈕 + 出擊鈕
+      h("div",{style:{flexDirection:"column",alignItems:"flex-end",gap:8}},
+        // 出擊鈕（第 3 關起出現）
+        stage>=3?h("button",{
+          className:"touch-btn",
+          style:{background:"linear-gradient(135deg,#00FFFF,#0080ff)",border:"3px solid #FFD700",fontSize:13,fontWeight:800,fontFamily:"'Noto Sans TC',sans-serif"},
+          onPointerDown:function(e){e.preventDefault();keysRef.current.launchPressed=true;},
+          onPointerUp:function(){},
+          onPointerLeave:function(){},
+          onPointerCancel:function(){}
+        },"🤖 出擊"):null,
         h("button",{
           className:"touch-btn bomb",
           onPointerDown:function(e){e.preventDefault();pressBomb(true);},
@@ -2417,7 +3848,125 @@ function Game(){
           onPointerCancel:function(){pressBomb(false);}
         },"💣 必殺")
       )
-    )
+    ),
+
+    // 複習面板（BOSS 死後出現，要點過所有成語才有升級）
+    reviewPanel?h("div",{style:{position:"fixed",inset:0,background:"radial-gradient(circle at center,rgba(30,15,70,0.95),rgba(0,0,0,0.97))",display:"flex",alignItems:"center",justifyContent:"center",zIndex:200,padding:20,overflowY:"auto"}},
+      h("div",{style:{maxWidth:760,width:"100%",textAlign:"center"}},
+        h("div",{style:{fontSize:48,marginBottom:4}},"📖"),
+        h("h2",{style:{color:"#FFD700",fontSize:28,margin:"0 0 4px",fontFamily:"'Orbitron','Noto Serif TC',serif",fontWeight:900,textShadow:"0 0 20px rgba(255,215,0,0.6)",letterSpacing:2}},"第 "+reviewPanel.stage+" 關 · 成語複習"),
+        h("p",{style:{color:"#4ECDC4",fontSize:13,margin:"0 0 16px"}},
+          "點選每個成語看看意思（"+reviewPanel.clicked.length+" / "+reviewPanel.idioms.length+"）"
+        ),
+        // 成語卡片網格
+        h("div",{style:{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(150px,1fr))",gap:10,marginBottom:18}},
+          reviewPanel.idioms.map(function(idiom,i){
+            const isClicked=reviewPanel.clicked.includes(idiom);
+            const meaning=IDIOM_MEANINGS[idiom]||"成語意思待補充";
+            return h("div",{
+              key:i,
+              onClick:function(){
+                if(isClicked)return;
+                setReviewPanel(function(prev){
+                  if(!prev)return prev;
+                  return Object.assign({},prev,{clicked:prev.clicked.concat([idiom])});
+                });
+              },
+              style:{
+                padding:"10px 8px",
+                background:isClicked?"linear-gradient(135deg,rgba(255,215,0,0.25),rgba(255,140,0,0.15))":"rgba(50,30,90,0.6)",
+                border:isClicked?"2px solid #FFD700":"2px solid rgba(78,205,196,0.4)",
+                borderRadius:10,
+                cursor:isClicked?"default":"pointer",
+                transition:"all 0.25s",
+                textAlign:"center",
+                minHeight:isClicked?70:50
+              },
+              onMouseEnter:function(e){if(!isClicked){e.currentTarget.style.background="rgba(78,205,196,0.2)";e.currentTarget.style.borderColor="#4ECDC4";}},
+              onMouseLeave:function(e){if(!isClicked){e.currentTarget.style.background="rgba(50,30,90,0.6)";e.currentTarget.style.borderColor="rgba(78,205,196,0.4)";}}
+            },
+              h("div",{style:{color:isClicked?"#FFD700":"#fff",fontSize:18,fontWeight:800,fontFamily:"'Noto Serif TC',serif",marginBottom:isClicked?4:0,letterSpacing:1}},idiom),
+              isClicked?h("div",{style:{color:"rgba(255,255,255,0.85)",fontSize:11,lineHeight:1.4,marginTop:3}},meaning):h("div",{style:{color:"rgba(255,255,255,0.4)",fontSize:10,marginTop:2}},"👆 點看意思")
+            );
+          })
+        ),
+        // 進入下一關（全部點完才可按）
+        (function(){
+          const allClicked=reviewPanel.clicked.length>=reviewPanel.idioms.length;
+          return h("button",{
+            disabled:!allClicked,
+            onClick:function(){
+              const g=gRef.current;
+              if(!g||!allClicked)return;
+              setReviewPanel(null);
+              // 隨機抽 3 個升級
+              const pool=UPGRADES.slice();
+              const choices=[];
+              for(let k=0;k<3&&pool.length>0;k++){
+                const idx=Math.floor(Math.random()*pool.length);
+                choices.push(pool.splice(idx,1)[0]);
+              }
+              setUpgradePanel({choices:choices,stage:g.stage});
+            },
+            style:{
+              padding:"14px 36px",
+              background:allClicked?"linear-gradient(135deg,#FFD700,#FF9933)":"rgba(100,100,100,0.4)",
+              color:allClicked?"#1a1a2e":"rgba(255,255,255,0.4)",
+              border:allClicked?"3px solid #FFD700":"3px solid rgba(255,255,255,0.15)",
+              borderRadius:30,
+              fontSize:16,
+              fontWeight:900,
+              fontFamily:"'Noto Sans TC',sans-serif",
+              cursor:allClicked?"pointer":"not-allowed",
+              boxShadow:allClicked?"0 6px 20px rgba(255,215,0,0.5)":"none",
+              letterSpacing:2,
+              transition:"all 0.2s"
+            }
+          },allClicked?"⚡ 繼續 — 機體升級":"請先複習所有成語（"+reviewPanel.clicked.length+"/"+reviewPanel.idioms.length+"）");
+        })()
+      )
+    ):null,
+
+    // 升級面板浮層（過關後出現）
+    upgradePanel?h("div",{style:{position:"fixed",inset:0,background:"radial-gradient(circle at center,rgba(20,10,60,0.92),rgba(0,0,0,0.95))",display:"flex",alignItems:"center",justifyContent:"center",zIndex:200,padding:20}},
+      h("div",{style:{maxWidth:680,width:"100%",textAlign:"center"}},
+        // 標題
+        h("div",{style:{marginBottom:6,fontSize:54}},"🏆"),
+        h("h2",{style:{color:"#FFD700",fontSize:34,margin:"0 0 6px",fontFamily:"'Orbitron','Noto Serif TC',serif",fontWeight:900,textShadow:"0 0 24px #FFD700, 0 0 50px rgba(255,215,0,0.5)",letterSpacing:3}},"第 "+upgradePanel.stage+" 關完成！"),
+        h("p",{style:{color:"#00FFFF",fontSize:15,margin:"0 0 24px",letterSpacing:2}},"⚡ 選擇一項機體升級 ⚡"),
+        // 三選一
+        h("div",{style:{display:"flex",gap:12,justifyContent:"center",flexWrap:"wrap"}},
+          upgradePanel.choices.map(function(upg,i){
+            return h("button",{
+              key:i,
+              onClick:function(){
+                const g=gRef.current;
+                if(!g)return;
+                applyUpgrade(g,upg);
+                setUpgradePanel(null);
+                nextStage(g);
+              },
+              style:{
+                width:180,padding:"20px 16px",
+                background:"linear-gradient(135deg,rgba(0,80,160,0.6),rgba(0,40,100,0.8))",
+                border:"3px solid #00FFFF",borderRadius:14,
+                color:"#fff",cursor:"pointer",
+                fontFamily:"'Noto Sans TC',sans-serif",
+                transition:"all 0.2s",
+                boxShadow:"0 6px 24px rgba(0,255,255,0.3)"
+              },
+              onMouseEnter:function(e){e.currentTarget.style.transform="translateY(-4px) scale(1.03)";e.currentTarget.style.borderColor="#FFD700";e.currentTarget.style.boxShadow="0 10px 30px rgba(255,215,0,0.5)";},
+              onMouseLeave:function(e){e.currentTarget.style.transform="";e.currentTarget.style.borderColor="#00FFFF";e.currentTarget.style.boxShadow="0 6px 24px rgba(0,255,255,0.3)";}
+            },
+              h("div",{style:{fontSize:42,marginBottom:6}},upg.icon),
+              h("div",{style:{fontSize:17,fontWeight:800,color:"#FFD700",marginBottom:6}},upg.name),
+              h("div",{style:{fontSize:11,color:"rgba(255,255,255,0.85)",lineHeight:1.5}},upg.desc)
+            );
+          })
+        ),
+        h("p",{style:{color:"rgba(255,255,255,0.4)",fontSize:11,marginTop:18}},"下一關 BOSS 會更強大⋯")
+      )
+    ):null
   );
 }
 
